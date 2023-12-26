@@ -76,6 +76,24 @@ export const columns: ColumnDef<Customer>[] = [
     },
   },
   {
+    accessorKey: 'lastServiceDate',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='Last Service Date' />
+    ),
+    cell: ({ row }) => {
+      const date = row.getValue('lastServiceDate') as string
+      const formattedDate = format(parseISO(date), 'MMM-do')
+      return (
+        <div className='flex min-w-content items-center'>
+          <span>{formattedDate}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+  {
     accessorKey: 'nextServiceDate',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='Next Service Date' />

@@ -9,6 +9,7 @@ export const customerSchema = z.object({
   email: z.string(),
   phone: z.string(),
   nextServiceDate: z.string(),
+  lastServiceDate: z.string(),
 });
 
 export type Customer = z.infer<typeof customerSchema>;

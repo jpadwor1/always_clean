@@ -5,6 +5,8 @@ import z from 'zod';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { CustomerType } from '@/lib/utils';
 import { randomUUID } from 'crypto';
+import { getUserSubscriptionPlan, stripe } from '@/lib/stripe';
+import { absoluteUrl } from '@/lib/utils';
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -23,7 +25,6 @@ export const appRouter = router({
 
     if (!dbUser) {
       // create user in db
-      console.log('creating user in db');
       await db.user.create({
         data: {
           id: user.id,
@@ -114,31 +115,52 @@ export const appRouter = router({
 
       return customer;
     }),
-  updateServiceDates: privateProcedure.mutation(async ({ ctx }) => {
-    const customers = await db.customer.findMany({
-      where: {
-        nextServiceDate: {
-          lt: new Date(), // lt = 'less than'
+  
+    createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
+      const { userId } = ctx;
+  
+      const billingUrl = absoluteUrl('/dashboard/billing');
+  
+      if (!userId) throw new TRPCError({ code: 'UNAUTHORIZED' });
+  
+      const dbUser = await db.user.findFirst({
+        where: {
+          id: userId,
         },
-      },
-    });
-
-    const updatedCustomers = await Promise.all(
-      customers.map(async (customer) => {
-        return await db.customer.update({
-          where: {
-            id: customer.id,
-          },
-          data: {
-            lastServiceDate: customer.nextServiceDate,
-            nextServiceDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days later
-          },
+      });
+  
+      if (!dbUser) throw new TRPCError({ code: 'UNAUTHORIZED' });
+  
+      const subscriptionPlan = await getUserSubscriptionPlan();
+  
+      if (subscriptionPlan.isSubscribed && dbUser.stripeCustomerId) {
+        const stripeSession = await stripe.billingPortal.sessions.create({
+          customer: dbUser.stripeCustomerId,
+          return_url: billingUrl,
         });
-      })
-    );
-
-    return updatedCustomers;
-  }),
+        return { url: stripeSession.url };
+      }
+  
+      const stripeSession = await stripe.checkout.sessions.create({
+        success_url: billingUrl,
+        cancel_url: billingUrl,
+        payment_method_types: ['card'],
+        mode: 'subscription',
+        billing_address_collection: 'auto',
+        line_items: [
+          // {
+          //   price: PLANS.find((plan) => plan.name === 'Pro')?.price.priceIds.test,
+          //   quantity: 1,
+          // },
+        ],
+  
+        metadata: {
+          userId: userId,
+        },
+      });
+      return { url: stripeSession.url };
+    }),
+  
 });
 
 export type AppRouter = typeof appRouter;

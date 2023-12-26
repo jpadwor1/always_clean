@@ -1,15 +1,26 @@
 'use client';
 import React from 'react';
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
+import  Link from 'next/link'
+import {format} from 'date-fns'
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, {
   Draggable,
-  DropArg,
 } from '@fullcalendar/interaction';
+import { EventClickArg } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import { EventSourceInput } from '@fullcalendar/core/index.js';
-import { CheckIcon, AlertTriangle } from 'lucide-react';
+import {
+  CheckIcon,
+  AlertTriangle,
+  MapPinned,
+  User,
+  Mail,
+  Info,
+  Phone,
+  CalendarIcon,
+} from 'lucide-react';
 import { Checkbox } from '../ui/checkbox';
 
 import {
@@ -55,6 +66,10 @@ const Calendar = () => {
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEventDetailsModal, setShowEventDetailsModal] = useState(false);
+  const [currentEventDetails, setCurrentEventDetails] = useState<Event | null>(
+    null
+  );
   const [idToDelete, setIdToDelete] = useState<number | null>(null);
   const [newEvent, setNewEvent] = useState<Event>({
     extendedProps: {
@@ -116,18 +131,6 @@ const Calendar = () => {
     setShowModal(true);
   }
 
-  function addEvent(data: DropArg) {
-    const event = {
-      ...newEvent,
-      start: data.date.toISOString(),
-      title: data.draggedEl.innerText,
-      allDay: data.allDay,
-      end: data.date.toISOString(),
-      id: new Date().getTime(),
-    };
-    setAllEvents([...allEvents, event]);
-  }
-
   function handleDeleteModal(data: { event: { id: string } }) {
     setShowDeleteModal(true);
     setIdToDelete(Number(data.event.id));
@@ -146,6 +149,9 @@ const Calendar = () => {
     setNewEvent({
       extendedProps: {
         location: '',
+        email: '',
+        phone: '',
+        customerType: CustomerType.Lead,
       },
       description: '',
       editable: true,
@@ -153,7 +159,7 @@ const Calendar = () => {
       start: '',
       end: '',
       allDay: false,
-      id: 0,
+      id: '0',
     });
     setShowDeleteModal(false);
     setIdToDelete(null);
@@ -165,6 +171,18 @@ const Calendar = () => {
     setNewEvent({
       ...newEvent,
       title: title.target.value,
+    });
+  };
+
+  const handleEventLocation = (
+    location: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setNewEvent({
+      ...newEvent,
+      extendedProps: {
+        ...newEvent.extendedProps,
+        location: location.target.value,
+      },
     });
   };
 
@@ -197,6 +215,9 @@ const Calendar = () => {
     setNewEvent({
       extendedProps: {
         location: '',
+        email: '',
+        phone: '',
+        customerType: CustomerType.Lead,
       },
       description: '',
       editable: true,
@@ -204,9 +225,37 @@ const Calendar = () => {
       start: '',
       end: '',
       allDay: false,
-      id: 0,
+      id: '0',
     });
   }
+
+  const showEventDetails = (data: EventClickArg) => {
+    const event = data.event._def;
+    const eventDetails: Event = {
+      extendedProps: {
+        location: event.extendedProps.location,
+        customerType: event.extendedProps.customerType,
+        email: event.extendedProps.email,
+        phone: event.extendedProps.phone,
+      },
+      title: event.title,
+      start: data.event._instance?.range.start ?? new Date(),
+      end: data.event._instance?.range.end ?? new Date(),
+      allDay: data.event.allDay,
+      id: data.event.id,
+      editable: event.ui.startEditable ?? true,
+    };
+
+    setShowEventDetailsModal(true);
+
+    setCurrentEventDetails(eventDetails);
+  };
+
+  const formatDateForDisplay = (date: string | Date | undefined) => {
+    if (!date) return '';
+  
+    return format(new Date(date), "MMM. do, yyyy 'at' h:mm aa");
+  };
 
   return (
     <main className='flex min-h-screen flex-col p-12'>
@@ -224,9 +273,62 @@ const Calendar = () => {
         selectable={true}
         selectMirror={true}
         dateClick={handleDateClick}
-        drop={(data) => addEvent(data)}
-        eventClick={(data) => handleDeleteModal(data)}
+        eventClick={(data) => showEventDetails(data)}
       />
+
+      <Dialog
+        open={showEventDetailsModal}
+        onOpenChange={setShowEventDetailsModal}
+      >
+        <DialogContent>
+          <DialogHeader className='flex flex-col items-center'>
+            <CheckIcon className='h-6 w-6 text-green-600' aria-hidden='true' />
+            <DialogTitle>Event Details</DialogTitle>
+          </DialogHeader>
+          <div className='event-details-form p-4 rounded-lg divide-y-1 space-y-2'>
+            <div className='flex items-center mb-4'>
+              <User className='text-lg mr-2' />
+              <span className='font-semibold text-lg'>
+                {currentEventDetails?.title}
+              </span>
+            </div>
+
+            <div className='mb-4'>
+              <CalendarIcon className='inline-block mr-2' />
+              <span className='text-zinc-800 mr-2'>Start -</span>
+              <span className='text-zinc-600'>{formatDateForDisplay(currentEventDetails?.start)}</span>
+            </div>
+
+            <div className='mb-4'>
+              <CalendarIcon className='inline-block mr-2' />
+              <span className='text-zinc-800 mr-2'>End Time -</span>
+              <span>{formatDateForDisplay(currentEventDetails?.end)}</span>
+            </div>
+
+            <div className='mb-4'>
+              <MapPinned className='inline-block mr-2' />
+              <span>{currentEventDetails?.extendedProps.location}</span>
+            </div>
+
+            <div className='mb-4'>
+              <Phone className='inline-block mr-2' />
+              <span>{currentEventDetails?.extendedProps.phone}</span>
+            </div>
+
+            <div className='mb-4'>
+              <Link href={`mailto:${currentEventDetails?.extendedProps.email}`}>
+              <Mail className='inline-block mr-2' />
+              <span>{currentEventDetails?.extendedProps.email}</span>
+              </Link>
+            </div>
+
+            <div className='mb-4'>
+              <Info className='inline-block mr-2' />
+              <span>{currentEventDetails?.description}</span>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
         <DialogContent>
@@ -281,6 +383,16 @@ const Calendar = () => {
                   placeholder='Title'
                 />
               </div>
+              <div className='mt-2'>
+                <Label htmlFor='title'>Location</Label>
+                <Input
+                  type='text'
+                  name='title'
+                  value={newEvent.title}
+                  onChange={(e) => handleEventLocation(e)}
+                  placeholder='Enter the event location'
+                />
+              </div>
               <div className='flex flex-row justify-between w-full'>
                 <div className='mt-2'>
                   <Label htmlFor='start'>Start Time</Label>
@@ -318,15 +430,6 @@ const Calendar = () => {
               />
             </div>
 
-            <div className='mt-2 flex items-center'>
-              <Label htmlFor='allDay'>Is this an all day event?</Label>
-              <Input
-                type='address'
-                name='location'
-                onChange={(e) => handleEndTimeChange(e)}
-                placeholder='End Time'
-              />
-            </div>
             <Textarea
               placeholder='Add Description'
               className='mt-2'

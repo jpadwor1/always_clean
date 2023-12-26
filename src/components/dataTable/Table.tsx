@@ -45,9 +45,17 @@ export default function TaskPage({ userId }: TaskProps) {
   const { data: customers, isLoading, error } = trpc.getCustomers.useQuery();
   const { toast } = useToast();
   const customerData = customers?.map((customer) => {
-    const { name, address, email, phone, customerType, nextServiceDate } =
-      customer;
+    const {
+      name,
+      address,
+      email,
+      phone,
+      customerType,
+      nextServiceDate,
+      lastServiceDate,
+    } = customer;
     const formattedNextServiceDate = new Date(nextServiceDate);
+    const formattedLastServiceDate = new Date(lastServiceDate);
     return {
       name,
       address,
@@ -55,6 +63,7 @@ export default function TaskPage({ userId }: TaskProps) {
       phone,
       customerType,
       formattedNextServiceDate,
+      formattedLastServiceDate,
     };
   });
   const [date, setDate] = React.useState<Date>(new Date());
@@ -65,6 +74,7 @@ export default function TaskPage({ userId }: TaskProps) {
     phone: '',
     customerType: 'LEAD' as CustomerType,
     nextServiceDate: date,
+    formattedLastServiceDate: date,
   });
   const [open, setOpen] = React.useState<boolean>(false);
   const [customerValue, setCustomerValue] = React.useState<string>('');
@@ -117,6 +127,7 @@ export default function TaskPage({ userId }: TaskProps) {
         phone: '',
         customerType: 'LEAD' as CustomerType,
         nextServiceDate: date,
+        formattedLastServiceDate: date,
       });
 
       customerData?.push({
@@ -134,7 +145,6 @@ export default function TaskPage({ userId }: TaskProps) {
         variant: 'destructive',
       });
 
-      console.log(error);
 
       setNewCustomerData({
         name: '',
@@ -143,6 +153,7 @@ export default function TaskPage({ userId }: TaskProps) {
         phone: '',
         customerType: 'LEAD' as CustomerType,
         nextServiceDate: date,
+        formattedLastServiceDate: date,
       });
     },
   });
@@ -391,6 +402,7 @@ export default function TaskPage({ userId }: TaskProps) {
             customerData?.map((customer) => ({
               ...customer,
               nextServiceDate: customer.formattedNextServiceDate.toISOString(),
+              lastServiceDate: customer.formattedLastServiceDate.toISOString(),
             })) || []
           }
           columns={columns}

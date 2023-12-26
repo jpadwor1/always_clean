@@ -21,4 +21,3 @@ fs.writeFileSync(
   JSON.stringify(customers, null, 2)
 );
 
-console.log('✅ Tasks data generated.');
