@@ -20,17 +20,31 @@ import {
 
 import { labels } from './data/data';
 import { customerSchema } from './data/CustomerSchema';
+import Link from 'next/link';
+import { trpc } from '@/app/_trpc/client';
+import {useToast} from '@/components/ui/use-toast';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 
+
+
+
 export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
-  
-  const customer = customerSchema.parse(row.original);
-
+  const {mutate: deleteUser} = trpc.deleteCustomer.useMutation({
+    onSuccess: () => {
+      console.log("User Deleted")
+      alert('user deleted')
+    },
+    onError: (error) => {
+      console.log(error)
+      alert('error')
+    }
+  })
+const customerId = (row.original as any).id;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -43,8 +57,14 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
+        <DropdownMenuItem>
+        <Link href={`/dashboard/customer/${customerId}`}>
+          Edit
+          </Link>
+          </DropdownMenuItem>
+        <DropdownMenuItem><Link href={`/dashboard/customer/${customerId}/billing`}>
+          Billing
+          </Link></DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
@@ -59,7 +79,7 @@ export function DataTableRowActions<TData>({
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => deleteUser({id: customerId})}>
           Delete
           <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
         </DropdownMenuItem>

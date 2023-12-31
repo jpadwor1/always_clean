@@ -10,7 +10,8 @@ import { DataTableRowActions } from './data-table-row-actions';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Mail, Phone } from 'lucide-react';
-import { format, parseISO} from 'date-fns';
+import { format, parseISO } from 'date-fns';
+
 export const columns: ColumnDef<Customer>[] = [
   {
     id: 'select',
@@ -66,11 +67,19 @@ export const columns: ColumnDef<Customer>[] = [
       <DataTableColumnHeader column={column} title='Customer Name' />
     ),
     cell: ({ row }) => {
+      const rowData = row.original;
+
+      const name = rowData.name;
+      const customerId = rowData.id;
+
       return (
         <div className='flex space-x-2'>
-          <span className='max-w-[500px] truncate font-medium'>
-            {row.getValue('name')}
-          </span>
+          <Link
+            href={`dashboard/customer/${customerId}`}
+            className='max-w-[500px] truncate font-medium'
+          >
+            {name}
+          </Link>
         </div>
       );
     },
@@ -81,8 +90,8 @@ export const columns: ColumnDef<Customer>[] = [
       <DataTableColumnHeader column={column} title='Last Service Date' />
     ),
     cell: ({ row }) => {
-      const date = row.getValue('lastServiceDate') as string
-      const formattedDate = format(parseISO(date), 'MMM-do')
+      const date = row.getValue('lastServiceDate') as string;
+      const formattedDate = format(parseISO(date), 'MMM-do');
       return (
         <div className='flex min-w-content items-center'>
           <span>{formattedDate}</span>
@@ -99,8 +108,8 @@ export const columns: ColumnDef<Customer>[] = [
       <DataTableColumnHeader column={column} title='Next Service Date' />
     ),
     cell: ({ row }) => {
-      const date = row.getValue('nextServiceDate') as string
-      const formattedDate = format(parseISO(date), 'MMM-do')
+      const date = row.getValue('nextServiceDate') as string;
+      const formattedDate = format(parseISO(date), 'MMM-do');
       return (
         <div className='flex min-w-content items-center'>
           <span>{formattedDate}</span>

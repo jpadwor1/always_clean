@@ -9,7 +9,6 @@ import Dashboard from '@/components/DashBoard/Dashboard';
 const Page = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-
   if (!user || !user.id) redirect('/auth-callback?origin=dashboard');
 
   const dbUser = await db.user.findFirst({
@@ -18,8 +17,8 @@ const Page = async () => {
     },
   });
 
-  if (!dbUser) {
-    redirect('/auth-callback?origin=dashboard');
+  if (dbUser?.role !== 'ADMIN') {
+    redirect('/auth-callback?origin=client');
   }
 
 

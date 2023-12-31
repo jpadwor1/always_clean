@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import sgMail from '@sendgrid/mail';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -16,9 +17,9 @@ export function absoluteUrl(path: string) {
 }
 
 export enum CustomerType {
-  Lead = "LEAD",
-  Active = "ACTIVE",
-  Inactive = "INACTIVE",
-  VIP = "VIP",
-  Lost = "LOST"
+  Lead = 'LEAD',
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE',
+  VIP = 'VIP',
+  Lost = 'LOST',
 }

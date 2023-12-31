@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-// We're keeping a simple non-relational schema here.
-// IRL, you will have a schema for your data models.
 export const customerSchema = z.object({
   customerType: z.string(),
   name: z.string(),
@@ -10,6 +8,7 @@ export const customerSchema = z.object({
   phone: z.string(),
   nextServiceDate: z.string(),
   lastServiceDate: z.string(),
+  id:z.string()
 });
 
 export type Customer = z.infer<typeof customerSchema>;

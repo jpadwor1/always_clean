@@ -101,7 +101,7 @@ input {
 }
 
 .fc-view {
-  @apply w-full h-full xl:h-2/3 bg-white;
+  @apply w-full h-full bg-white;
 }
 
 .fc-h-event {
@@ -126,3 +126,4 @@ input {
 .fc-v-event {
   @apply bg-blue-500 border border-blue-600;
 }
+

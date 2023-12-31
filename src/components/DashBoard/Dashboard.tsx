@@ -14,6 +14,7 @@ import { RecentSales } from '@/components/ui/recent-sales';
 import Table from '@/components/dataTable/Table';
 import Calendar from '@/components/Calendar/Calendar';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import UtilityPage from '../UtilityPage';
 
 const Dashboard = async () => {
   const { getUser } = getKindeServerSession();
@@ -31,12 +32,12 @@ const Dashboard = async () => {
               <Button className='mt-4 sm:mt-0'>Download</Button>
             </div>
           </div>
-          <Tabs defaultValue='customers' className='space-y-4'>
+          <Tabs defaultValue='utilities' className='space-y-4'>
             <TabsList>
               <TabsTrigger value='overview'>Overview</TabsTrigger>
               <TabsTrigger value='customers'>Customers</TabsTrigger>
               <TabsTrigger value='schedule'>Schedule</TabsTrigger>
-              <TabsTrigger value='notifications'>Notifications</TabsTrigger>
+              <TabsTrigger value='utilities'>Utilities</TabsTrigger>
             </TabsList>
             <TabsContent value='overview' className='space-y-4'>
               <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
@@ -171,6 +172,9 @@ const Dashboard = async () => {
 
             <TabsContent value='schedule' className='space-y-4'>
               <Calendar />
+            </TabsContent>
+            <TabsContent value='utilities' className='space-y-4'>
+              <UtilityPage />
             </TabsContent>
           </Tabs>
         </div>

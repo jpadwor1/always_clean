@@ -55,39 +55,51 @@ const PricingModule = () => {
 
                     {plan.name === 'Play Pools' ? (
                       <>
-                        <Button className='mb-4 w-full sm:text-md text-md shadow-md hover:shadow-lg '>
-                          <Link href='/booking'>Book Now</Link>
-                        </Button>
-                        <Button
-                          variant='secondary'
-                          className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
-                        >
-                          <Link href='/services'>Learn More</Link>
-                        </Button>
+                        <Link href='/booking'>
+                          <Button className='mb-4 w-full sm:text-md text-md shadow-md hover:shadow-lg '>
+                            Book Now
+                          </Button>
+                        </Link>
+                        <Link href='/services'>
+                          <Button
+                            variant='secondary'
+                            className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
+                          >
+                            Learn More
+                          </Button>
+                        </Link>
                       </>
                     ) : plan.name === 'Diving or Extra Large' ? (
                       <>
-                        <Button className='mb-4 w-full sm:text-md text-md shadow-md hover:shadow-lg '>
-                          <Link href='/booking'>Book Now</Link>
-                        </Button>
-                        <Button
-                          variant='secondary'
-                          className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
-                        >
-                          <Link href='/services'>Learn More</Link>
-                        </Button>
+                        <Link href='/booking'>
+                          <Button className='mb-4 w-full sm:text-md text-md shadow-md hover:shadow-lg '>
+                            Book Now
+                          </Button>
+                        </Link>
+                        <Link href='/services'>
+                          <Button
+                            variant='secondary'
+                            className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
+                          >
+                            Learn More
+                          </Button>
+                        </Link>
                       </>
                     ) : (
                       <>
-                        <Button className='mb-4 w-full sm:text-md text-md shadow-md hover:shadow-lg '>
-                          <Link href='/booking'>{plan.callToAction}</Link>
-                        </Button>
-                        <Button
-                          variant='secondary'
-                          className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
-                        >
-                          <Link href='/services'>Learn More</Link>
-                        </Button>
+                        <Link href='/booking'>
+                          <Button className='mb-4 w-full sm:text-md text-md shadow-md hover:shadow-lg '>
+                            {plan.callToAction}
+                          </Button>
+                        </Link>
+                        <Link href='/services'>
+                          <Button
+                            variant='secondary'
+                            className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
+                          >
+                            Learn More
+                          </Button>
+                        </Link>
                       </>
                     )}
                   </div>

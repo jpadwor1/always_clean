@@ -1,14 +1,9 @@
-import { authMiddleware } from '@kinde-oss/kinde-auth-nextjs/server';
+import { withAuth } from '@kinde-oss/kinde-auth-nextjs/middleware';
+import { NextApiRequest } from 'next';
 
+export default function middleware(req: NextApiRequest) {
+  return withAuth(req);
+}
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/auth-callback',
-    '/profile/account/:path*',
-    '/profile/billing/:path*',
-    '/profile/notifications/:path*',
-    '/profile/:path*'
-  ],
+  matcher: ['/dashboard/:path*', '/profile/:path*', '/auth-callback'],
 };
-
-export default authMiddleware;

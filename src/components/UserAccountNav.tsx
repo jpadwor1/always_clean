@@ -23,7 +23,6 @@ const UserAccountNav = async ({
   imageUrl,
   name,
 }: UserAccountNavProps) => {
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className='overflow-visible'>
@@ -67,7 +66,7 @@ const UserAccountNav = async ({
 
         <DropdownMenuItem asChild>
           {email ? (
-            <Link href='/dashboard/billing'>Manage billing</Link>
+            <Link href='/profile/billing'>Manage billing</Link>
           ) : (
             <Link href='/pricing'>
               Upgrade <Gem className='ml-1 h-4 w-4 text-green-400' />

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import PricingModule from '@/components/PricingModule';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -24,9 +25,11 @@ export default function Home() {
               </p>
               <div className='flex flex-wrap'>
                 <div className='w-full md:w-auto py-1 md:py-0 md:mr-4'>
+                  <Link href='/booking'>
                   <Button className='shadow-lg hover:shadow-xl'>
                     Book Here
                   </Button>
+                  </Link>
                 </div>
                 <div className='w-full md:w-auto py-1 md:py-0' />
               </div>

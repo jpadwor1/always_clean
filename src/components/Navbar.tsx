@@ -1,11 +1,18 @@
+import React from 'react';
 import Link from 'next/link';
 import MaxWidthWrapper from './MaxWidthWrapper';
 import { buttonVariants } from './ui/button';
-import { LoginLink, RegisterLink, getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import {
+  LoginLink,
+  RegisterLink,
+  getKindeServerSession,
+} from '@kinde-oss/kinde-auth-nextjs/server';
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import MobileNav from './MobileNav';
 import UserAccountNav from './UserAccountNav';
+import NavbarMenu from './NavbarMenu';
+
 
 const Navbar = async () => {
   const { getUser } = getKindeServerSession();
@@ -19,18 +26,13 @@ const Navbar = async () => {
             <Image src='/logo.png' width={120} height={80} alt='Always Clean' />
           </Link>
 
-          <MobileNav  />
-
+          <MobileNav />
+          
           <div className='hidden items-center space-x-4 sm:flex'>
+
+            <NavbarMenu/>
             {!user ? (
               <>
-                <Link
-                  href='/dashboard'
-                  className={buttonVariants({ variant: 'ghost', size: 'sm' })}
-                >
-                  Dashboard
-                </Link>
-
                 <LoginLink
                   className={buttonVariants({ variant: 'ghost', size: 'sm' })}
                 >

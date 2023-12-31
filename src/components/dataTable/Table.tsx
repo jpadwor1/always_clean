@@ -46,6 +46,7 @@ export default function TaskPage({ userId }: TaskProps) {
   const { toast } = useToast();
   const customerData = customers?.map((customer) => {
     const {
+      id,
       name,
       address,
       email,
@@ -57,6 +58,7 @@ export default function TaskPage({ userId }: TaskProps) {
     const formattedNextServiceDate = new Date(nextServiceDate);
     const formattedLastServiceDate = new Date(lastServiceDate);
     return {
+      id,
       name,
       address,
       email,
@@ -75,6 +77,7 @@ export default function TaskPage({ userId }: TaskProps) {
     customerType: 'LEAD' as CustomerType,
     nextServiceDate: date,
     formattedLastServiceDate: date,
+    id: ''
   });
   const [open, setOpen] = React.useState<boolean>(false);
   const [customerValue, setCustomerValue] = React.useState<string>('');
@@ -128,6 +131,7 @@ export default function TaskPage({ userId }: TaskProps) {
         customerType: 'LEAD' as CustomerType,
         nextServiceDate: date,
         formattedLastServiceDate: date,
+        id: ''
       });
 
       customerData?.push({
@@ -154,6 +158,7 @@ export default function TaskPage({ userId }: TaskProps) {
         customerType: 'LEAD' as CustomerType,
         nextServiceDate: date,
         formattedLastServiceDate: date,
+        id: ''
       });
     },
   });
@@ -403,6 +408,7 @@ export default function TaskPage({ userId }: TaskProps) {
               ...customer,
               nextServiceDate: customer.formattedNextServiceDate.toISOString(),
               lastServiceDate: customer.formattedLastServiceDate.toISOString(),
+              id: customer.id
             })) || []
           }
           columns={columns}
