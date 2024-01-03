@@ -41,7 +41,19 @@ interface ServiceHistoryProps {
     customerId: string | null;
     notes: string | null;
     name: string;
-    chemicalsUsed: string[];
+    serviceChemicals: ({
+      chemical: {
+          id: string;
+          name: string;
+          price: number;
+          units: string;
+      };
+  } & {
+      id: string;
+      serviceEventId: string;
+      chemicalId: string;
+      quantity: number;
+  })[]
     files: {
       id: string;
       name: string;
@@ -184,9 +196,19 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
               {' '}
               <MoreVertical />
             </PopoverTrigger>
-            <PopoverContent className="w-fit flex flex-col">
-              <Link className={buttonVariants({variant: 'ghost'})} href={`/contact`}>Contact Us</Link>
-              <Link className={buttonVariants({variant: 'ghost'})} href={`/FAQs`}>FAQs</Link>
+            <PopoverContent className='w-fit flex flex-col'>
+              <Link
+                className={buttonVariants({ variant: 'ghost' })}
+                href={`/contact`}
+              >
+                Contact Us
+              </Link>
+              <Link
+                className={buttonVariants({ variant: 'ghost' })}
+                href={`/FAQs`}
+              >
+                FAQs
+              </Link>
             </PopoverContent>
           </Popover>
         </div>
@@ -296,20 +318,20 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
             <Separator className='mb-4' />
             <Separator
               orientation='vertical'
-              className='absolute -left-[2.35rem] top-[2.25rem] mb-1 h-14'
+              className='absolute -left-[2.35rem] top-[2.25rem] mb-1 sm:h-14 h-16'
             />
           </div>
         </div>
 
-        <div className='grid sm:grid-cols-10 grid-cols-4 text-center items-center justify-center mt-4 relative'>
-          {serviceEvent.chemicalsUsed.map((chemical) => (
-            <div className='col-span-2 mt-4' key={chemical}>
+        <div className='grid sm:grid-cols-5 grid-cols-2 place-items-center mt-4 relative'>
+          {serviceEvent.serviceChemicals.map((chemical) => (
+            <div className='col-span-1 mt-4 place-items-center text-center' key={chemical.chemical.id}>
               <div
-                key={chemical}
+                key={chemical.chemical.id}
                 className='flex items-center justify-center rounded-full px-2 py-1 bg-black max-w-fit'
               >
                 <p className='text-yellow-400 font-medium text-md '>
-                  {chemical}
+                  {chemical.chemical.name}
                 </p>
               </div>
             </div>

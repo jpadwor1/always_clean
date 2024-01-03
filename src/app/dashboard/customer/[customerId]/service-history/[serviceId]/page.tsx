@@ -22,28 +22,25 @@ const Page = async ({ params }: PageProps) => {
     },
     include: {
       files: true,
-    },
-    
-  })
+      serviceChemicals: {
+        include: {
+          chemical: true,
+        },
+      },
+      }
+  });
 
   if (!serviceEvent) {
-    
     return <div>Service event not found</div>;
   }
 
   const transformedServiceEvent = {
     ...serviceEvent,
     tasksPerformed: serviceEvent.tasksPerformed || '',
-    chemicalsUsed: ['Chlorine', 'Algaecide', 'Muriatic Acid'],
   };
 
-  return (
-    <ServiceHistory
-      serviceEvent={transformedServiceEvent}
-    />
- 
-  )
-  
+  console.log(transformedServiceEvent.serviceChemicals)
+  return <ServiceHistory serviceEvent={transformedServiceEvent} />;
 };
 
 export default Page;
