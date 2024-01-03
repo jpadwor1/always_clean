@@ -354,14 +354,24 @@ export const appRouter = router({
   createServiceEvent: privateProcedure
     .input(
       z.object({
-        customerId: z.string(),
+        customerId: z.string().optional(),
         service: z.string(),
         dateCompleted: z.string(),
         tasksPerformed: z.array(z.string()),
         chemicalsUsed: z.array(
           z.object({ name: z.string(), quantity: z.number() })
         ),
-        notes: z.string(),
+        notes: z.string().optional(),
+        files: z.array(
+          z
+            .object({
+              id: z.string(),
+              downloadURL: z.string(),
+              fileName: z.string(),
+              serviceEventId: z.string(),
+            })
+            .optional()
+        ),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -370,7 +380,7 @@ export const appRouter = router({
       if (!userId || !user) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
-
+      console.log('files', input.files);
       const dbCustomer = await db.customer.findFirst({
         where: {
           id: input.customerId,
@@ -383,6 +393,15 @@ export const appRouter = router({
           message: 'Customer does not exist',
         });
       }
+
+      await db.customer.update({
+        where: {
+          id: input.customerId,
+        },
+        data: {
+          nextServiceDate: nextServiceDate,
+        },
+      });
 
       const dbUser = await db.user.findFirst({
         where: {
@@ -417,18 +436,65 @@ export const appRouter = router({
               quantity: chemical.quantity,
             })),
           },
+          technicianId: userId,
         },
       });
 
+      if (input.files.length > 0) {
+        input.files.map(async (file) => {
+          if (!file) {
+            throw new Error('File is undefined');
+          }
+
+          const currentFile = await db.file.findFirst({
+            where: {
+              key: file.downloadURL,
+            },
+          });
+
+          if (currentFile) {
+            await db.file.update({
+              where: {
+                id: currentFile.id,
+              },
+              data: {
+                key: file.downloadURL,
+                name: file.fileName,
+                serviceEventId: dbServiceEvent.id,
+                url: file.downloadURL,
+                uploadStatus: 'SUCCESS',
+              },
+            });
+          }
+        });
+      }
+
       return dbServiceEvent;
     }),
-  updateChemical: privateProcedure.input(z.object({
-    id: z.string(),
-    name: z.string(),
-    units: z.string(),
-    price: z.number(),
-  })).mutation(async ({ ctx, input }) => {
-    const { userId, user } = ctx;
+
+  getChemicals: privateProcedure.query(async ({ ctx }) => {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user?.id || !user?.email)
+      throw new TRPCError({ code: 'UNAUTHORIZED' });
+
+    const chemicals = await db.chemical.findMany();
+
+    return chemicals;
+  }),
+
+  updateChemical: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        units: z.string(),
+        price: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
 
       if (!userId || !user) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
@@ -455,11 +521,125 @@ export const appRouter = router({
           name: input.name,
           units: input.units,
           price: input.price,
-        }
-      })
+        },
+      });
 
       return { success: true };
-  }),
+    }),
+
+  addChemical: privateProcedure
+    .input(
+      z.object({
+        name: z.string(),
+        units: z.string(),
+        price: z.number(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      const dbChemical = await db.chemical.findFirst({
+        where: {
+          name: input.name,
+        },
+      });
+
+      if (dbChemical) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Chemical already exists',
+        });
+      }
+
+      await db.chemical.create({
+        data: {
+          name: input.name,
+          units: input.units,
+          price: input.price,
+        },
+      });
+
+      return { success: true };
+    }),
+
+  getFile: privateProcedure
+    .input(z.object({ downloadURL: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      const file = await db.file.findFirst({
+        where: {
+          key: input.downloadURL,
+        },
+      });
+
+      if (!file) throw new TRPCError({ code: 'NOT_FOUND' });
+
+      return file;
+    }),
+
+  getCreateFile: privateProcedure
+    .input(
+      z.object({
+        downloadURL: z.string(),
+        fileName: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+      console.log('Input received:', input);
+      const doesFileExist = await db.file.findFirst({
+        where: {
+          key: input.downloadURL,
+        },
+      });
+
+      if (doesFileExist) return;
+      console.log('going to create file');
+
+      const createdFile = await db.file.create({
+        data: {
+          key: input.downloadURL,
+          name: input.fileName,
+          url: input.downloadURL,
+          uploadStatus: 'PROCESSING',
+        },
+      });
+
+      if (!createdFile) throw new TRPCError({ code: 'NOT_FOUND' });
+
+      try {
+        const response = await fetch(input.downloadURL);
+
+        await db.file.update({
+          where: { id: createdFile.id },
+          data: {
+            uploadStatus: 'SUCCESS',
+          },
+        });
+      } catch (err) {
+        await db.file.update({
+          where: { id: createdFile.id },
+          data: {
+            uploadStatus: 'FAILED',
+          },
+        });
+      }
+
+      return createdFile;
+    }),
 
   createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
     const { userId } = ctx;

@@ -1,7 +1,5 @@
 'use client';
 import React from 'react';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Carousel,
@@ -10,262 +8,382 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { Button, buttonVariants } from './ui/button';
 import Image from 'next/image';
+import { format } from 'date-fns';
+import { Separator } from './ui/separator';
+import {
+  Clock,
+  MoreVertical,
+  Wrench,
+  Droplet,
+  Brush,
+  Filter,
+  Leaf,
+  TestTube,
+  Biohazard,
+  Camera,
+  Pencil,
+} from 'lucide-react';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import DualSeparator from './ui/DualSeparator';
+import { Icon } from '@iconify/react';
+import Link from 'next/link';
+interface ServiceHistoryProps {
+  serviceEvent: {
+    id: string;
+    dateCompleted: Date;
+    customerId: string | null;
+    notes: string | null;
+    name: string;
+    chemicalsUsed: string[];
+    files: {
+      id: string;
+      name: string;
+      uploadStatus: string;
+      url: string;
+      key: string;
+      createdAt: Date;
+      serviceEventId: string | null;
+    }[];
+    tasksPerformed: string;
+  };
+}
 
-const serviceHistoryData = [
-  // Each object represents a service date and its details
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  {
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-    // ... other details
-  },
-  // ... other service dates
-];
-
-type Service = {
-  date: string;
-  notes: string;
-  chemicalsUsed: string[];
-  photos: string[];
-  servicesCompleted: string[];
+const technician = {
+  name: 'John Doe',
+  photoURL:
+    'https://lh3.googleusercontent.com/a/ACg8ocJcg4cTZ7bX6_idgIdE0CG3FtMgstADR8iwUuCM2_cfqA=s96-c',
 };
 
-const ServiceHistory = () => {
-  const [selectedService, setSelectedService] = React.useState<Service | null>(
-    null
-  );
+type PoolTask = {
+  label: string;
+  icon: string;
+  description: string;
+};
 
-  const handleDateClick = (serviceData: Service) => {
-    setSelectedService(serviceData);
-  };
-  return (
-    <div className='flex flex-col space-x-6 bg-white shadow-md p-6 rounded-md min-h-[calc(100vh-30rem)]'>
-      <div className='flex flex-row space-x-6'>
-        <ScrollArea className='h-72 w-48 rounded-md border'>
-          <div className='p-4'>
-            <h4 className='mb-4 text-lg font-medium leading-none'>
-              Service History
-            </h4>
-            {serviceHistoryData.map((service) => (
-              <React.Fragment key={service.date}>
-                <div
-                  key={service.date}
-                  className='text-sm cursor-pointer'
-                  onClick={() => handleDateClick(service)}
-                >
-                  {service.date}
-                </div>
-                <Separator className='my-2' />
-              </React.Fragment>
-            ))}
+const poolTasks: PoolTask[] = [
+  {
+    label: 'Vacuuming the Pool',
+    icon: 'vacuum-icon', // Replace with actual icon reference
+    description:
+      'Thorough vacuuming of the pool floor and walls to remove debris.',
+  },
+  {
+    label: 'Balanced Chemicals',
+    icon: 'water-drop-icon', // Replace with actual icon reference
+    description:
+      'Adjusting and balancing pool chemicals for safe and comfortable swimming.',
+  },
+  {
+    label: 'Cleaned Tile Band',
+    icon: 'brush-icon', // Replace with actual icon reference
+    description:
+      'Scrubbing the tile band around the pool to remove buildup and stains.',
+  },
+  {
+    label: 'Cleaned Filters',
+    icon: 'filter-icon', // Replace with actual icon reference
+    description:
+      'Cleaning and inspecting the filters for optimal water filtration.',
+  },
+  {
+    label: 'Skimmed',
+    icon: 'leaf-icon', // Replace with actual icon reference
+    description: 'Removing leaves and floating debris from the pool surface.',
+  },
+  {
+    label: 'Performed pH test',
+    icon: 'ph-test-icon', // Replace with actual icon reference
+    description:
+      "Conducting a pH test to ensure the water's acidity/alkalinity levels are balanced.",
+  },
+];
+
+const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
+  const tasksPerformed = serviceEvent?.tasksPerformed.split(',');
+
+  function mapTasks(
+    tasksPerformed: string[],
+    poolTasks: PoolTask[]
+  ): PoolTask[] {
+    return tasksPerformed.map((task) => {
+      const foundTask = poolTasks.find((poolTask) =>
+        poolTask.label.startsWith(task)
+      );
+
+      return (
+        foundTask || {
+          label: task,
+          icon: 'default-icon',
+          description: 'No description available.',
+        }
+      );
+    });
+  }
+
+  const detailedTasks = mapTasks(tasksPerformed, poolTasks);
+
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case 'vacuum-icon':
+        return (
+          <div className=' bg-gray-100 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center tracking-wider'>
+            <Icon className='text-gray-700 h-5 w-5' icon='mdi:vacuum' />
           </div>
-        </ScrollArea>
-        <div className='flex flex-col'>
-          <h4 className='mb-4 text-lg font-medium leading-none'>
-            Details for service completed on:{' '}
-            {selectedService?.date ? selectedService.date : null}
+        );
+      case 'water-drop-icon':
+        return (
+          <div className=' bg-blue-100 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center tracking-wider'>
+            <Droplet className='text-blue-600 h-5 w-5' />
+          </div>
+        );
+      case 'brush-icon':
+        return (
+          <div className=' bg-brown-100 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center tracking-wider'>
+            <Brush className='text-brown-600 h-5 w-5' />
+          </div>
+        );
+      case 'filter-icon':
+        return (
+          <div className=' bg-orange-100 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center tracking-wider'>
+            <Filter className='text-orange-600 h-5 w-5' />
+          </div>
+        );
+      case 'leaf-icon':
+        return (
+          <div className=' bg-green-100 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center tracking-wider'>
+            <Leaf className='text-green-600 h-5 w-5' />
+          </div>
+        );
+      case 'ph-test-icon':
+        return (
+          <div className=' bg-red-100 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center tracking-wider'>
+            <TestTube className='text-red-600 h-5 w-5' />
+          </div>
+        );
+      default:
+        return <span>🔍</span>; // Default icon
+    }
+  };
+
+  return (
+    <div className='flex flex-col bg-white shadow-md p-6 rounded-md min-h-[calc(100vh-30rem)]'>
+      <div className='flex flex-col justify-center items-center text-center space-y-4'>
+        <div className='flex flex-row justify-between w-full mb-10'>
+          <h1 className='mb-2 text-3xl font-medium leading-none text-gray-900'>
+            Service Details
+          </h1>
+          <Popover>
+            <PopoverTrigger>
+              {' '}
+              <MoreVertical />
+            </PopoverTrigger>
+            <PopoverContent className="w-fit flex flex-col">
+              <Link className={buttonVariants({variant: 'ghost'})} href={`/contact`}>Contact Us</Link>
+              <Link className={buttonVariants({variant: 'ghost'})} href={`/FAQs`}>FAQs</Link>
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className='flex flex-row justify-between w-full'>
+          <h4 className='mb-2 sm:text-sm text-md font-medium leading-none text-gray-700'>
+            Completed on
           </h4>
-          <p>Notes: {selectedService?.notes ? selectedService?.notes : null}</p>
-          <p>
-            Chemicals Used:{' '}
-            {selectedService?.chemicalsUsed.join(', ')
-              ? selectedService.chemicalsUsed.join(', ')
-              : null}
+          <p className='sm:text-sm text-md text-gray-900 font-medium tracking-wider'>
+            {format(new Date(serviceEvent.dateCompleted), 'MMM dd, yyyy')}
+          </p>
+        </div>
+
+        <div className='flex flex-row justify-between items-center w-full'>
+          <h4 className='mb-2 sm:text-sm text-md font-medium leading-none text-gray-700'>
+            Technician
+          </h4>
+          <div className='flex flex-row gap-1 items-center'>
+            <Avatar>
+              <AvatarImage src={technician.photoURL} />
+              <AvatarFallback>
+                {technician.name[0] + technician.name.split(' ')[1][0]}
+              </AvatarFallback>
+            </Avatar>
+            <p className='sm:text-sm text-md text-gray-900 font-medium tracking-wider ml-2'>
+              {technician.name}
+            </p>
+          </div>
+        </div>
+
+        <div className='flex flex-row justify-between w-full'>
+          <h4 className='mb-2 sm:text-sm text-md font-medium leading-none text-gray-700'>
+            Service completed
+          </h4>
+          <p className='sm:text-sm text-md text-gray-900 font-medium tracking-wider'>
+            {serviceEvent.name}
           </p>
         </div>
       </div>
 
-      {/* Conditional rendering of selected service details */}
-      {selectedService && (
-        <div className='flex flex-col items-center justify-center mt-20'>
-          <div>
-            <Carousel className='max-w-md'>
-              <CarouselContent>
-                {selectedService.photos.map((photo) => (
-                  <CarouselItem key={photo}>
-                    <div className='p-1'>
-                      <Card>
-                        <CardContent className='flex aspect-square items-center justify-center p-6'>
-                          <Image
-                            height={427}
-                            width={640}
-                            key={photo}
-                            src='/test.jpg'
-                            alt='Service Photo'
-                          />
-                        </CardContent>
-                      </Card>
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
+      <Button className='my-8'>Contact us</Button>
+
+      <Separator />
+
+      <div className='max-w-[80px] px-2 py-1 rounded-r-xl bg-gray-300 text-center text-gray-700 tracking-wider mt-10'>
+        <p className='text-xs font-medium'>
+          {format(serviceEvent.dateCompleted, 'MMM dd')}
+        </p>
+      </div>
+
+      <div className='flex flex-row items-center justify-start w-full align-middle text-center mt-6'>
+        <div className=' bg-indigo-100 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center text-indigo-400 tracking-wider'>
+          <Clock className='h-5 w-5' />
+        </div>
+        <div className='flex flex-col text-left justify-start ml-5 space-y-1 w-full'>
+          <h4 className='text-md font-medium leading-none text-gray-700'>
+            Technician Arrived
+          </h4>
+          <p className='text-sm italic leading-none text-gray-600'>
+            {format(new Date(serviceEvent.dateCompleted), 'HH:mm a')}
+          </p>
+        </div>
+      </div>
+
+      <DualSeparator />
+
+      <div className='flex flex-row space-y-2 items-start justify-start w-full align-middle text-center mb-2'>
+        <div className=' bg-blue-100 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center text-blue-300 tracking-wider'>
+          <Wrench className='h-5 w-5' />
+        </div>
+        <div className='flex flex-col text-left justify-start ml-5 mt-3 space-y-1 w-full'>
+          <h4 className='text-md font-medium leading-none text-gray-700 mb-3'>
+            Tasks Performed
+          </h4>
+          <Separator className='mb-4' />
+          <div className='grid grid-cols-4 gap-2 text-center items-start justify-center mt-4 relative'>
+            <Separator
+              orientation='vertical'
+              className='absolute -left-[2.35rem] mb-1'
+            />
+            {detailedTasks.map((task) => (
+              <div className='col-span-2 mt-4' key={task.label}>
+                <div className='flex flex-col space-y-1 items-center'>
+                  {getIconComponent(task.icon)}
+                  <h3 className='text-gray-900 font-medium text-md '>
+                    {task.label}
+                  </h3>
+                </div>
+                <div className='text-gray-700 text-sm '>
+                  <p>{task.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
+      </div>
+
+      <div className='flex flex-col items-center justify-center'>
+        <div className='flex flex-row space-y-2 items-start justify-start w-full align-middle text-center relative'>
+          <div className=' bg-black  text-yellow-400 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center'>
+            <Biohazard className='h-5 w-5' />
+          </div>
+          <div className='flex flex-col text-left justify-start ml-5 mt-3 space-y-1 w-full relative'>
+            <h4 className='text-md font-medium leading-none text-gray-700 mb-3'>
+              Chemicals Used
+            </h4>
+            <Separator className='mb-4' />
+            <Separator
+              orientation='vertical'
+              className='absolute -left-[2.35rem] top-[2.25rem] mb-1 h-14'
+            />
+          </div>
+        </div>
+
+        <div className='grid sm:grid-cols-10 grid-cols-4 text-center items-center justify-center mt-4 relative'>
+          {serviceEvent.chemicalsUsed.map((chemical) => (
+            <div className='col-span-2 mt-4' key={chemical}>
+              <div
+                key={chemical}
+                className='flex items-center justify-center rounded-full px-2 py-1 bg-black max-w-fit'
+              >
+                <p className='text-yellow-400 font-medium text-md '>
+                  {chemical}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className='flex flex-row space-y-2 items-start justify-start w-full align-middle text-center mt-2'>
+        <div className=' bg-pink-100 text-pink-300 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center tracking-wider'>
+          <Pencil className='h-5 w-5' />
+        </div>
+        <div className='flex flex-col text-left justify-start ml-5 mt-3 space-y-1 w-full'>
+          <h4 className='text-md font-medium leading-none text-gray-700 mb-3'>
+            Technician&apos;s Notes
+          </h4>
+          <Separator className='mb-4' />
+          <div className='grid grid-cols-4 gap-2 text-center items-start justify-center mt-4 relative'>
+            <Separator
+              orientation='vertical'
+              className='absolute -left-[2.35rem] mb-1'
+            />
+            <div className='col-span-4 mt-4 px-1 py-1 rounded-md '>
+              <p className='text-md text-gray-700 font-medium tracking-wide'>
+                {serviceEvent.notes}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {serviceEvent.files.length > 0 && (
+        <div className='flex flex-col items-center justify-center mt-4'>
+          <div className='flex flex-row space-y-2 items-start justify-start w-full align-middle text-center '>
+            <div className=' bg-green-200  text-green-400 flex items-center justify-center w-10 h-10 px-2 py-1 rounded-full text-center'>
+              <Camera className='h-5 w-5' />
+            </div>
+            <div className='flex flex-col text-left justify-start ml-5 mt-3 space-y-1 w-full'>
+              <h4 className='text-md font-medium leading-none text-gray-700 mb-3'>
+                Technician&apos;s Photos
+              </h4>
+              <Separator className='mb-4' />
+            </div>
+          </div>
+
+          {serviceEvent && (
+            <div className='flex flex-col items-center justify-center mt-10'>
+              <div>
+                <Carousel className='max-w-md'>
+                  <CarouselContent>
+                    {serviceEvent.files.map((photo) => (
+                      <CarouselItem key={photo.id}>
+                        <div className='p-1'>
+                          <Card>
+                            <CardContent className='flex aspect-square items-center justify-center p-6'>
+                              <Image
+                                height={400}
+                                width={400}
+                                key={photo.id}
+                                src={photo.url}
+                                alt='Service Photo'
+                                className='rounded-md max-h-[400px]'
+                              />
+                            </CardContent>
+                          </Card>
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -55,11 +55,16 @@ model ServiceEvent {
   customer   Customer? @relation(fields: [customerId], references: [id])
   customerId String?
 
+  technicianId String?
+
   name             String
   notes            String?
   dateCompleted    DateTime          @default(now())
   tasksPerformed   String?
   serviceChemicals ServiceChemical[]
+  files            File[]
+
+  @@index([customerId])
 }
 
 model Chemical {
@@ -77,11 +82,36 @@ model ServiceChemical {
   chemical       Chemical     @relation(fields: [chemicalId], references: [id])
   chemicalId     String
   quantity       Int // Quantity of chemical used
+
+  @@index([chemicalId])
+  @@index([serviceEventId])
+}
+
+model File {
+  id   String @id @default(cuid())
+  name String
+
+  uploadStatus UploadStatus @default(PENDING)
+
+  url String
+  key String
+
+  createdAt DateTime @default(now())
+
+  ServiceEvent   ServiceEvent? @relation(fields: [serviceEventId], references: [id])
+  serviceEventId String?
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum UploadStatus {
+  PENDING
+  PROCESSING
+  FAILED
+  SUCCESS
 }
 
 enum CustomerType {

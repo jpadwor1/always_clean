@@ -51,7 +51,7 @@ const FormSchema = z.object({
 
 const Page = async ({ params }: PageProps) => {
   const { customerId } = params;
-  const dbUser = await db.customer.findFirst({
+  const dbCustomer = await db.customer.findFirst({
     where: {
       id: customerId,
     },
@@ -64,11 +64,11 @@ const Page = async ({ params }: PageProps) => {
       <div>
         <h3 className='text-lg font-medium'>Customer Service Center</h3>
         <p className='text-sm text-muted-foreground'>
-          Create service events for {dbUser?.name}.
+          Create service events for {dbCustomer?.name}.
         </p>
       </div>
       <Separator />
-      <ServiceForm />
+      <ServiceForm customerId={dbCustomer?.id} />
     </div>
   );
 };
