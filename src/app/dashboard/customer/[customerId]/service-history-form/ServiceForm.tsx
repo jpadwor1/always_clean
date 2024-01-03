@@ -61,7 +61,7 @@ type ChemicalQuantities = {
 };
 
 const FormSchema = z.object({
-  dateCompleted: z.date({
+  dateCompleted: z.string({
     required_error: 'Please enter the completion date.',
   }),
   tasksPerformed: z.string({
@@ -152,19 +152,41 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
 
   const mutation = trpc.createServiceEvent.useMutation();
   const { data: chemicals } = trpc.getChemicals.useQuery();
+  const { mutate: startPolling } = trpc.getFile.useMutation({
+    onSuccess: (file) => {},
+    retry: true,
+    retryDelay: 500,
+  });
+  const { mutate: createFile } = trpc.getCreateFile.useMutation({
+    onSuccess: (file) => {
+      setFileData((prevData) => [
+        ...prevData,
+        {
+          downloadURL: file?.key || '',
+          fileName: file?.name || '',
+          id: file?.id || '',
+          serviceId: '',
+        },
+      ]);
+    },
+  });
+
   const chemicalOptions = chemicals?.map((chemical) => ({
     label: chemical.name,
     value: chemical.name,
   }));
 
   const handleFileUpload = (downloadURL: string, fileName: string) => {
-    setFileData((prevData) => [...prevData, { downloadURL, fileName, id: '', serviceId: '' }]);
+    setFileData((prevData) => [
+      ...prevData,
+      { downloadURL, fileName, id: '', serviceId: '' },
+    ]);
   };
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const formData = {
       ...data,
-      dateCompleted: data.dateCompleted.toISOString(),
+      dateCompleted: data.dateCompleted,
       nextServiceDate: new Date(),
       customerType: 'ACTIVE' as CustomerType,
       tasksPerformed: selected.map((task) => task.label),
@@ -202,8 +224,7 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
               title: 'Service Event Created',
               description: (
                 <>
-                  <p>try again later</p>
-                  <p>{JSON.stringify(dbServiceEvent, null, 2)}</p>
+                  <p>Succesfully completed a job! Great work!</p>
                 </>
               ),
             });
@@ -233,27 +254,6 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
       });
     }
   }
-
-  const { mutate: startPolling } = trpc.getFile.useMutation({
-    onSuccess: (file) => {
-      router.push(`/dashboard/${file.id}`);
-    },
-    retry: true,
-    retryDelay: 500,
-  });
-  const { mutate: createFile } = trpc.getCreateFile.useMutation({
-    onSuccess: (file) => {
-      setFileData((prevData) => [
-        ...prevData,
-        {
-          downloadURL: file?.key || '',
-          fileName: file?.name || '', 
-          id: file?.id || '', 
-          serviceId: '', 
-        },
-      ]);
-    },
-  });
 
   return (
     <div className='flex flex-col mb-8 rounded-md w-full text-center gap-2 items-center'>
@@ -320,7 +320,14 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
                     <FormLabel className='min-w-fit mr-2 my-1'>
                       Date Completed
                     </FormLabel>
-                    <Popover>
+                    <Input
+                      type='datetime-local'
+                      onChange={(e) => {
+                        const dateTimeWithSeconds = `${e.target.value}:01Z`;
+                        field.onChange(dateTimeWithSeconds);
+                      }}
+                    />
+                    {/* <Popover>
                       <PopoverTrigger className='shadow-sm' asChild>
                         <FormControl>
                           <Button
@@ -347,7 +354,7 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
                           initialFocus
                         />
                       </PopoverContent>
-                    </Popover>
+                    </Popover> */}
                     <FormDescription className='text-xs'>
                       This is the date you completed the service.
                     </FormDescription>
@@ -356,7 +363,6 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
                 )}
               />
             </div>
-
             <div className='px-4 my-2 flex flex-col'>
               <FormField
                 control={form.control}

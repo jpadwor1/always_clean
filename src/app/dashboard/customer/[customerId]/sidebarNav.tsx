@@ -81,9 +81,9 @@ export function SidebarNav({
         <CollapsibleContent>
           <ScrollArea type='auto' className='p-4 h-60'>
             {serviceHistoryData.map((service) => (
-              <React.Fragment key={service.dateCompleted.toISOString()}>
+              <React.Fragment key={service.id}>
                 <Link
-                  key={service.dateCompleted.toISOString()}
+                  key={service.id}
                   className={cn(
                     buttonVariants({ variant: 'outline' }),
                     'text-sm cursor-pointer'

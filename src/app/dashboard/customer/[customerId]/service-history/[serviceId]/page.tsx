@@ -39,7 +39,6 @@ const Page = async ({ params }: PageProps) => {
     tasksPerformed: serviceEvent.tasksPerformed || '',
   };
 
-  console.log(transformedServiceEvent.serviceChemicals)
   return <ServiceHistory serviceEvent={transformedServiceEvent} />;
 };
 

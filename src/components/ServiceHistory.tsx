@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/carousel';
 import { Button, buttonVariants } from './ui/button';
 import Image from 'next/image';
-import { format } from 'date-fns';
 import { Separator } from './ui/separator';
 import {
   Clock,
@@ -34,6 +33,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import DualSeparator from './ui/DualSeparator';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
+import { parseISO } from 'date-fns';
+import { format, utcToZonedTime } from "date-fns-tz";
 interface ServiceHistoryProps {
   serviceEvent: {
     id: string;
@@ -43,17 +44,17 @@ interface ServiceHistoryProps {
     name: string;
     serviceChemicals: ({
       chemical: {
-          id: string;
-          name: string;
-          price: number;
-          units: string;
+        id: string;
+        name: string;
+        price: number;
+        units: string;
       };
-  } & {
+    } & {
       id: string;
       serviceEventId: string;
       chemicalId: string;
       quantity: number;
-  })[]
+    })[];
     files: {
       id: string;
       name: string;
@@ -184,6 +185,14 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
     }
   };
 
+
+  const formatInTimeZone = (date: Date, fmt: string, tz: string) =>
+    format(utcToZonedTime(date, tz), 
+           fmt, 
+           { timeZone: tz });
+  
+  const formattedTime = formatInTimeZone(serviceEvent.dateCompleted, "hh:mm a", "UTC");
+  
   return (
     <div className='flex flex-col bg-white shadow-md p-6 rounded-md min-h-[calc(100vh-30rem)]'>
       <div className='flex flex-col justify-center items-center text-center space-y-4'>
@@ -255,7 +264,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
 
       <div className='max-w-[80px] px-2 py-1 rounded-r-xl bg-gray-300 text-center text-gray-700 tracking-wider mt-10'>
         <p className='text-xs font-medium'>
-          {format(serviceEvent.dateCompleted, 'MMM dd')}
+        {format(new Date(serviceEvent.dateCompleted), 'MMM dd')}
         </p>
       </div>
 
@@ -268,7 +277,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
             Technician Arrived
           </h4>
           <p className='text-sm italic leading-none text-gray-600'>
-            {format(new Date(serviceEvent.dateCompleted), 'HH:mm a')}
+            {formattedTime}
           </p>
         </div>
       </div>
@@ -325,7 +334,10 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
 
         <div className='grid sm:grid-cols-5 grid-cols-2 place-items-center mt-4 relative'>
           {serviceEvent.serviceChemicals.map((chemical) => (
-            <div className='col-span-1 mt-4 place-items-center text-center' key={chemical.chemical.id}>
+            <div
+              className='col-span-1 mt-4 place-items-center text-center'
+              key={chemical.chemical.id}
+            >
               <div
                 key={chemical.chemical.id}
                 className='flex items-center justify-center rounded-full px-2 py-1 bg-black max-w-fit'

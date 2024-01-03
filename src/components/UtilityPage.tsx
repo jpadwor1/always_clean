@@ -56,10 +56,10 @@ const chemicalData = [
 ];
 
 type Chemical = {
-    id: string;
-  name: string;
-  price: number;
-  units: string;
+  id: string | undefined;
+  name: string | undefined;
+  price: number | undefined;
+  units: string | undefined;
 } | null;
 
 const UtilityPage = () => {
@@ -71,19 +71,27 @@ const UtilityPage = () => {
   const [Loading, setLoading] = React.useState(false);
   const [chemicals, setChemicals] = React.useState<Chemical[]>([]);
   const { mutate: addChemical } = trpc.addChemical.useMutation();
-  const {data: dbChemicals, isLoading, error} = trpc.getChemicals.useQuery();
+  const { data: dbChemicals, isLoading, error } = trpc.getChemicals.useQuery();
 
-    React.useEffect(() => {
-        if (dbChemicals) {
-        setChemicals(dbChemicals);
-        }
-    }, [dbChemicals]);
-    
+  React.useEffect(() => {
+    if (dbChemicals) {
+      setChemicals(dbChemicals);
+    }
+  }, [dbChemicals]);
+
+  const updateChemical = trpc.updateChemical.useMutation();
+
   const handleAddChemical = () => {
     if (newChemical) {
       setLoading(true);
 
-      addChemical(newChemical, {
+      const formattedChemical = {
+        id: newChemical?.id || '',
+        name: newChemical?.name || '',
+        units: newChemical?.units || '',
+        price: newChemical?.price || 0,
+      };
+      addChemical(formattedChemical, {
         onSuccess: () => {
           toast({
             title: 'Chemical Added',
@@ -116,7 +124,29 @@ const UtilityPage = () => {
 
   const handleSave = () => {
     console.log('Saved:', selectedChemical);
-    setSelectedChemical(null); // Reset or close dialog after save
+
+    const updatedChemical = {
+      id: selectedChemical?.id || '',
+      name: selectedChemical?.name || '',
+      units: selectedChemical?.units || '',
+      price: selectedChemical?.price || 0,
+    };
+    updateChemical.mutate(updatedChemical, {
+      onSuccess: () => {
+        toast({
+          title: 'Chemical Updated',
+          description: 'Chemical has been updated',
+        });
+        setSelectedChemical(null);
+      },
+      onError: () => {
+        toast({
+          title: 'Oops, something went wrong!',
+          description: 'Chemical failed to update. Try again later.',
+        });
+        setSelectedChemical(null);
+      },
+    });
   };
 
   if (isLoading) {
@@ -169,7 +199,7 @@ const UtilityPage = () => {
               <TableRow key={chemical?.id}>
                 <TableCell>{chemical?.name}</TableCell>
                 <TableCell>{chemical?.units}</TableCell>
-                <TableCell>${chemical?.price.toFixed(2)}</TableCell>
+                <TableCell>${chemical?.price?.toFixed(2)}</TableCell>
                 <TableCell>
                   <Button onClick={() => handleEditClick(chemical)}>
                     Edit
@@ -183,13 +213,11 @@ const UtilityPage = () => {
         {selectedChemical && (
           <Dialog open={selectedChemical ? true : false}>
             <DialogContent>
-              <DialogClose className='absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground'>
-                <Button
-                  variant='ghost'
-                  onClick={() => setSelectedChemical(null)}
-                >
-                  <X className='h-4 w-4' />
-                </Button>
+              <DialogClose
+                onClick={() => setSelectedChemical(null)}
+                className='absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground'
+              >
+                <X className='h-4 w-4' />
                 <span className='sr-only'>Close</span>
               </DialogClose>
               <DialogHeader>
@@ -324,11 +352,7 @@ const UtilityPage = () => {
               Cancel
             </Button>
             <Button onClick={handleAddChemical}>
-              {Loading ? (
-                <Loader2 className='h-4 w-4 animate-spin' />
-              ) : (
-                'Save'
-              )}
+              {Loading ? <Loader2 className='h-4 w-4 animate-spin' /> : 'Save'}
             </Button>
           </DialogFooter>
         </DialogContent>
