@@ -641,6 +641,42 @@ export const appRouter = router({
       return createdFile;
     }),
 
+  getAddCalendarEvent: privateProcedure.input(z.object({
+    title: z.string(),
+    start: z.string(),
+    end: z.string(),
+    description: z.string(),
+    location: z.string(),
+    allDay: z.boolean(),
+    customerId: z.string(),
+  })).mutation(async ({ ctx, input }) => {
+    const { userId, user } = ctx;
+
+    if (!userId || !user) {
+      throw new TRPCError({ code: 'UNAUTHORIZED' });
+    }
+
+    const dbCalendarEvent = await db.calendarEvent.create({
+      data: {
+        id: randomUUID(),
+        title: input.title,
+        start: input.start,
+        end: input.end,
+        description: input.description,
+        location: input.location,
+        customerName: input.customerName,
+        customerAddress: input.customerAddress,
+        customerEmail: input.customerEmail,
+        customerPhone: input.customerPhone,
+        customerType: input.customerType,
+        nextServiceDate: input.nextServiceDate,
+      },
+    });
+
+    return dbCalendarEvent;
+  }),
+  
+
   createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
     const { userId } = ctx;
 

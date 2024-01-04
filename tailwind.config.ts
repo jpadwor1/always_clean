@@ -17,6 +17,9 @@ module.exports = withMT({
       },
     },
     extend: {
+      blur: {
+        xs: '2px',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -51,7 +54,6 @@ module.exports = withMT({
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        
       },
       borderRadius: {
         lg: 'var(--radius)',
