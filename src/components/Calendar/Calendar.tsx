@@ -12,7 +12,7 @@ import { EventSourceInput } from '@fullcalendar/core/index.js';
 import {
   CheckIcon,
   AlertTriangle,
-  MapPinned,
+  MapPin,
   User,
   Mail,
   Info,
@@ -54,8 +54,7 @@ import {
 } from '@/components/ui/select';
 import { Role, CustomerType } from '@prisma/client';
 import { toast } from '../ui/use-toast';
-import { setId } from '@material-tailwind/react/components/Tabs/TabsContext';
-import { id } from 'date-fns/locale';
+import { Separator } from '@/components/ui/separator';
 
 interface Event {
   extendedProps: {
@@ -64,6 +63,7 @@ interface Event {
     phone: string | null;
     customerId: string | null;
     description?: string | null;
+    customerName?: string | null;
   };
   editable: boolean | string;
   title: string;
@@ -127,6 +127,7 @@ const Calendar = () => {
       phone: '',
       customerId: '',
       description: '',
+      customerName: '',
     },
     editable: true,
     title: '',
@@ -156,11 +157,12 @@ const Calendar = () => {
           phone: customer.phone,
           customerId: customer.id,
           description: 'Regularly Scheduled Cleaning',
+          customerName: customer.name,
         },
       }));
       setAllEvents((prevEvents) => {
         const newEvents = formattedCustomerEvents.filter(
-          fe => !prevEvents.some(pe => pe.id === fe.id)
+          (fe) => !prevEvents.some((pe) => pe.id === fe.id)
         );
         return [...prevEvents, ...newEvents];
       });
@@ -182,6 +184,7 @@ const Calendar = () => {
           phone: event.phone,
           customerId: event.customerId,
           description: event.description,
+          customerName: event.customerName,
         },
       }));
       setAllEvents((prevEvents) => [...prevEvents, ...formattedCalendarEvents]);
@@ -283,6 +286,7 @@ const Calendar = () => {
         email: eventCustomer?.email || '',
         phone: eventCustomer?.phone || '',
         customerId: data.customer || '',
+        customerName: eventCustomer?.name || '',
       },
       editable: '',
       start: data.startTime,
@@ -301,9 +305,10 @@ const Calendar = () => {
         extendedProps: {
           description: data.description,
           location: data.address,
-          email: '',
-          phone: '',
-          customerId: '',
+          email: eventCustomer?.email,
+          phone: eventCustomer?.phone,
+          customerId: data.customer,
+          customerName: eventCustomer?.name || '',
         },
         editable: '',
         id: '',
@@ -329,18 +334,22 @@ const Calendar = () => {
   }
 
   const showEventDetails = (data: EventClickArg) => {
+    const eventCustomer = customers?.find(
+      (customer) => customer.id === data.event.id
+    );
     const event = data.event._def;
     const eventDetails: Event = {
       extendedProps: {
         location: event.extendedProps.location,
-        customerId: '',
+        customerId: event.extendedProps.customerId,
         email: event.extendedProps.email,
         phone: event.extendedProps.phone,
         description: event.extendedProps.description,
+        customerName: event.extendedProps.customerName,
       },
       title: event.title,
-      start: data.event._instance?.range.start ?? new Date(),
-      end: data.event._instance?.range.end ?? new Date(),
+      start: data.event.start ?? new Date(),
+      end: data.event.end ?? new Date(),
       allDay: data.event.allDay,
       id: data.event.id,
       editable: event.ui.startEditable ?? true,
@@ -363,7 +372,7 @@ const Calendar = () => {
       }
     }
   };
-
+  
   return (
     <main className='flex min-h-screen flex-col p-12'>
       <FullCalendar
@@ -387,33 +396,67 @@ const Calendar = () => {
         open={showEventDetailsModal}
         onOpenChange={setShowEventDetailsModal}
       >
-        <DialogContent className='bg-blue-600'>
-          <div className='flex flex-col items-start space-y-2'>
-            <div className='flex flex-row'>
+        <DialogContent className=''>
+          <div className='flex flex-col items-start'>
+          <div>
+              <h1 className='text-2xl text-gray-900 font-medium'>
+                {currentEventDetails?.title}
+              </h1>
+            </div>
+            <div className='flex flex-row mb-1'>
               {currentEventDetails?.start && (
-                <h3 className='text-white text-sm font-medium tracking-wider'>
-                  {format(
-                    new Date(currentEventDetails?.start),
-                    'EEEE, MMM dd @ HH:mm a'
+                <h3 className='text-gray-700 text-sm font-medium tracking-wider'>
+                  {new Date(currentEventDetails?.start).toLocaleDateString(
+                    'en-US',
+                    {
+                      weekday: 'long',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      hour12: true,
+                      timeZone: 'America/Los_Angeles'
+                    }
+                  )}{' '}
+                  -{' '}
+                  {new Date(currentEventDetails?.end).toLocaleTimeString(
+                    'en-US',
+                    { hour: 'numeric', minute: 'numeric', hour12: true }
                   )}
                 </h3>
               )}
             </div>
 
-            <div className=''>
-              <h1 className='text-xl text-white font-medium'>
-                {currentEventDetails?.title}
-              </h1>
+            
+
+            <Separator className='mb-4' />
+
+            <div className='flex flex-row space-x-2 items-center justify-center mb-3'>
+              <div className='flex items-center justify-center bg-blue-200 rounded-full px-2 py-2'>
+                <User className='h-5 w-5 text-blue-500' aria-hidden='true' />
+              </div>
+              
+              <div className='flex flex-col items-start justify-start'>
+              <p className='text-sm text-gray-700 font-medium'>
+                {currentEventDetails?.extendedProps.customerName}
+              </p>
+              <p className='text-xs text-gray-700 font-medium'>
+                {currentEventDetails?.extendedProps.phone}
+              </p>
+              </div>
+             
             </div>
 
-            <div className='flex flex-row space-x-2 items-center justify-center'>
+            <div className='flex flex-row space-x-2 items-center justify-center mb-3'>
               <Link
                 href={`https://www.google.com/maps/place/${currentEventDetails?.extendedProps.location}`}
                 target='_blank'
               >
                 <div className='flex flex-row space-x-2 items-center justify-center'>
-                  <MapPinned className='h-6 w-6 text-white' />
-                  <h1 className='text-sm text-white font-medium tracking-wider'>
+                  <div className='flex items-center justify-center bg-green-200 rounded-full px-2 py-2'>
+                    <MapPin className='h-5 w-5 text-green-500' />
+                  </div>
+                  <h1 className='text-sm text-gray-700 font-medium tracking-wider'>
                     {currentEventDetails?.extendedProps.location}
                   </h1>
                 </div>
@@ -421,8 +464,11 @@ const Calendar = () => {
             </div>
 
             <div className='flex flex-row space-x-2 items-center justify-center'>
-              <Info className='h-6 w-6 text-white' />
-              <h3 className='text-sm text-white font-medium tracking-wider'>
+            <div className='flex items-center justify-center bg-gray-200 rounded-full px-2 py-2'>
+            <Info className='h-5 w-5 text-gray-500' />
+
+                  </div>
+              <h3 className='text-sm text-gray-700 font-medium tracking-wider'>
                 {currentEventDetails?.extendedProps.description}
               </h3>
             </div>

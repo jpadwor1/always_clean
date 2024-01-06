@@ -70,19 +70,19 @@ model ServiceEvent {
 }
 
 model CalendarEvent {
-  id          String      @id @default(cuid())
-  title       String
-  start       DateTime
-  end         DateTime
-  allDay      Boolean
-  editable    String    @default("false")
-  description String?  @map("extendedProps_description")
-  location    String   @map("extendedProps_location")
-  email       String?  @map("extendedProps_email")
-  phone       String?  @map("extendedProps_phone")
-  customerId  String?  @map("extendedProps_customerId")
-
-  customer Customer? @relation(fields: [customerId], references: [id])
+  id           String    @id @default(cuid())
+  title        String
+  start        DateTime
+  end          DateTime
+  allDay       Boolean
+  editable     String    @default("false")
+  description  String?   @map("extendedProps_description")
+  location     String    @map("extendedProps_location")
+  email        String?   @map("extendedProps_email")
+  phone        String?   @map("extendedProps_phone")
+  customerId   String?   @map("extendedProps_customerId")
+  customerName String?   @map("extendedProps_customerName")
+  customer     Customer? @relation(fields: [customerId], references: [id])
 
   @@index([customerId])
 }

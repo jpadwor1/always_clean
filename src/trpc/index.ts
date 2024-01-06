@@ -674,13 +674,14 @@ export const appRouter = router({
           email: z.string().optional(),
           phone: z.string().optional(),
           customerId: z.string().optional(),
+          customerName: z.string().optional(),
         }),
         editable: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
-
+      console.log('input', input)
       if (!userId || !user) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
@@ -697,6 +698,7 @@ export const appRouter = router({
           phone: input.extendedProps.phone,
           customerId: input.extendedProps.customerId,
           editable: input.editable,
+          customerName: input.extendedProps.customerName,
         },
       });
 
