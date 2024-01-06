@@ -23,6 +23,7 @@ import {
   Biohazard,
   Camera,
   Pencil,
+  Trash,
 } from 'lucide-react';
 import {
   Popover,
@@ -33,8 +34,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import DualSeparator from './ui/DualSeparator';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
-import { parseISO } from 'date-fns';
-import { format, utcToZonedTime } from "date-fns-tz";
+import { format, utcToZonedTime } from 'date-fns-tz';
+import { trpc } from '@/app/_trpc/client';
+import { toast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
+
 interface ServiceHistoryProps {
   serviceEvent: {
     id: string;
@@ -42,6 +46,7 @@ interface ServiceHistoryProps {
     customerId: string | null;
     notes: string | null;
     name: string;
+    role: string;
     serviceChemicals: ({
       chemical: {
         id: string;
@@ -120,7 +125,10 @@ const poolTasks: PoolTask[] = [
 
 const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
   const tasksPerformed = serviceEvent?.tasksPerformed.split(',');
-
+  const router = useRouter();
+  const handleRefresh = () => {
+    router.refresh();
+  };
   function mapTasks(
     tasksPerformed: string[],
     poolTasks: PoolTask[]
@@ -185,14 +193,52 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
     }
   };
 
-
   const formatInTimeZone = (date: Date, fmt: string, tz: string) =>
-    format(utcToZonedTime(date, tz), 
-           fmt, 
-           { timeZone: tz });
-  
-  const formattedTime = formatInTimeZone(serviceEvent.dateCompleted, "hh:mm a", "UTC");
-  
+    format(utcToZonedTime(date, tz), fmt, { timeZone: tz });
+
+  const formattedTime = formatInTimeZone(
+    serviceEvent.dateCompleted,
+    'hh:mm a',
+    'UTC'
+  );
+
+  const deleteServiceEvent = trpc.getDeleteServiceEvent.useMutation();
+
+  const handleDelete = () => {
+
+    deleteServiceEvent.mutate(
+      {
+        id: serviceEvent.id,
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Service Event Deleted',
+            description: (
+              <>
+                <p>Ensure a new Service Form is completed if necessary.</p>
+              </>
+            ),
+          });
+          router.push(`/dashboard/customer/${serviceEvent?.customerId}`);
+          handleRefresh()
+        },
+        onError: (error: any) => {
+          toast({
+            title: 'Oops Something went wrong',
+            description: (
+              <>
+                <p>try again later</p>
+                <p>{error.message}</p>
+              </>
+            ),
+          });
+          handleRefresh();
+        },
+      }
+    );
+  };
+
   return (
     <div className='flex flex-col bg-white shadow-md p-6 rounded-md min-h-[calc(100vh-30rem)]'>
       <div className='flex flex-col justify-center items-center text-center space-y-4'>
@@ -205,7 +251,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
               {' '}
               <MoreVertical />
             </PopoverTrigger>
-            <PopoverContent className='w-fit flex flex-col'>
+            <PopoverContent className='w-fit flex flex-col p-0'>
               <Link
                 className={buttonVariants({ variant: 'ghost' })}
                 href={`/contact`}
@@ -218,6 +264,13 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
               >
                 FAQs
               </Link>
+
+              {serviceEvent.role === 'ADMIN' && (
+                <Button variant='ghost' onClick={handleDelete}>
+                  Delete
+                  <Trash className='h-5 w-5 ml-2 text-red-600' />
+                </Button>
+              )}
             </PopoverContent>
           </Popover>
         </div>
@@ -264,7 +317,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
 
       <div className='max-w-[80px] px-2 py-1 rounded-r-xl bg-gray-300 text-center text-gray-700 tracking-wider mt-10'>
         <p className='text-xs font-medium'>
-        {format(new Date(serviceEvent.dateCompleted), 'MMM dd')}
+          {format(new Date(serviceEvent.dateCompleted), 'MMM dd')}
         </p>
       </div>
 

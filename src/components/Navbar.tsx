@@ -12,11 +12,17 @@ import Image from 'next/image';
 import MobileNav from './MobileNav';
 import UserAccountNav from './UserAccountNav';
 import NavbarMenu from './NavbarMenu';
-
-
+import { db } from '@/db';
+import { redirect } from 'next/navigation';
 const Navbar = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
+
+  const dbCustomer = await db.customer.findFirst({
+    where: {
+      id: user?.id,
+    },
+  });
 
   return (
     <nav className='sticky h-20 inset-x-0 top-0 z-30 w-flow border-b border-gray-200 bg-white/75 backdrop-blur-lg transtion-all'>
@@ -27,10 +33,9 @@ const Navbar = async () => {
           </Link>
 
           <MobileNav />
-          
-          <div className='hidden items-center space-x-4 sm:flex'>
 
-            <NavbarMenu/>
+          <div className='hidden items-center space-x-4 sm:flex'>
+            <NavbarMenu />
             {!user ? (
               <>
                 <LoginLink
@@ -46,20 +51,19 @@ const Navbar = async () => {
             ) : (
               <>
                 <Link
-                  href='/dashboard'
+                  href={dbCustomer?.role === 'ADMIN' ? '/dashboard' : '/client'}
                   className={buttonVariants({ variant: 'ghost', size: 'sm' })}
                 >
-                  Dashboard
+                  {dbCustomer?.role === 'ADMIN' ? 'Dashboard' : 'Service History'}
                 </Link>
 
                 <UserAccountNav
                   name={
-                    !user.given_name || !user.family_name
-                      ? 'Your Account'
-                      : `${user.given_name} ${user.family_name}`
+                    !dbCustomer?.name ? 'Your Account' : `${dbCustomer?.name} `
                   }
                   imageUrl={user.picture ?? ''}
                   email={user.email ?? ''}
+                  role={dbCustomer?.role ?? ''}
                 />
               </>
             )}

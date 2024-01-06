@@ -14,7 +14,6 @@ const Page = async ({ params }: PageProps) => {
   const subscriptionPlan = await getUserSubscriptionPlan();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  const userId = user?.id;
 
   const serviceEvent = await db.serviceEvent.findFirst({
     where: {
@@ -30,6 +29,15 @@ const Page = async ({ params }: PageProps) => {
       }
   });
 
+  const userRole = await db.customer.findFirst({
+    where: {
+      id: user?.id,
+    },
+    select: {
+      role: true,
+    },
+  })
+
   if (!serviceEvent) {
     return <div>Service event not found</div>;
   }
@@ -37,6 +45,7 @@ const Page = async ({ params }: PageProps) => {
   const transformedServiceEvent = {
     ...serviceEvent,
     tasksPerformed: serviceEvent.tasksPerformed || '',
+    role: userRole?.role || 'USER',
   };
 
   return <ServiceHistory serviceEvent={transformedServiceEvent} />;

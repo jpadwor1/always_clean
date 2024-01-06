@@ -2,201 +2,12 @@ import { Metadata } from 'next';
 
 import { Separator } from '@/components/ui/separator';
 import { SidebarNav } from './sidebarNav';
-
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { db } from '@/db';
 export const metadata: Metadata = {
   title: 'Forms',
   description: 'Advanced form example using react-hook-form and Zod.',
 };
-
-const serviceHistoryData = [
-  // Each object represents a service date and its details
-  {
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },
-  {
-    id: '1',
-    date: 'Thursday, July 2, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },{
-    id: '1',
-    date: 'Thursday, July 1, 2021',
-    notes: 'Cleaned pool filters',
-    chemicalsUsed: ['Chlorine', 'Algaecide'],
-    photos: ['', ''],
-    servicesCompleted: [
-      'Vacuumed pool',
-      'Balanced pH',
-      'Added Chlorine Tablets',
-      'Cleaned pool filters',
-      'Added Algaecide',
-    ],
-   
-  },
-  
-  
-];
 
 
 
@@ -219,7 +30,33 @@ interface SettingsLayoutProps {
   children: React.ReactNode;
 }
 
-export default function SettingsLayout({ children }: SettingsLayoutProps) {
+export default async function SettingsLayout({ children }: SettingsLayoutProps) {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  const dbUser = await db.customer.findFirst({
+    where: {
+      id: user?.id,
+    },
+  });
+  const customerServiceEvents = await db.serviceEvent.findMany({
+    orderBy: {
+      dateCompleted: 'asc',
+    },
+    where: {
+      customerId: user?.id,
+    },
+    include: {
+      files: true,
+    },
+  });
+  
+  const formattedServiceEvents = customerServiceEvents.map((event) => ({
+    ...event,
+    dateCompleted: new Date(event.dateCompleted),
+    chemicalsUsed: [], // Convert to Date object if necessary
+  }));
+
   return (
     <>
      
@@ -233,7 +70,7 @@ export default function SettingsLayout({ children }: SettingsLayoutProps) {
         <Separator className='my-6' />
         <div className='flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0'>
           <aside className='-mx-4 lg:w-1/5'>
-            <SidebarNav serviceHistoryData={serviceHistoryData} items={sidebarNavItems} />
+            <SidebarNav serviceHistoryData={formattedServiceEvents} items={sidebarNavItems} />
           </aside>
           <div className='flex-1 lg:max-w-3xl'>{children}</div>
         </div>

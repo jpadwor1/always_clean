@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import Navbar from '@/components/Navbar';
 import Providers from '@/components/Providers';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
@@ -13,6 +14,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
+  
+
   return (
     <html lang='en'>
       <Providers>

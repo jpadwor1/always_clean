@@ -16,9 +16,11 @@ interface UserAccountNavProps {
   email: string | undefined;
   imageUrl: string;
   name: string;
+  role: string;
 }
 
 const UserAccountNav = async ({
+  role,
   email,
   imageUrl,
   name,
@@ -41,7 +43,7 @@ const UserAccountNav = async ({
             ) : (
               <AvatarFallback>
                 <span className='sr-only'>{name}</span>
-                <User className='h-4 w-4 text-zinc-900' />
+                <User className='h-4 w-4 text-gray-900' />
               </AvatarFallback>
             )}
           </Avatar>
@@ -62,7 +64,7 @@ const UserAccountNav = async ({
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href='/profile'>Profile</Link>
+          <Link href={role === 'USER' ? '/client' : '/profile'}>Profile</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>

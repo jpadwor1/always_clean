@@ -34,19 +34,21 @@ model Customer {
   id    String @id @unique
   email String @unique
 
-  services        ServiceEvent[]
-  name            String
-  address         String
-  phone           String
-  lastServiceDate DateTime       @default(now())
-  nextServiceDate DateTime       @default(now())
-  role            Role           @default(USER)
-  customerType    CustomerType   @default(LEAD)
+  services          ServiceEvent[]
+  name              String
+  address           String
+  phone             String
+  lastServiceDate   DateTime       @default(now())
+  nextServiceDate   DateTime       @default(now())
+  role              Role           @default(USER)
+  customerType      CustomerType   @default(LEAD)
+  isProfileComplete Boolean        @default(false)
 
-  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?   @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+  stripeCustomerId       String?         @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?         @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?         @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime?       @map(name: "stripe_current_period_end")
+  CalendarEvent          CalendarEvent[]
 }
 
 model ServiceEvent {
@@ -67,6 +69,24 @@ model ServiceEvent {
   @@index([customerId])
 }
 
+model CalendarEvent {
+  id          String      @id @default(cuid())
+  title       String
+  start       DateTime
+  end         DateTime
+  allDay      Boolean
+  editable    String    @default("false")
+  description String?  @map("extendedProps_description")
+  location    String   @map("extendedProps_location")
+  email       String?  @map("extendedProps_email")
+  phone       String?  @map("extendedProps_phone")
+  customerId  String?  @map("extendedProps_customerId")
+
+  customer Customer? @relation(fields: [customerId], references: [id])
+
+  @@index([customerId])
+}
+
 model Chemical {
   id       String            @id @default(cuid())
   name     String            @unique
@@ -77,7 +97,7 @@ model Chemical {
 
 model ServiceChemical {
   id             String       @id @default(cuid())
-  serviceEvent   ServiceEvent @relation(fields: [serviceEventId], references: [id])
+  serviceEvent   ServiceEvent @relation(fields: [serviceEventId], references: [id], onDelete: Cascade)
   serviceEventId String
   chemical       Chemical     @relation(fields: [chemicalId], references: [id])
   chemicalId     String
@@ -100,6 +120,8 @@ model File {
 
   ServiceEvent   ServiceEvent? @relation(fields: [serviceEventId], references: [id])
   serviceEventId String?
+
+  @@index([serviceEventId])
 }
 
 enum Role {

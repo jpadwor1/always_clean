@@ -2,7 +2,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { format } from 'date-fns';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -46,14 +45,25 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { trpc } from '@/app/_trpc/client';
 import { cn } from '@/lib/utils';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Role, CustomerType } from '@prisma/client';
+import { toast } from '../ui/use-toast';
+import { setId } from '@material-tailwind/react/components/Tabs/TabsContext';
+import { id } from 'date-fns/locale';
 
 interface Event {
   extendedProps: {
     location: string;
-    email: string;
-    phone: string;
-    customerId: string;
-    description?: string;
+    email: string | null;
+    phone: string | null;
+    customerId: string | null;
+    description?: string | null;
   };
   editable: boolean | string;
   title: string;
@@ -69,86 +79,39 @@ declare global {
   }
 }
 
-const initGooglePlaces = (addressInput: HTMLInputElement | null, form: any) => {
-  // Ensure that the Google Maps API script has loaded
-  if (!window.google || !window.google.maps || !window.google.maps.places) {
-    console.error('Google Maps API script not loaded');
-    return;
-  }
-
-  if (!addressInput) {
-    console.error('Address input not found');
-    return;
-  }
-
-  // Create a new instance of the Google Places Autocomplete
-  const autocomplete = new google.maps.places.Autocomplete(addressInput, {
-    types: ['address'],
-  });
-
-  // Add a listener for the 'place_changed' event
-  autocomplete.addListener('place_changed', () => {
-    const place = autocomplete.getPlace();
-    const address = place.formatted_address;
-    if (address) {
-      form.setValue('address', address, { shouldValidate: true });
-    }
-  });
-};
-
-const loadGooglePlacesScript = (callback: () => void) => {
-  if (typeof window !== 'undefined') {
-    const isScriptLoaded = document.querySelector(
-      "script[src*='maps.googleapis.com/maps/api/js']"
-    );
-    if (!isScriptLoaded) {
-      window.initGooglePlaces = callback;
-
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&callback=initGooglePlaces`;
-      document.head.appendChild(script);
-    } else if (window.google && window.google.maps) {
-      callback();
-    }
-  }
-};
-
-const mergeRefs = (...refs: React.Ref<any>[]) => {
-  return (element: HTMLInputElement) => {
-    refs.forEach((ref) => {
-      if (typeof ref === 'function') {
-        ref(element);
-      } else if (ref != null) {
-        (ref as React.MutableRefObject<HTMLInputElement>).current = element;
-      }
-    });
-  };
+type Customer = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  customerType: CustomerType;
+  nextServiceDate: string;
+  lastServiceDate: string;
+  role: Role;
+  isProfileComplete: boolean;
+  stripeCustomerId: string | null;
+  stripeSubscriptionId: string | null;
+  stripePriceId: string | null;
+  stripeCurrentPeriodEnd: string | null;
 };
 
 const FormSchema = z.object({
-  title: z.string({
-    required_error: 'Please enter a title for the event.',
-  }),
-  startTime: z.string({
-    required_error: 'Please select the event start time.',
-  }),
-  endTime: z.string({
-    required_error: 'Please select the event end time.',
-  }),
-  address: z.string({
-    required_error: 'Please enter your address.',
-  }),
+  title: z.string(),
+  startTime: z.string(),
+  endTime: z.string(),
+  address: z.string(),
   allDay: z.boolean().default(false).optional(),
   description: z.string().optional(),
+  customer: z.string().optional(),
 });
 
 const Calendar = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    mode: 'onChange',
   });
-  const { data: customers, isLoading, error } = trpc.getCustomers.useQuery();
+  const [isPageLoading, setIsPageLoading] = useState<boolean>(false);
+  const [customerAttending, setCustomerAttending] = useState<Customer>();
   const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -156,7 +119,7 @@ const Calendar = () => {
   const [currentEventDetails, setCurrentEventDetails] = useState<Event | null>(
     null
   );
-  const [idToDelete, setIdToDelete] = useState<number | null>(null);
+  const [idToDelete, setIdToDelete] = useState<string>('');
   const [newEvent, setNewEvent] = useState<Event>({
     extendedProps: {
       location: '',
@@ -172,27 +135,19 @@ const Calendar = () => {
     allDay: false,
     id: '0',
   });
-  const addressInputRef = React.useRef<HTMLInputElement>(null);
-  const onAddressInputMount = mergeRefs(
-    addressInputRef,
-    form.register('address').ref
-  );
 
-  useEffect(() => {
-    if (showModal) {
-      loadGooglePlacesScript(() =>
-        initGooglePlaces(addressInputRef.current, form)
-      );
-    }
-  }, [showModal, form]);
+  const { data: customers, isLoading, error } = trpc.getCustomers.useQuery();
+  const createEvent = trpc.getAddCalendarEvent.useMutation();
+  const { data: calendarEvents } = trpc.getCalendarEvents.useQuery();
+  const deleteEvent = trpc.getDeleteCalendarEvent.useMutation();
 
   useEffect(() => {
     if (customers) {
-      const formattedEvents = customers.map((customer) => ({
+      const formattedCustomerEvents = customers.map((customer) => ({
         title: customer.name,
         start: customer.nextServiceDate,
         editable: true,
-        end: '',
+        end: '', // Assuming end date is not available, you might want to adjust this
         allDay: false,
         id: customer.id,
         extendedProps: {
@@ -203,9 +158,30 @@ const Calendar = () => {
           description: 'Regularly Scheduled Cleaning',
         },
       }));
-      setAllEvents(formattedEvents);
+      setAllEvents((prevEvents) => [...prevEvents, ...formattedCustomerEvents]);
     }
   }, [customers]);
+
+  useEffect(() => {
+    if (calendarEvents) {
+      const formattedCalendarEvents = calendarEvents.map((event) => ({
+        title: event.title,
+        start: event.start,
+        end: event.end,
+        allDay: event.allDay,
+        id: event.id,
+        editable: true,
+        extendedProps: {
+          location: event.location,
+          email: event.email,
+          phone: event.phone,
+          customerId: event.customerId,
+          description: event.description,
+        },
+      }));
+      setAllEvents((prevEvents) => [...prevEvents, ...formattedCalendarEvents]);
+    }
+  }, [calendarEvents]);
 
   useEffect(() => {
     let draggableEl = document.getElementById('draggable-el');
@@ -232,11 +208,35 @@ const Calendar = () => {
   }
 
   function handleDelete() {
-    setAllEvents(
-      allEvents.filter((event) => Number(event.id) !== Number(idToDelete))
-    );
-    setShowDeleteModal(false);
-    setIdToDelete(null);
+    if (currentEventDetails) {
+      deleteEvent.mutate(
+        { id: currentEventDetails.id },
+        {
+          onSuccess: () => {
+            setShowDeleteModal(false);
+            setShowEventDetailsModal(false);
+            setIdToDelete('');
+            setAllEvents((prevEvents) =>
+              prevEvents.filter((event) => event.id !== currentEventDetails.id)
+            );
+            toast({
+              title: 'Event Deleted!',
+              description: 'Check the calendar for updated event details.',
+            });
+          },
+          onError: (error) => {
+            toast({
+              title: 'Oops, something went wrong!',
+              description: error.message,
+            });
+            setIdToDelete('');
+
+            setShowDeleteModal(false);
+            setShowEventDetailsModal(false);
+          },
+        }
+      );
+    }
   }
 
   function handleCloseModal() {
@@ -257,27 +257,72 @@ const Calendar = () => {
       id: '0',
     });
     setShowDeleteModal(false);
-    setIdToDelete(null);
+    setIdToDelete('');
+    form.clearErrors();
+    form.reset();
   }
 
-  function handleSubmit(data: z.infer<typeof FormSchema>) {
-    setAllEvents([...allEvents, newEvent]);
-    setShowModal(false);
-    setNewEvent({
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsPageLoading(true);
+    console.log(data);
+    const eventCustomer = customers?.find(
+      (customer) => customer.id === data.customer
+    );
+    const updatedEvent = {
+      title: data.title,
+      startTime: data.startTime,
+      endTime: data.endTime,
+      allDay: (data.allDay as boolean) || false,
       extendedProps: {
-        location: '',
-        email: '',
-        phone: '',
-        customerId: '',
-        description: '',
+        description: data.description,
+        location: data.address,
+        email: eventCustomer?.email || '',
+        phone: eventCustomer?.phone || '',
+        customerId: data.customer || '',
       },
-      editable: true,
-      title: '',
-      start: '',
-      end: '',
-      allDay: false,
-      id: '0',
-    });
+      editable: '',
+      start: data.startTime,
+      end: data.endTime,
+      id: '',
+    };
+
+    console.log(updatedEvent);
+    setAllEvents([...allEvents, updatedEvent]);
+
+    createEvent.mutate(
+      {
+        title: data.title,
+        start: data.startTime,
+        end: data.endTime,
+        allDay: data.allDay as boolean,
+        extendedProps: {
+          description: data.description,
+          location: data.address,
+          email: '',
+          phone: '',
+          customerId: '',
+        },
+        editable: '',
+        id: '',
+      },
+      {
+        onSuccess: () => {
+          setIsPageLoading(false);
+          setShowModal(false);
+          toast({
+            title: 'Event Created!',
+            description: 'Check the calendar for new event details.',
+          });
+        },
+        onError: (error) => {
+          setIsPageLoading(false);
+          toast({
+            title: 'OOps, something went wrong!',
+            description: error.message,
+          });
+        },
+      }
+    );
   }
 
   const showEventDetails = (data: EventClickArg) => {
@@ -303,10 +348,17 @@ const Calendar = () => {
     setCurrentEventDetails(eventDetails);
   };
 
-  const formatDateForDisplay = (date: string | Date | undefined) => {
-    if (!date) return '';
-
-    return format(new Date(date), "MMM. do, yyyy 'at' h:mm aa");
+  const handleCustomerChange = (customerId: string) => {
+    if (customerId) {
+      const customer = customers?.find(
+        (customer) => customer.id === customerId
+      );
+      if (customer) {
+        setCustomerAttending(customer);
+        form.setValue('address', customer.address);
+        form.setValue('customer', customer.id);
+      }
+    }
   };
 
   return (
@@ -372,11 +424,21 @@ const Calendar = () => {
               </h3>
             </div>
           </div>
+          <DialogFooter className='flex flex-row justify-end'>
+            <Button
+              variant='destructive'
+              onClick={() => {
+                setShowDeleteModal(true);
+              }}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
-        <DialogContent>
+        <DialogContent className='max-w-xs'>
           <DialogHeader>
             <div className='flex flex-col items-center'>
               <div
@@ -408,17 +470,22 @@ const Calendar = () => {
 
       <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent>
-          <DialogHeader className='flex flex-col items-center'>
+          <DialogHeader className='flex flex-col items-start'>
             <CheckIcon className='h-6 w-6 text-green-600' aria-hidden='true' />
-            <DialogTitle>Add Event</DialogTitle>
+            <DialogTitle className='text-2xl text-gray-900'>
+              Add Event
+            </DialogTitle>
+            <h2 className='text-gray-700 text-medium tracing-wide '>
+              Complete all the fields to create a calendar event.
+            </h2>
           </DialogHeader>
 
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(handleSubmit)}
+              onSubmit={form.handleSubmit(onSubmit)}
               className='w-full space-y-6'
             >
-              <div className='flex flex-col -mx-4 mb-8 rounded-md w-full text-center'>
+              <div className='flex flex-col mb-8 rounded-md w-full text-center'>
                 <div className='px-4 mt-6 mb-2'>
                   <FormField
                     control={form.control}
@@ -444,8 +511,55 @@ const Calendar = () => {
                 <div className='px-4 mt-6 mb-2'>
                   <FormField
                     control={form.control}
-                    name='address'
+                    name='customer'
                     defaultValue=''
+                    render={({ field }) => (
+                      <FormItem className='flex flex-col justify-start items-start w-full mt-0'>
+                        <FormLabel className='min-w-fit mr-2 mt-2'>
+                          Customers
+                        </FormLabel>
+                        <FormControl>
+                          <Select
+                            onValueChange={(e) => {
+                              handleCustomerChange(e);
+                            }}
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder='Select a verified email to display' />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {customers?.map((customer) => {
+                                return (
+                                  <SelectItem
+                                    key={customer.id}
+                                    value={customer.id}
+                                  >
+                                    {customer.name}
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectContent>
+                          </Select>
+                        </FormControl>
+                        <FormDescription>
+                          If this event is tied to a customer, select them here.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className='px-4 mt-6 mb-2'>
+                  <FormField
+                    control={form.control}
+                    name='address'
+                    defaultValue={
+                      customerAttending ? customerAttending.address : ''
+                    }
                     render={({ field }) => (
                       <FormItem className='flex flex-col justify-start items-start w-full mt-0'>
                         <FormLabel className='min-w-fit mr-2 mt-2'>
@@ -454,13 +568,16 @@ const Calendar = () => {
                         <div className='flex flex-col justify-center items-center w-full'>
                           <FormControl>
                             <Input
-                              ref={onAddressInputMount}
                               id='address'
                               name='address'
                               onChange={field.onChange}
                               onBlur={field.onBlur}
                               placeholder='12348 Express Way'
-                              value={field.value}
+                              value={
+                                customerAttending
+                                  ? customerAttending.address
+                                  : field.value
+                              }
                             />
                           </FormControl>
                           <FormMessage />
@@ -488,7 +605,7 @@ const Calendar = () => {
                           </FormLabel>
                           <FormControl>
                             <Input
-                              name='start'
+                              name='startTime'
                               type='datetime-local'
                               onChange={field.onChange}
                             />
@@ -510,7 +627,7 @@ const Calendar = () => {
                             </FormLabel>
                             <FormControl>
                               <Input
-                                name='end'
+                                name='startTime'
                                 type='datetime-local'
                                 onChange={field.onChange}
                               />
@@ -567,16 +684,8 @@ const Calendar = () => {
                             placeholder='Add Description'
                             className='mt-2'
                             name='description'
-                            value={newEvent.extendedProps.description}
-                            onChange={(e) =>
-                              setNewEvent({
-                                ...newEvent,
-                                extendedProps: {
-                                  ...newEvent.extendedProps,
-                                  description: e.target.value,
-                                },
-                              })
-                            }
+                            value={field.value}
+                            onChange={field.onChange}
                           />
                         </FormControl>
                         <FormMessage />
@@ -586,7 +695,13 @@ const Calendar = () => {
                 </div>
                 <div className='mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3'>
                   <Button disabled={!form.formState.isValid}>Create</Button>
-                  <Button onClick={handleCloseModal}>Cancel</Button>
+                  <Button
+                    type='button'
+                    className='bg-red-500/70 hover:bg-red-500'
+                    onClick={handleCloseModal}
+                  >
+                    Cancel
+                  </Button>
                 </div>
               </div>
             </form>

@@ -211,7 +211,7 @@ export const appRouter = router({
   updateUserProfileSettings: privateProcedure
     .input(
       z.object({
-        name: z.string().optional(),
+        fullName: z.string().optional(),
         address: z.string().optional(),
         email: z.string().optional(),
         phone: z.string().optional(),
@@ -244,10 +244,11 @@ export const appRouter = router({
             id: user.id,
           },
           data: {
-            name: input.name,
+            name: input.fullName,
             address: input.address,
             email: input.email,
             phone: input.phone,
+            isProfileComplete: true,
           },
         });
 
@@ -257,7 +258,7 @@ export const appRouter = router({
               id: user.id,
             },
             data: {
-              name: input.name,
+              name: input.fullName,
               address: input.address,
               email: input.email,
               phone: input.phone,
@@ -472,6 +473,24 @@ export const appRouter = router({
       return dbServiceEvent;
     }),
 
+  getDeleteServiceEvent: privateProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      await db.serviceEvent.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return { success: true };
+    }),
+
   getChemicals: privateProcedure.query(async ({ ctx }) => {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
@@ -641,41 +660,78 @@ export const appRouter = router({
       return createdFile;
     }),
 
-  getAddCalendarEvent: privateProcedure.input(z.object({
-    title: z.string(),
-    start: z.string(),
-    end: z.string(),
-    description: z.string(),
-    location: z.string(),
-    allDay: z.boolean(),
-    customerId: z.string(),
-  })).mutation(async ({ ctx, input }) => {
+  getAddCalendarEvent: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        start: z.string(),
+        end: z.string(),
+        allDay: z.boolean(),
+        extendedProps: z.object({
+          description: z.string().optional(),
+          location: z.string(),
+          email: z.string().optional(),
+          phone: z.string().optional(),
+          customerId: z.string().optional(),
+        }),
+        editable: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      const dbCalendarEvent = await db.calendarEvent.create({
+        data: {
+          title: input.title,
+          start: new Date(input.start),
+          end: new Date(input.end),
+          allDay: input.allDay as boolean,
+          description: input.extendedProps.description,
+          location: input.extendedProps.location,
+          email: input.extendedProps.email,
+          phone: input.extendedProps.phone,
+          customerId: input.extendedProps.customerId,
+          editable: input.editable,
+        },
+      });
+
+      return dbCalendarEvent;
+    }),
+
+  getCalendarEvents: privateProcedure.query(async ({ ctx }) => {
     const { userId, user } = ctx;
 
     if (!userId || !user) {
       throw new TRPCError({ code: 'UNAUTHORIZED' });
     }
 
-    const dbCalendarEvent = await db.calendarEvent.create({
-      data: {
-        id: randomUUID(),
-        title: input.title,
-        start: input.start,
-        end: input.end,
-        description: input.description,
-        location: input.location,
-        customerName: input.customerName,
-        customerAddress: input.customerAddress,
-        customerEmail: input.customerEmail,
-        customerPhone: input.customerPhone,
-        customerType: input.customerType,
-        nextServiceDate: input.nextServiceDate,
-      },
-    });
+    const calendarEvents = await db.calendarEvent.findMany();
 
-    return dbCalendarEvent;
+    return calendarEvents;
   }),
-  
+
+  getDeleteCalendarEvent: privateProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      await db.calendarEvent.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      return { success: true };
+    }),
 
   createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
     const { userId } = ctx;
