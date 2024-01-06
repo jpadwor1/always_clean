@@ -158,7 +158,12 @@ const Calendar = () => {
           description: 'Regularly Scheduled Cleaning',
         },
       }));
-      setAllEvents((prevEvents) => [...prevEvents, ...formattedCustomerEvents]);
+      setAllEvents((prevEvents) => {
+        const newEvents = formattedCustomerEvents.filter(
+          fe => !prevEvents.some(pe => pe.id === fe.id)
+        );
+        return [...prevEvents, ...newEvents];
+      });
     }
   }, [customers]);
 
@@ -264,7 +269,6 @@ const Calendar = () => {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsPageLoading(true);
-    console.log(data);
     const eventCustomer = customers?.find(
       (customer) => customer.id === data.customer
     );
@@ -286,7 +290,6 @@ const Calendar = () => {
       id: '',
     };
 
-    console.log(updatedEvent);
     setAllEvents([...allEvents, updatedEvent]);
 
     createEvent.mutate(
