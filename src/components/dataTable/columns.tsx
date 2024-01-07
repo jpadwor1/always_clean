@@ -87,7 +87,7 @@ export const columns: ColumnDef<Customer>[] = [
   {
     accessorKey: 'lastServiceDate',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Last Service Date' />
+      <DataTableColumnHeader column={column} title='Last Service' />
     ),
     cell: ({ row }) => {
       const date = row.getValue('lastServiceDate') as string;
@@ -105,7 +105,7 @@ export const columns: ColumnDef<Customer>[] = [
   {
     accessorKey: 'nextServiceDate',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Next Service Date' />
+      <DataTableColumnHeader column={column} title='Next Service' />
     ),
     cell: ({ row }) => {
       const date = row.getValue('nextServiceDate') as string;
@@ -139,17 +139,16 @@ export const columns: ColumnDef<Customer>[] = [
   {
     accessorKey: 'email',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='email' />
+      <DataTableColumnHeader column={column} title='Email' />
     ),
     cell: ({ row }) => {
       return (
-        <div className='flex items-center'>
+        <div className='flex items-center max-w-[50px] truncate'>
           <Link
-            className='flex items-center'
+            className='hover:text-blue-500'
             href={`mailto:${row.getValue('email')}`}
           >
-            <Mail className='h-4 w-4 mr-1' />
-            <span className='ml-1'>{row.getValue('email')}</span>
+            <Mail className='h-6 w-6' />
           </Link>
         </div>
       );

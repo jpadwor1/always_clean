@@ -27,10 +27,6 @@ const Dashboard = async () => {
         <div className='flex-1 space-y-4 p-8 pt-6'>
           <div className='flex flex-col sm:flex-row items-center justify-between space-y-2'>
             <h2 className='text-3xl font-bold tracking-tight'>Dashboard</h2>
-            <div className='flex flex-col py-1 sm:mt-0 sm:flex-row items-center space-x-2'>
-              <CalendarDateRangePicker />
-              <Button className='mt-4 sm:mt-0'>Download</Button>
-            </div>
           </div>
           <Tabs defaultValue='utilities' className='space-y-4'>
             <TabsList>

@@ -22,7 +22,7 @@ import { labels } from './data/data';
 import { customerSchema } from './data/CustomerSchema';
 import Link from 'next/link';
 import { trpc } from '@/app/_trpc/client';
-import {useToast} from '@/components/ui/use-toast';
+import {toast, useToast} from '@/components/ui/use-toast';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -36,12 +36,17 @@ export function DataTableRowActions<TData>({
 }: DataTableRowActionsProps<TData>) {
   const {mutate: deleteUser} = trpc.deleteCustomer.useMutation({
     onSuccess: () => {
-      console.log("User Deleted")
-      alert('user deleted')
+      toast({
+        title: 'Success!',
+        description: 'Customer has been deleted',
+      })
+      
     },
     onError: (error) => {
-      console.log(error)
-      alert('error')
+      toast({
+        title: 'Oops, something went wrong!',
+        description: 'Try again later' + error.message,
+      })
     }
   })
 const customerId = (row.original as any).id;
