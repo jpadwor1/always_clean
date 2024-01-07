@@ -1,32 +1,146 @@
+'use client';
 import React from 'react';
-import Image from 'next/image';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { Button } from './ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import axios from 'axios';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { set } from 'date-fns';
+import { Loader2, CheckCircle } from 'lucide-react';
+import { toast } from './ui/use-toast';
+import Link from 'next/link';
+import { trpc } from '@/app/_trpc/client';
+
+const FormSchema = z.object({
+  email: z
+    .string({
+      required_error: 'Please select an email to display.',
+    })
+    .email(),
+  message: z
+    .string({
+      required_error: 'Please enter a message.',
+    })
+    .min(10, 'Message must be at least 10 characters.'),
+});
 
 const ContactSection = () => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [notification, setNotification] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [formSubmitted, setFormSubmitted] = React.useState<boolean>(false);
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
+  const {
+    formState: { errors, isValid },
+  } = form;
+
+  const sendContactFormConfirmationEmail =
+    trpc.sendContactFormEmail.useMutation();
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    setIsLoading(true);
+    if (!executeRecaptcha) {
+      toast({
+        title: 'Oops, something went wrong.',
+        description: 'Please try again later.',
+      });
+      setIsLoading(false);
+      return;
+    }
+
+    executeRecaptcha('enquiryFormSubmit').then((gReCaptchaToken) => {
+      async function goAsync() {
+        try {
+          const response = await axios({
+            method: 'post',
+            url: '/api/contactFormSubmit',
+            data: {
+              email: data.email,
+              message: data.message,
+              gRecaptchaToken: gReCaptchaToken,
+            },
+            headers: {
+              Accept: 'application/json, text/plain, */*',
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const { email, message } = response.data;
+
+          if (response?.data?.success === true) {
+            sendContactFormConfirmationEmail.mutate(
+              { email, message },
+              {
+                onSuccess: () => {
+                  setNotification('Success!');
+                  setFormSubmitted(true);
+                },
+                onError: () => {
+                  setNotification('Error!');
+                  toast({
+                    title: 'Oops, something went wrong.',
+                    description: 'Please try again later.',
+                  });
+                },
+              }
+            );
+          } else {
+            toast({
+              title: 'Oops, something went wrong.',
+              description: 'Please try again later.',
+            });
+          }
+        } catch (error) {
+          toast({
+            title: 'Oops, something went wrong.',
+            description: 'Please try again later.',
+          });
+        } finally {
+          setIsLoading(false);
+          setFormSubmitted(true);
+        }
+      }
+
+      goAsync();
+    });
+  }
+
   return (
     <section className='bg-transparent'>
       <div className='pt-20 pb-5 relative'>
         <div className='container px-4 mx-auto'>
           <div className='flex flex-wrap mb-12 lg:mb-18 justify-between items-center'>
-            <div className='w-full lg:w-1/2 mb-0'>
+            <div className='w-full mb-0'>
               <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-600 bg-blue-100 font-medium uppercase rounded-9xl'>
                 Contact
               </span>
-              <h3 className='mb-4 text-4xl md:text-5xl text-zinc-900 font-bold tracking-tighter leading-tight'>
+              <h3 className='mb-1 text-4xl md:text-5xl text-zinc-900 font-bold tracking-tighter leading-tight'>
                 Let’s stay connected
               </h3>
-              <p className='text-lg md:text-xl text-zinc-700 font-medium'>
-                Connecting with Always Clean is effortless and swift. Whether
-                you call, email, or book online, we guarantee a prompt and
-                personalized response. <br />
-                Reach out today for unparalleled service!
+
+              <p className='text-lg md:text-md text-gray-700 font-medium'>
+                Whether you call, email, or book online, we guarantee a prompt
+                and personalized response.
               </p>
             </div>
           </div>
           <div className='flex flex-wrap -mx-4'>
             <div className='w-full lg:w-1/2 px-4 mb-14 lg:mb-0 '>
-              <div className='flex flex-wrap -mx-4 '>
-                <div className='w-full md:w-1/2 px-4 mb-10 '>
+              <div className='flex flex-wrap -mx-4'>
+                <div className='w-full md:w-1/2 px-4 mb-8 md:mt-8'>
                   <div className='max-w-xs mx-auto flex flex-col '>
                     <div className='inline-flex mb-6 items-center justify-center w-12 h-12 bg-blue-600 rounded-full'>
                       <svg
@@ -54,7 +168,7 @@ const ContactSection = () => {
                     </a>
                   </div>
                 </div>
-                <div className='w-full md:w-1/2 px-4 mb-10'>
+                <div className='w-full md:w-1/2 px-4 mb-8 md:mt-8'>
                   <div className='max-w-xs mx-auto'>
                     <div className='inline-flex mb-6 items-center justify-center w-12 h-12 bg-blue-600 rounded-full'>
                       <svg
@@ -219,43 +333,87 @@ const ContactSection = () => {
               </div>
             </div>
             <div className='w-full lg:w-1/2 px-4'>
-              <div className='px-4 py-8 md:p-10 bg-white rounded-xl shadow-md'>
-                <form>
-                  <div className='mb-6'>
-                    <label
-                      className='block mb-2 text-zinc-800 font-medium leading-6'
-                      htmlFor=''
-                    >
-                      Email
-                    </label>
-                    <input
-                      className='block w-full py-2 px-3 appearance-none border border-zinc-200 rounded-lg shadow-md text-zinc-600 leading-6 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50'
-                      type='email'
-                      placeholder='youremail@gmail.com'
-                    />
+              <div className='px-4 py-8 md:p-10 bg-white rounded-xl shadow-md min-h-[350px]'>
+                {formSubmitted ? (
+                  <div className='flex flex-col items-center justify-center text-center'>
+                    <CheckCircle className='h-12 w-12 text-green-600 mb-4' />
+                    <h2 className='text-xl md:text-2xl leading-9 tracking-wider font-bold text-gray-900 mb-6'>
+                      Thanks for your message!
+                    </h2>
+                    <p className='text-md md:text-lg leading-6 text-gray-700'>
+                      We will look over your message and get back to you as soon
+                      as possible. In the meantime, you can check the{' '}
+                      <Link href='/FAQs' className='text-blue-600 font-medium'>
+                        FAQs
+                      </Link>{' '}
+                      section.
+                    </p>
                   </div>
-                  <div className='mb-6'>
-                    <label
-                      className='block mb-2 text-zinc-800 font-medium leading-6'
-                      htmlFor=''
-                    >
-                      Message
-                    </label>
-                    <textarea
-                      className='block h-32 md:h-52 w-full py-2 px-3 appearance-none border border-zinc-200 rounded-lg shadow-md text-zinc-600 leading-6 focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 placeholder-zinc-200 resize-none'
-                      placeholder='Your message...'
-                      defaultValue={''}
-                    />
-                  </div>
-                  <Button className="w-full">
-                    Send Message
-                    </Button>
-                </form>
+                ) : (
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)}>
+                      <div className='mb-6'>
+                        <FormField
+                          control={form.control}
+                          name='email'
+                          defaultValue=''
+                          render={({ field }) => (
+                            <FormItem className='flex flex-col justify-start items-start w-full'>
+                              <FormLabel className='min-w-fit mr-2 text-gray-900 font-medium leading-6 text-md'>
+                                Your Email
+                              </FormLabel>
+                              <div className='flex flex-col justify-center items-center w-full mb-2'>
+                                <FormControl>
+                                  <Input
+                                    className='block w-full py-2 px-3 appearance-none border border-zinc-200 rounded-lg shadow-md text-zinc-600 leading-6 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50'
+                                    placeholder='youremail@gmail.com'
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className='mb-6'>
+                        <FormField
+                          control={form.control}
+                          name='message'
+                          defaultValue=''
+                          render={({ field }) => (
+                            <FormItem className='flex flex-col justify-start items-start w-full'>
+                              <FormLabel className='min-w-fit mr-2 text-gray-900 font-medium leading-6 text-md'>
+                                Message
+                              </FormLabel>
+                              <div className='flex flex-col justify-center items-center w-full mb-2'>
+                                <FormControl>
+                                  <Textarea
+                                    className=' h-32 md:h-40 w-full py-2 px-3 appearance-none border border-zinc-200 rounded-lg shadow-md text-zinc-600 leading-6 focus:outline-none focus:shadow-outline focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50 placeholder-zinc-200 resize-none'
+                                    placeholder='Your message...'
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </div>
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <Button type='submit' className='w-full'>
+                        {isLoading ? (
+                          <Loader2 className='h-4 w-4 animate-spin' />
+                        ) : (
+                          'Send Message'
+                        )}
+                      </Button>
+                    </form>
+                  </Form>
+                )}
               </div>
             </div>
           </div>
         </div>
-        
       </div>
     </section>
   );

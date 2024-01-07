@@ -8,8 +8,8 @@ const Page = () => {
   return (
     <MaxWidthWrapper className='relative flex flex-col items-center justify-center'>
       <div className='flex flex-col text-center items-center justify-center my-20'>
-        <h1 className='text-6xl text-gray-900 font-bold'>THANK YOU!</h1>
         <CheckCircle className='h-20 w-20 text-green-500 my-4' />
+        <h1 className='text-6xl text-gray-900 font-bold'>THANK YOU!</h1>
         <p className='text-xl mt-4 mb-10'>
           Your service appointment has been confirmed. You will receive a
           confirmation email shortly with additional details about our visit.
@@ -27,7 +27,7 @@ const Page = () => {
           />
         </div>
 
-        <h2 className='mt-2 font-bold text-4xl text-gray-900 sm:text-5xl'>
+        <h2 className='mt-2 font-bold text-2xl text-gray-900 sm:text-3xl'>
           Create an account with us.
         </h2>
         <p className='mt-4 text-lg text-gray-600'>
@@ -35,7 +35,9 @@ const Page = () => {
           services.
         </p>
         <RegisterLink>
-          <Button className='mt-8 bg-green-500 hover:bg-green-400'>Create an Account</Button>
+          <Button className='mt-8 bg-green-500 hover:bg-green-400'>
+            Create an Account
+          </Button>
         </RegisterLink>
 
         <ol className=' relative my-4 space-y-4 pt-8 md:flex md:space-x-12 md:space-y-0'>
@@ -82,19 +84,18 @@ const Page = () => {
             </div>
           </li>
           <div
-          aria-hidden='true'
-          className='pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:top-100'
-        >
-          <div
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-            className='relative right-[calc(50%-10rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#624ff5] to-[#83d9f5] opacity-20 sm:right-[calc(50%-50rem)] sm:w-[72.1875rem]'
-          />
-        </div>
+            aria-hidden='true'
+            className='pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:top-100'
+          >
+            <div
+              style={{
+                clipPath:
+                  'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+              }}
+              className='relative right-[calc(50%-10rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#624ff5] to-[#83d9f5] opacity-20 sm:right-[calc(50%-50rem)] sm:w-[72.1875rem]'
+            />
+          </div>
         </ol>
-        
       </div>
     </MaxWidthWrapper>
   );

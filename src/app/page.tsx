@@ -5,8 +5,17 @@ import PricingModule from '@/components/PricingModule';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import GoogleCaptchaWrapper from "@/app/google-captcha-wrapper";
 
 export default function Home() {
+  return (
+    <GoogleCaptchaWrapper>
+      <HomeInside />
+    </GoogleCaptchaWrapper>
+  );
+}
+
+function HomeInside() {
   return (
     <MaxWidthWrapper>
       {/* hero section */}

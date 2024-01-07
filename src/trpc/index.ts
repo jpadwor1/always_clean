@@ -8,6 +8,7 @@ import { randomUUID } from 'crypto';
 import { getUserSubscriptionPlan, stripe } from '@/lib/stripe';
 import { absoluteUrl } from '@/lib/utils';
 import { addDays, format } from 'date-fns';
+import sgMail from '@sendgrid/mail';
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -285,14 +286,12 @@ export const appRouter = router({
       const currentCustomer = await db.customer.findFirst({
         where: {
           email: input.email,
-          address: input.address,
         },
       });
 
       const currentUser = await db.user.findFirst({
         where: {
           email: input.email,
-          address: input.address,
         },
       });
 
@@ -314,7 +313,6 @@ export const appRouter = router({
         to: string,
         subject: string
       ) => {
-        const sgMail = require('@sendgrid/mail');
         sgMail.setApiKey(
           process.env.SENDGRID_API_KEY ? process.env.SENDGRID_API_KEY : ''
         );
@@ -351,6 +349,43 @@ export const appRouter = router({
       await sendBookingConfirmationEmail(input.email, 'Booking Confirmation');
 
       return;
+    }),
+  sendContactFormEmail: publicProcedure
+    .input(
+      z.object({
+        email: z.string().email(),
+        message: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+     
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+
+      const sendEmail = async (to: string) => {
+        const msg = {
+          to: to,
+          from: 'john@johnpadworski.dev', 
+          subject: ' ',
+          html: ' ',
+          text: ' ',
+          template_id: 'd-aa89f78d44df4fa9a92e24dcf3fcfbfe',
+          dynamic_template_data: {
+            sender_email: input.email,
+            sender_message: input.message,
+          },
+        };
+
+        try {
+          await sgMail.send(msg);
+          console.log('Email sent');
+        } catch (error) {
+          console.error('Error sending email:', error);
+
+          throw new Error('Failed to send email');
+        }
+      };
+
+      await sendEmail(input.email);
     }),
   createServiceEvent: privateProcedure
     .input(
@@ -681,7 +716,7 @@ export const appRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
-      console.log('input', input)
+      console.log('input', input);
       if (!userId || !user) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
