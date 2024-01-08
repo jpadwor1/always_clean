@@ -78,8 +78,7 @@ function HomeInside() {
       {/* Contact Section */}
       <ContactSection />
 
-      {/* Footer */}
-      <Footer />
+      
     </MaxWidthWrapper>
   );
 }
