@@ -21,60 +21,53 @@ const Footer = () => {
             </div>
             <div className='flex flex-wrap justify-center -mx-3 lg:-mx-6'>
               <div className='w-full md:w-auto p-3 md:px-6'>
-                <a
+                <Link
                   className='inline-block text-lg md:text-xl text-coolGray-500 hover:text-coolGray-600 font-medium'
-                  href='#'
+                  href='/services'
                 >
-                  Product
-                </a>
+                  Services
+                </Link>
               </div>
+              
               <div className='w-full md:w-auto p-3 md:px-6'>
-                <a
+                <Link
                   className='inline-block text-lg md:text-xl text-coolGray-500 hover:text-coolGray-600 font-medium'
-                  href='#'
-                >
-                  Features
-                </a>
-              </div>
-              <div className='w-full md:w-auto p-3 md:px-6'>
-                <a
-                  className='inline-block text-lg md:text-xl text-coolGray-500 hover:text-coolGray-600 font-medium'
-                  href='#'
+                  href='/pricing'
                 >
                   Pricing
-                </a>
+                </Link>
               </div>
               <div className='w-full md:w-auto p-3 md:px-6'>
-                <a
+                <Link
                   className='inline-block text-lg md:text-xl text-coolGray-500 hover:text-coolGray-600 font-medium'
-                  href='#'
+                  href='/account-features'
                 >
-                  Resources
-                </a>
+                  Account Features
+                </Link>
               </div>
               <div className='w-full md:w-auto p-3 md:px-6'>
-                <a
+                <Link
                   className='inline-block text-lg md:text-xl text-coolGray-500 hover:text-coolGray-600 font-medium'
                   href='#'
                 >
                   Careers
-                </a>
+                </Link>
               </div>
               <div className='w-full md:w-auto p-3 md:px-6'>
-                <a
+                <Link
                   className='inline-block text-lg md:text-xl text-coolGray-500 hover:text-coolGray-600 font-medium'
                   href='#'
                 >
                   Help
-                </a>
+                </Link>
               </div>
               <div className='w-full md:w-auto p-3 md:px-6'>
-                <a
+                <Link
                   className='inline-block text-lg md:text-xl text-coolGray-500 hover:text-coolGray-600 font-medium'
-                  href='#'
+                  href='/privacy-policy'
                 >
                   Privacy
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -82,7 +75,7 @@ const Footer = () => {
         <div className='border-b border-coolGray-100' />
         <div className='container px-4 mx-auto'>
           <p className='py-5 md:pb-20 text-lg md:text-lg text-zinc-400 font-small text-center'>
-            © 2023 HydroClean Pools. All rights reserved.
+            © 2024 Always Clean Pool Service. All rights reserved.
           </p>
         </div>
       </div>

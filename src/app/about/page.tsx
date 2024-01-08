@@ -218,8 +218,7 @@ const Page = () => {
                     </svg>
                   </div>
                   <span className='text-lg text-gray-600'>
-                    Meticulous attention to detail for unsurpassed pool
-                    service.
+                    Meticulous attention to detail for unsurpassed pool service.
                   </span>
                 </div>
                 <div className='flex items-center flex-wrap gap-3'>
@@ -238,8 +237,7 @@ const Page = () => {
                     </svg>
                   </div>
                   <span className='text-lg text-gray-600'>
-                    Dedicated to serving the neighborhoods we
-                    operate in.
+                    Dedicated to serving the neighborhoods we operate in.
                   </span>
                 </div>
               </div>
@@ -253,54 +251,42 @@ const Page = () => {
             </div>
           </div>
           <h2 className='text-center text-4xl lg:text-5xl mb-9 font-bold font-heading'>
-            Our investors
+            Our Credentials
           </h2>
           <div className='bg-gray-50 rounded-3xl mb-32 flex flex-wrap py-8'>
-            <div className='w-full md:w-1/2 lg:w-1/3 py-8 px-16 flex justify-center items-center'>
+            <div className='w-full md:w-1/2 lg:w-1/4 py-8 px-16 flex justify-center items-center'>
               <Image
-                height={500}
-                width={500}
-                src='/logos/placeholder-logo1.png'
+                className='grayscale'
+                height={1307}
+                width={770}
+                src='/logos/bbb-logo-3.webp'
                 alt=''
               />
             </div>
-            <div className='w-full md:w-1/2 lg:w-1/3 py-8 px-16 flex justify-center items-center'>
+            <div className='w-full md:w-1/2 lg:w-1/4 py-8 px-8 flex justify-center items-center'>
               <Image
+                className='grayscale'
                 height={500}
                 width={500}
-                src='/logos/placeholder-logo2.png'
+                src='/logos/APSPlogo.png'
                 alt=''
               />
             </div>
-            <div className='w-full md:w-1/2 lg:w-1/3 py-8 px-16 flex justify-center items-center'>
+            <div className='w-full md:w-1/2 lg:w-1/4 py-8 px-8 flex justify-center items-center'>
               <Image
-                height={500}
-                width={500}
-                src='/logos/placeholder-logo3.png'
+                className='grayscale'
+                height={357}
+                width={697}
+                src='/logos/ECOlogo.png'
                 alt=''
               />
             </div>
-            <div className='w-full md:w-1/2 lg:w-1/3 py-8 px-16 flex justify-center items-center'>
+            <div className='w-full md:w-1/2 lg:w-1/4 py-8 px-8 flex justify-center items-center'>
               <Image
+                className='grayscale'
                 height={500}
                 width={500}
-                src='/logos/placeholder-logo4.png'
-                alt=''
-              />
-            </div>
-            <div className='w-full md:w-1/2 lg:w-1/3 py-8 px-16 flex justify-center items-center'>
-              <Image
-                height={500}
-                width={500}
-                src='/logos/placeholder-logo5.png'
-                alt=''
-              />
-            </div>
-            <div className='w-full md:w-1/2 lg:w-1/3 py-8 px-16 flex justify-center items-center'>
-              <Image
-                height={500}
-                width={500}
-                src='/logos/placeholder-logo6.png'
+                src='/logos/NSPFlogo.png'
                 alt=''
               />
             </div>
@@ -314,57 +300,45 @@ const Page = () => {
           <div className='mb-16 flex justify-center'>
             <a
               className='w-full sm:w-auto text-center h-14 inline-flex items-center justify-center py-3 px-5 rounded-full bg-orange-500 border border-orange-600 shadow text-sm font-semibold text-white hover:bg-orange-600 focus:ring focus:ring-orange-200 transition duration-200'
-              href='#'
+              href='/careers'
             >
               Careers
             </a>
           </div>
-          <div className='flex flex-wrap mb-32 -mx-4'>
-            <div className='w-full lg:w-1/3 p-4'>
+          <div className='flex flex-wrap mb-10 -mx-4'>
+            <div className='w-full lg:w-1/2 p-4'>
               <div
                 className='relative bg-no-repeat bg-cover rounded-3xl w-full max-w-sm mx-auto'
                 style={{
-                  height: 440,
-                  backgroundImage: 'url("/about/men-picture.png")',
+                  height: 380,
+                  backgroundImage: 'url("/about/SrHeadshot.jpg")',
+                  backgroundPosition: 'center',
+                  backgroundSize: 'cover',
                 }}
               >
                 <div className='absolute bottom-0 left-0 bg-white rounded-tr-3xl rounded-bl-3xl px-6 py-3'>
                   <h2 className='text-2xl font-bold font-heading mb-2'>
-                    David Petrucci
+                    John Padworski Jr.
                   </h2>
                   <p className='text-sm text-gray-600'>Founder &amp; CEO</p>
                 </div>
               </div>
             </div>
-            <div className='w-full lg:w-1/3 p-4'>
+            <div className='w-full lg:w-1/2 p-4'>
               <div
                 className='relative bg-no-repeat bg-cover rounded-3xl w-full max-w-sm mx-auto'
                 style={{
-                  height: 440,
-                  backgroundImage: 'url("/about/woman-picture1.png")',
+                  height: 380,
+                  backgroundImage: 'url("/about/jrHeadshot.jpeg")',
+                  backgroundPosition: 'center',
+                  backgroundSize: 'cover',
                 }}
               >
                 <div className='absolute bottom-0 left-0 bg-white rounded-tr-3xl rounded-bl-3xl px-6 py-3'>
                   <h2 className='text-2xl font-bold font-heading mb-2'>
-                    Malika Gil
+                  John Padworski Jr.
                   </h2>
                   <p className='text-sm text-gray-600'>Operations Manager</p>
-                </div>
-              </div>
-            </div>
-            <div className='w-full lg:w-1/3 p-4'>
-              <div
-                className='relative bg-no-repeat bg-cover rounded-3xl w-full max-w-sm mx-auto'
-                style={{
-                  height: 440,
-                  backgroundImage: 'url("/about/woman-picture2.png")',
-                }}
-              >
-                <div className='absolute bottom-0 left-0 bg-white rounded-tr-3xl rounded-bl-3xl px-6 py-3'>
-                  <h2 className='text-2xl font-bold font-heading mb-2'>
-                    Erika Newton
-                  </h2>
-                  <p className='text-sm text-gray-600'>Growth Marketer</p>
                 </div>
               </div>
             </div>
