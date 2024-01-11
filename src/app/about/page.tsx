@@ -2,6 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Always Clean Pool Service',
+  description: 'We are a father and son team, committed to providing top-notch pool services with integrity and unmatched quality. Founded by a proud veteran, we bring military precision and reliability to every job.',
+};
+
 const Page = () => {
   return (
     <MaxWidthWrapper>
@@ -67,7 +74,7 @@ const Page = () => {
               </svg>
             </div>
             <div className='relative z-10'>
-              <h1 className='text-center text-3xl lg:text-5xl font-bold font-heading max-w-lg lg:max-w-3xl mx-auto pt-14 pb-32'>
+              <h1 className='text-center text-4xl lg:text-5xl font-bold font-heading max-w-lg lg:max-w-3xl mx-auto pt-14 pb-32'>
                 Veteran Dedication, Family Values: Elevating Pool Service
                 Excellence
               </h1>
@@ -75,7 +82,7 @@ const Page = () => {
                 <div className='w-full md:w-1/2 lg:w-1/4 py-8'>
                   <div className='md:border-r border-gray-200 px-8'>
                     <p className='text-gray-600 mb-2 text-center'>Core Value</p>
-                    <h2 className='text-2xl lg:text-3xl font-semibold text-center'>
+                    <h2 className='text-3xl lg:text-3xl font-semibold text-center'>
                       Integrity
                     </h2>
                   </div>
@@ -83,7 +90,7 @@ const Page = () => {
                 <div className='w-full md:w-1/2 lg:w-1/4 py-8'>
                   <div className='lg:border-r border-gray-200 px-8'>
                     <p className='text-gray-600 mb-2 text-center'>Commitment</p>
-                    <h2 className='text-2xl lg:text-3xl font-semibold text-center'>
+                    <h2 className='text-3xl lg:text-3xl font-semibold text-center'>
                       Quality
                     </h2>
                   </div>
@@ -93,7 +100,7 @@ const Page = () => {
                     <p className='text-gray-600 mb-2 text-center'>
                       Unique Aspect
                     </p>
-                    <h2 className='text-2xl lg:text-3xl font-semibold text-center'>
+                    <h2 className='text-3xl lg:text-3xl font-semibold text-center'>
                       Veteran-Owned
                     </h2>
                   </div>
@@ -101,7 +108,7 @@ const Page = () => {
                 <div className='w-full md:w-1/2 lg:w-1/4 py-8'>
                   <div className='px-8'>
                     <p className='text-gray-600 mb-2 text-center'>Approach</p>
-                    <h2 className='text-2xl lg:text-3xl font-semibold text-center'>
+                    <h2 className='text-3xl lg:text-3xl font-semibold text-center'>
                       Transparency
                     </h2>
                   </div>
@@ -118,11 +125,15 @@ const Page = () => {
           <div className='flex flex-wrap mb-32 -mx-4'>
             <div className='w-full lg:w-1/2 p-4'>
               <p className='text-gray-600 text-lg'>
-                We are a father and son team, proud veterans, committed to
-                bringing integrity and unmatched quality to every pool we
-                service. Our journey began in the armed forces, where we learned
-                the importance of precision, reliability, and a job well done.
-                These values form the cornerstone of our business.
+                As a father and son team, our commitment to providing top-notch
+                pool services is unwavering. While one of us proudly serves as a
+                veteran, both of us share a dedication to bringing integrity and
+                unmatched quality to every pool we service. Our journey began
+                with the lessons learned in the armed forces, where we gained a
+                deep appreciation for precision, reliability, and delivering a
+                job well done. These values are the bedrock of our business,
+                ensuring that you receive exceptional care and professionalism
+                in every aspect of our pool services.
               </p>
             </div>
             <div className='w-full lg:w-1/2 p-4'>
@@ -318,7 +329,7 @@ const Page = () => {
               >
                 <div className='absolute bottom-0 left-0 bg-white rounded-tr-3xl rounded-bl-3xl px-6 py-3'>
                   <h2 className='text-2xl font-bold font-heading mb-2'>
-                    John Padworski Jr.
+                    John Padworski Sr.
                   </h2>
                   <p className='text-sm text-gray-600'>Founder &amp; CEO</p>
                 </div>
@@ -336,7 +347,7 @@ const Page = () => {
               >
                 <div className='absolute bottom-0 left-0 bg-white rounded-tr-3xl rounded-bl-3xl px-6 py-3'>
                   <h2 className='text-2xl font-bold font-heading mb-2'>
-                  John Padworski Jr.
+                    John Padworski Jr.
                   </h2>
                   <p className='text-sm text-gray-600'>Operations Manager</p>
                 </div>
