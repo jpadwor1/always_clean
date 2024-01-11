@@ -1,7 +1,7 @@
 import { db } from '@/db';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function get(req: NextApiRequest, res: NextApiResponse) {
   try {
     const customers = await db.customer.findMany({
       where: {
@@ -25,9 +25,7 @@ export async function GET(req: NextApiRequest, res: NextApiResponse) {
       })
     );
 
-    return new Response('Hello, Next.js!', {
-      status: 200,
-    });
+    return res.status(200).send('Hello, Next.js!');
   } catch (error) {
     console.error(error);
     return new Response('error', {

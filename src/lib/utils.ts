@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import sgMail from '@sendgrid/mail';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
