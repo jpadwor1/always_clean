@@ -27,13 +27,20 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
     notes: string | null;
     chemicalsUsed: string[] | null;
     name: string;
-    files: { id: string; name: string; uploadStatus: string; url: string; key: string; createdAt: Date; serviceEventId: string | null; }[] | []
-    tasksPerformed: string | null
+    files:
+      | {
+          id: string;
+          name: string;
+          uploadStatus: string;
+          url: string;
+          key: string;
+          createdAt: Date;
+          serviceEventId: string | null;
+        }[]
+      | [];
+    tasksPerformed: string | null;
   }[];
-  };
-
-
-
+}
 
 export function SidebarNav({
   className,
@@ -79,7 +86,7 @@ export function SidebarNav({
           <span className='sr-only'>Toggle</span>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <ScrollArea type='auto' className='p-4 h-60'>
+          <ScrollArea type='auto' className='p-2 max-h-fit md:h-60'>
             {serviceHistoryData.map((service) => (
               <React.Fragment key={service.id}>
                 <Link

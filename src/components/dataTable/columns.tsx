@@ -40,10 +40,10 @@ export const columns: ColumnDef<Customer>[] = [
   {
     accessorKey: 'customerType',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='Type' />
+      <DataTableColumnHeader className='md:block hidden' column={column} title='Type' />
     ),
     cell: ({ row }) => (
-      <div className='w-[80px] truncate'>
+      <div className='w-[80px] truncate md:block hidden'>
         {row.getValue('customerType') === 'VIP' ? (
           <Badge className='bg-purple-500'>Lead</Badge>
         ) : row.getValue('customerType') === 'INACTIVE' ? (

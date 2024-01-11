@@ -32,10 +32,11 @@ const Navbar = async () => {
             <Image src='/logo.png' width={120} height={80} alt='Always Clean' />
           </Link>
 
-          <MobileNav />
+          <MobileNav isAuth={!!user}/>
 
           <div className='hidden items-center space-x-4 sm:flex'>
-            <NavbarMenu />
+          <NavbarMenu />
+
             {!user ? (
               <>
                 <LoginLink

@@ -60,7 +60,7 @@ model ServiceEvent {
   technicianId String?
 
   name             String
-  notes            String?
+  notes            String?           @db.VarChar(300)
   dateCompleted    DateTime          @default(now())
   tasksPerformed   String?
   serviceChemicals ServiceChemical[]

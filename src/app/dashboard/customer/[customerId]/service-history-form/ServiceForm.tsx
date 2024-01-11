@@ -228,6 +228,7 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
                 </>
               ),
             });
+            router.push(`/dashboard/customer/${customerId}/service-history`);
           },
           onError: (error: any) => {
             toast({

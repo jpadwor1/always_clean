@@ -374,7 +374,7 @@ const Calendar = () => {
   };
   
   return (
-    <main className='flex min-h-screen flex-col p-2 md:p-6'>
+    <main className='flex min-h-screen flex-col p-0 md:p-6'>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
         headerToolbar={{

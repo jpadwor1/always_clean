@@ -89,6 +89,9 @@ input {
   @apply px-2;
 }
 
+.fc-media-screen {
+  @apply w-full h-full;
+}
 .fc-header-toolbar {
   display: inline-block;
   padding: 4px 4px;
