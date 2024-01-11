@@ -46,7 +46,7 @@ interface ServiceHistoryProps {
     customerId: string | null;
     notes: string | null;
     name: string;
-    role: string;
+    role: string | undefined;
     serviceChemicals: ({
       chemical: {
         id: string;

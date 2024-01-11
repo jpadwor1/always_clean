@@ -16,6 +16,11 @@ const Page = async ({ params }: PageProps) => {
   const user = await getUser();
   const userId = user?.id;
 
+  const dbUser = await db.customer.findFirst({
+    where: {
+      id: userId,
+    },
+  });
   const serviceEvent = await db.serviceEvent.findFirst({
     where: {
       id: serviceId,
@@ -27,7 +32,7 @@ const Page = async ({ params }: PageProps) => {
           chemical: true,
         },
       },
-      }
+    },
   });
 
   if (!serviceEvent) {
@@ -37,6 +42,7 @@ const Page = async ({ params }: PageProps) => {
   const transformedServiceEvent = {
     ...serviceEvent,
     tasksPerformed: serviceEvent.tasksPerformed || '',
+    role: dbUser?.role,
   };
 
   return <ServiceHistory serviceEvent={transformedServiceEvent} />;

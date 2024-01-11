@@ -1,7 +1,8 @@
 import { db } from '@/db';
-import { NextApiRequest, NextApiResponse } from 'next';
 
-export async function get(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(request: Request) {
+  const body = await request.text();
+
   try {
     const customers = await db.customer.findMany({
       where: {
@@ -25,12 +26,14 @@ export async function get(req: NextApiRequest, res: NextApiResponse) {
       })
     );
 
-    return res.status(200).send('Hello, Next.js!');
+    return new Response(null, { status: 200 });
   } catch (error) {
-    console.error(error);
-    return new Response('error', {
-      status: 500,
-    });
+    return new Response(
+      `Webhook Error: ${
+        error instanceof Error ? error.message : 'Unknown Error'
+      }`,
+      { status: 400 }
+    );
   }
 }
 
