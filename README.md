@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Always Clean Pool Service
 
-## Getting Started
+## Overview
+This platform is a comprehensive solution designed for company owners to streamline their service management processes. It includes a variety of features for payment processing, service request completion, service history documentation, customer relationship management, and more.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Payment Processing
+- Secure and efficient handling of payments.
+- Supports multiple payment methods and gateways.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Service Request Management
+- Easy creation and tracking of service requests.
+- Interactive dashboard for managing ongoing and completed requests.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Service History Forms
+- Detailed forms to document the history of services provided.
+- Accessible records for both owners and customers.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Customer Portal
+- Customers can view a comprehensive history of their previous cleanings and maintenance services.
+- Enhanced transparency and trust in service delivery.
 
-## Learn More
+### Consumable Tracking
+- Efficient tracking system for consumables used in services.
+- Helps in inventory management and cost analysis.
 
-To learn more about Next.js, take a look at the following resources:
+### CRM Features
+- Robust customer management tools.
+- Integrated emailing system for effective communication.
+- Billing management for streamlined financial handling.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  <img width="941" alt="alwaysclean" src="https://github.com/jpadwor1/always_clean/assets/128070765/7e5d6bfa-1b4c-430a-9f48-cbfccc2e4009">
+<img width="825" alt="Screenshot 2024-01-21 210053" src="https://github.com/jpadwor1/always_clean/assets/128070765/14159ed5-2358-49b3-8457-5240ea396880">
+<img width="823" alt="Screenshot 2024-01-21 210110" src="https://github.com/jpadwor1/always_clean/assets/128070765/5727b060-35d4-4511-b23d-cfc0d679bf8d">
+<img width="732" alt="Screenshot 2024-01-21 210441" src="https://github.com/jpadwor1/always_clean/assets/128070765/78e54bc5-cbd5-4245-9bad-3a514db44cab">
