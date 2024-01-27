@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { PLANS } from '@/lib/PLANS';
 
 const PricingModule = () => {
+  
   return (
     <section
       className='py-20 xl:py-24 bg-white rounded-xl shadow-xl'

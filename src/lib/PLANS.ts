@@ -1,9 +1,9 @@
 export const PLANS = [
   {
     name: 'Play Pools',
-    price: 125,
+    price: 99,
     priceFrequency: 'per month',
-    description: 'Basic features for up to 10 users.',
+    description: '',
     features: [
       'Test and chemically balance water',
       'Clean skimmer and pump basket',
@@ -17,7 +17,7 @@ export const PLANS = [
     name: 'Diving or Extra Large',
     price: 150,
     priceFrequency: 'per month',
-    description: 'Basic features for up to 30 users.',
+    description: '',
     features: [
       'Test and chemically balance water',
       'Clean skimmer and pump basket',
@@ -31,7 +31,7 @@ export const PLANS = [
     name: 'Commercial and Community Pools',
     price: 'Call',
     priceSuffix: 'for quote',
-    description: 'Basic features for up to 100 users.',
+    description: '',
     features: [
       'Test and chemically balance water',
       'Clean skimmer and pump basket',
