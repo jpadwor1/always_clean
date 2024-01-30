@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link'
 import { FlaskConical, Pipette, TestTubes } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Page = () => {
   return (
@@ -14,7 +16,7 @@ const Page = () => {
       >
         <div className='container px-4 mx-auto'>
           <div className='md:max-w-4xl mx-auto mb-16 md:mb-20 text-center'>
-            <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-green-500 bg-green-100 font-medium uppercase rounded-full shadow-sm'>
+            <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium uppercase rounded-full shadow-sm'>
               Chemical Balancing
             </span>
             <h1 className='mb-4 text-3xl md:text-4xl leading-tight text-gray-900 font-bold tracking-tighter'>
@@ -46,7 +48,7 @@ const Page = () => {
           <div className='flex flex-wrap justify-center -mx-4'>
             <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
               <div className='h-full p-8 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
-                <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-green-500 rounded-lg'>
+                <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-blue-500 rounded-lg'>
                   <FlaskConical className='h-8 w-8'/>
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
@@ -60,7 +62,7 @@ const Page = () => {
             </div>
             <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
               <div className='h-full p-8 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
-                <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-green-500 rounded-lg'>
+                <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-blue-500 rounded-lg'>
                 <TestTubes className='h-8 w-8'/>
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
@@ -74,7 +76,7 @@ const Page = () => {
             </div>
             <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
               <div className='h-full p-8 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
-                <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-green-500 rounded-lg'>
+                <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-blue-500 rounded-lg'>
                 <Pipette className='h-8 w-8'/>
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
@@ -99,7 +101,7 @@ const Page = () => {
       >
         <div className='container px-4 mx-auto'>
           <div className='max-w-4xl mb-16'>
-            <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-green-500 bg-green-100 font-medium rounded-full shadow-sm'>
+            <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium rounded-full shadow-sm'>
               FAQ
             </span>
             <h2 className='mb-4 text-4xl md:text-5xl leading-tight text-gray-900 font-bold tracking-tighter'>
@@ -113,7 +115,7 @@ const Page = () => {
           <div className='flex flex-wrap pb-16 -mx-4'>
             <div className='w-full md:w-1/2 xl:w-1/3 px-4 mb-8'>
               <div className='md:max-w-xs'>
-                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-green-500'>
+                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-blue-500'>
                   <Image
                     src='/shield-icon.svg'
                     alt=''
@@ -133,7 +135,7 @@ const Page = () => {
             </div>
             <div className='w-full md:w-1/2 xl:w-1/3 px-4 mb-8'>
               <div className='md:max-w-xs'>
-                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-green-500'>
+                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-blue-500'>
                   <Image
                     src='/shield-icon.svg'
                     alt=''
@@ -152,7 +154,7 @@ const Page = () => {
             </div>
             <div className='w-full md:w-1/2 xl:w-1/3 px-4 mb-8'>
               <div className='md:max-w-xs'>
-                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-green-500'>
+                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-blue-500'>
                   <Image
                     src='/shield-icon.svg'
                     alt=''
@@ -171,7 +173,7 @@ const Page = () => {
             </div>
             <div className='w-full md:w-1/2 xl:w-1/3 px-4 mb-8 xl:mb-0'>
               <div className='md:max-w-xs'>
-                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-green-500'>
+                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-blue-500'>
                   <Image
                     src='/shield-icon.svg'
                     alt=''
@@ -191,7 +193,7 @@ const Page = () => {
             </div>
             <div className='w-full md:w-1/2 xl:w-1/3 px-4 mb-8 md:mb-0'>
               <div className='md:max-w-xs'>
-                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-green-500'>
+                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-blue-500'>
                   <Image
                     src='/shield-icon.svg'
                     alt=''
@@ -210,7 +212,7 @@ const Page = () => {
             </div>
             <div className='w-full md:w-1/2 xl:w-1/3 px-4'>
               <div className='md:max-w-xs'>
-                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-green-500'>
+                <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-blue-500'>
                   <Image
                     src='/shield-icon.svg'
                     alt=''
@@ -229,6 +231,42 @@ const Page = () => {
               </div>
             </div>
           </div>
+          <section className='relative py-16'>
+        <div className='absolute top-0 left-0 h-1/2 w-full bg-blue-500' />
+        <div className='container px-4 mx-auto'>
+          <div className='relative py-16 px-4 md:px-24 bg-gray-50 rounded-xl'>
+            <Image
+              height={50}
+              width={50}
+              className='absolute top-0 left-0 w-full h-full object-cover'
+              src='/pattern-light1.svg'
+              alt=''
+            />
+            <div className='relative flex flex-wrap items-center -mx-4'>
+              <div className='w-full lg:w-[80%] px-4 mb-14 lg:mb-0'>
+                <div className='max-w-lg'>
+                  <h2 className='mb-4 text-3xl md:text-4xl font-heading font-bold leading-snug'>
+                    Relax, We&apos;ve Got You Covered
+                  </h2>
+                  <p className='text-lg md:text-xl font-heading font-medium text-gray-500'>
+                    With Always Clean Pool Service, you can relax knowing your
+                    pool is in expert hands. Our commitment to excellence
+                    guarantees a crystal-clear pool that&apos;s always ready for
+                    your next swim.
+                  </p>
+                </div>
+              </div>
+              <div className='w-full lg:w-[20%] px-4'>
+                <div className='flex flex-wrap items-center lg:justify-end'>
+                  <Button size='lg'>
+                    <Link href='/booking'>Book Now</Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
           <div className='relative -mb-40 py-16 px-4 md:px-8 lg:px-16 bg-gray-800 rounded-md overflow-hidden'>
             <Image
               className='absolute top-0 left-0 h-full w-full object-cover'
@@ -247,16 +285,17 @@ const Page = () => {
                 out. Our team is dedicated to providing you with comprehensive
                 support and tailored solutions.
               </p>
-              <a
-                className='flex flex-col items-center justify-center px-7 py-3 h-14 max-w-fit md:w-auto mb-2 md:mb-0 md:mr-4 text-lg leading-7 text-green-50 bg-green-500 hover:bg-green-600 font-medium focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 border border-transparent rounded-md shadow-sm'
+              <Link
+                className='flex flex-col items-center justify-center px-7 py-3 h-14 max-w-fit md:w-auto mb-2 md:mb-0 md:mr-4 text-lg leading-7 text-blue-50 bg-blue-500 hover:bg-blue-600 font-medium focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border border-transparent rounded-md shadow-sm'
                 href='tel:760-912-7396'
+                
               >
                 <span className='md:hidden block'>Click to Call</span> <span className='md:block hidden'>760-912-7396</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
-        <div className='h-64 bg-green-500' />
+        <div className='h-64 bg-blue-500' />
       </section>
     </div>
   );
