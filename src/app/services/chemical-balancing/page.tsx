@@ -4,9 +4,9 @@ import Image from 'next/image';
 
 const Page = () => {
   return (
-    <div className="container mx-auto px-4">
+    <div className="container mx-auto px-8">
     <section
-          className='py-24 md:pb-28 bg-white overflow-hidden'
+          className='py-12 md:pb-28 bg-white overflow-hidden'
           style={{
             backgroundImage: 'url("/pattern-white.svg")',
             backgroundPosition: 'center',
@@ -17,10 +17,10 @@ const Page = () => {
               <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-green-500 bg-green-100 font-medium uppercase rounded-full shadow-sm'>
                 Features
               </span>
-              <h1 className='mb-4 text-3xl md:text-4xl leading-tight text-coolGray-900 font-bold tracking-tighter'>
+              <h1 className='mb-4 text-3xl md:text-4xl leading-tight text-gray-900 font-bold tracking-tighter'>
                 Gain more insight into how people use your
               </h1>
-              <p className='text-lg md:text-xl text-coolGray-500 font-medium'>
+              <p className='text-lg md:text-xl text-gray-500 font-medium'>
                 With our integrated CRM, project management, collaboration and
                 invoicing capabilities, you can manage every aspect of your
                 business in one secure platform.
@@ -41,7 +41,8 @@ const Page = () => {
                 height={100}
                 width={100}
               />
-              <Image src='../flex-ui-assets/images/features/stock3.png' alt='' />
+              <Image src='/stock2.png' alt='' height={500}
+                width={500} />
             </div>
             <div className='flex flex-wrap justify-center -mx-4'>
               <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
@@ -63,7 +64,7 @@ const Page = () => {
                   <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
                     Measure your performance
                   </h3>
-                  <p className='text-coolGray-500 font-medium'>
+                  <p className='text-gray-500 font-medium'>
                     Get a complete sales dashboard in the cloud. See activity,
                     revenue and social metrics all in one place.
                   </p>
@@ -88,7 +89,7 @@ const Page = () => {
                   <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
                     Custom analytics
                   </h3>
-                  <p className='text-coolGray-500 font-medium'>
+                  <p className='text-gray-500 font-medium'>
                     Our calendar lets you know what is happening with customer
                     and projects so you
                   </p>
@@ -113,7 +114,7 @@ const Page = () => {
                   <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
                     Team Management
                   </h3>
-                  <p className='text-coolGray-500 font-medium'>
+                  <p className='text-gray-500 font-medium'>
                     A tool that lets you build a dream website even if you know
                     nothing about web design or programming.
                   </p>
@@ -123,7 +124,7 @@ const Page = () => {
           </div>
         </section>
         <section
-          className='pt-24 bg-white'
+          className='pt-12 bg-white'
           style={{
             backgroundImage: 'url("/pattern-white.svg")',
             backgroundPosition: 'center',
@@ -134,10 +135,10 @@ const Page = () => {
               <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-green-500 bg-green-100 font-medium rounded-full shadow-sm'>
                 FAQ
               </span>
-              <h2 className='mb-4 text-4xl md:text-5xl leading-tight text-coolGray-900 font-bold tracking-tighter'>
+              <h2 className='mb-4 text-4xl md:text-5xl leading-tight text-gray-900 font-bold tracking-tighter'>
                 Frequently Asked Questions
               </h2>
-              <p className='text-lg md:text-xl text-coolGray-500 font-medium'>
+              <p className='text-lg md:text-xl text-gray-500 font-medium'>
                 Flex is the only saas business platform that lets you run your
                 business on one platform, seamlessly across all digital
                 channels.
@@ -154,10 +155,10 @@ const Page = () => {
                       width={100}
                     />
                   </div>
-                  <h3 className='mb-6 text-xl text-coolGray-900 font-bold'>
+                  <h3 className='mb-6 text-xl text-gray-900 font-bold'>
                     What shipping options do you have?
                   </h3>
-                  <p className='text-coolGray-500 font-medium'>
+                  <p className='text-gray-500 font-medium'>
                     For USA domestic orders we offer FedEx and USPS shipping.
                     Contact us via email to learn more.
                   </p>
@@ -173,10 +174,10 @@ const Page = () => {
                       width={100}
                     />
                   </div>
-                  <h3 className='mb-6 text-xl text-coolGray-900 font-bold'>
+                  <h3 className='mb-6 text-xl text-gray-900 font-bold'>
                     What payment methods do you accept?
                   </h3>
-                  <p className='text-coolGray-500 font-medium'>
+                  <p className='text-gray-500 font-medium'>
                     Any method of payments acceptable by you. For example: We
                     accept MasterCard, Visa.
                   </p>
@@ -192,10 +193,10 @@ const Page = () => {
                       width={100}
                     />
                   </div>
-                  <h3 className='mb-6 text-xl text-coolGray-900 font-bold'>
+                  <h3 className='mb-6 text-xl text-gray-900 font-bold'>
                     How long does it take to ship my order?
                   </h3>
-                  <p className='text-coolGray-500 font-medium'>
+                  <p className='text-gray-500 font-medium'>
                     Orders are usually shipped within 1-2 business days after
                     placing the order.
                   </p>
@@ -211,10 +212,10 @@ const Page = () => {
                       width={100}
                     />
                   </div>
-                  <h3 className='mb-6 text-xl text-coolGray-900 font-bold'>
+                  <h3 className='mb-6 text-xl text-gray-900 font-bold'>
                     What shipping options do you have?
                   </h3>
-                  <p className='text-coolGray-500 font-medium'>
+                  <p className='text-gray-500 font-medium'>
                     For USA domestic orders we offer FedEx and USPS shipping.
                     Contact us via email to learn more.
                   </p>
@@ -230,10 +231,10 @@ const Page = () => {
                       width={100}
                     />
                   </div>
-                  <h3 className='mb-6 text-xl text-coolGray-900 font-bold'>
+                  <h3 className='mb-6 text-xl text-gray-900 font-bold'>
                     What payment methods do you accept?
                   </h3>
-                  <p className='text-coolGray-500 font-medium'>
+                  <p className='text-gray-500 font-medium'>
                     Any method of payments acceptable by you. For example: We
                     accept MasterCard, Visa.
                   </p>
@@ -243,32 +244,36 @@ const Page = () => {
                 <div className='md:max-w-xs'>
                   <div className='inline-flex mb-6 items-center justify-center w-12 h-12 rounded-full bg-green-500'>
                     <Image
-                      src='flex-ui-assets/elements/faq/shield-icon.svg'
+                      src='/shield-icon.svg'
                       alt=''
+                      height={100}
+                      width={100}
                     />
                   </div>
-                  <h3 className='mb-6 text-xl text-coolGray-900 font-bold'>
+                  <h3 className='mb-6 text-xl text-gray-900 font-bold'>
                     How long does it take to ship my order?
                   </h3>
-                  <p className='text-coolGray-500 font-medium'>
+                  <p className='text-gray-500 font-medium'>
                     Orders are usually shipped within 1-2 business days after
                     placing the order.
                   </p>
                 </div>
               </div>
             </div>
-            <div className='relative -mb-40 py-16 px-4 md:px-8 lg:px-16 bg-coolGray-800 rounded-md overflow-hidden'>
+            <div className='relative -mb-40 py-16 px-4 md:px-8 lg:px-16 bg-gray-800 rounded-md overflow-hidden'>
               <Image
                 className='absolute top-0 left-0 h-full w-full object-cover'
-                src='flex-ui-assets/elements/pattern-dark.svg'
+                src='/pattern-dark.svg'
                 alt=''
+                height={100}
+                width={100}
               />
               <div className='relative max-w-max mx-auto text-center'>
                 <h3 className='mb-2 text-2xl md:text-5xl leading-tight font-bold text-white tracking-tighter'>
                   Have any additional questions?
                 </h3>
-                <p className='mb-6 text-base md:text-xl text-coolGray-400'>
-                  Flex is a Small SaaS Business. Flex isn’t a traditional
+                <p className='mb-6 text-base md:text-xl text-gray-400'>
+                  Flex is a Small SaaS Business. Flex isn&apos;t a traditional
                   company.
                 </p>
                 <a
