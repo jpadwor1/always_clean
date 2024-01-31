@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link'
+import Link from 'next/link';
 import { FlaskConical, Pipette, TestTubes } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -17,15 +17,16 @@ const Page = () => {
         <div className='container px-4 mx-auto'>
           <div className='md:max-w-4xl mx-auto mb-16 md:mb-20 text-center'>
             <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium uppercase rounded-full shadow-sm'>
-              Chemical Balancing
+              Algae Treatment
             </span>
             <h1 className='mb-4 text-3xl md:text-4xl leading-tight text-gray-900 font-bold tracking-tighter'>
-              Expert Chemical Balancing for Pristine Pools
+              Effective Algae Treatment for Sparkling Clean Pools
             </h1>
             <p className='text-lg md:text-xl text-gray-500 font-medium'>
-              Discover the unparalleled benefits of our specialized chemical
-              balancing services. Our team ensures your pool remains a safe,
-              crystal-clear haven for all your swimming needs.
+              Combat algae growth and maintain a pristine pool with our
+              specialized algae treatment services. Our expert approach ensures
+              a healthy, algae-free swimming environment for you and your
+              family.
             </p>
           </div>
           <div className='relative mb-8 md:mb-24 mx-auto max-w-max'>
@@ -43,49 +44,54 @@ const Page = () => {
               height={100}
               width={100}
             />
-            <Image src='/pool.webp' alt='' height={500} width={500} className='rounded-xl' />
+            <Image
+              src='/pool.webp'
+              alt=''
+              height={500}
+              width={500}
+              className='rounded-xl'
+            />
           </div>
           <div className='flex flex-wrap justify-center -mx-4'>
             <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
               <div className='h-full p-8 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
                 <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-blue-500 rounded-lg'>
-                  <FlaskConical className='h-8 w-8'/>
+                  <FlaskConical className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                  Precision Chlorine Management
+                  Targeted Algae Elimination
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Ensure optimal chlorine levels for a bacteria-free and
-                  comfortable swimming experience with our expert services.
+                  Our precise treatment targets and eliminates algae, ensuring
+                  your pool stays clear and hygienic.
                 </p>
               </div>
             </div>
             <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
               <div className='h-full p-8 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
                 <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-blue-500 rounded-lg'>
-                <TestTubes className='h-8 w-8'/>
+                  <TestTubes className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                  Advanced pH Balancing
+                  Preventive Algae Control
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Experience the perfect balance in your pool with our advanced
-                  pH adjustment methods, tailored for your pool&apos;s unique needs.
+                  We offer solutions that not only treat but also prevent future
+                  algae growth, safeguarding your pool&apos;s health.
                 </p>
               </div>
             </div>
             <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
               <div className='h-full p-8 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
                 <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-blue-500 rounded-lg'>
-                <Pipette className='h-8 w-8'/>
+                  <Pipette className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                  Comprehensive Water Testing
+                  Regular Maintenance Checks
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  We employ state-of-the-art testing to accurately assess and
-                  adjust your pool&apos;s chemical composition for optimal
-                  safety and clarity.
+                  Consistent pool check-ups as part of our service to detect and
+                  address any signs of algae early on.
                 </p>
               </div>
             </div>
@@ -232,41 +238,41 @@ const Page = () => {
             </div>
           </div>
           <section className='relative py-16'>
-        <div className='absolute top-0 left-0 h-1/2 w-full bg-blue-500' />
-        <div className='container px-4 mx-auto'>
-          <div className='relative py-16 px-4 md:px-24 bg-gray-50 rounded-xl'>
-            <Image
-              height={50}
-              width={50}
-              className='absolute top-0 left-0 w-full h-full object-cover'
-              src='/pattern-light1.svg'
-              alt=''
-            />
-            <div className='relative flex flex-wrap items-center -mx-4'>
-              <div className='w-full lg:w-[80%] px-4 mb-14 lg:mb-0'>
-                <div className='max-w-lg'>
-                  <h2 className='mb-4 text-3xl md:text-4xl font-heading font-bold leading-snug'>
-                    Relax, We&apos;ve Got You Covered
-                  </h2>
-                  <p className='text-lg md:text-xl font-heading font-medium text-gray-500'>
-                    With Always Clean Pool Service, you can relax knowing your
-                    pool is in expert hands. Our commitment to excellence
-                    guarantees a crystal-clear pool that&apos;s always ready for
-                    your next swim.
-                  </p>
-                </div>
-              </div>
-              <div className='w-full lg:w-[20%] px-4'>
-                <div className='flex flex-wrap items-center lg:justify-end'>
-                  <Button size='lg'>
-                    <Link href='/booking'>Book Now</Link>
-                  </Button>
+            <div className='absolute top-0 left-0 h-1/2 w-full bg-blue-500' />
+            <div className='container px-4 mx-auto'>
+              <div className='relative py-16 px-4 md:px-24 bg-gray-50 rounded-xl'>
+                <Image
+                  height={50}
+                  width={50}
+                  className='absolute top-0 left-0 w-full h-full object-cover'
+                  src='/pattern-light1.svg'
+                  alt=''
+                />
+                <div className='relative flex flex-wrap items-center -mx-4'>
+                  <div className='w-full lg:w-[80%] px-4 mb-14 lg:mb-0'>
+                    <div className='max-w-lg'>
+                      <h2 className='mb-4 text-3xl md:text-4xl font-heading font-bold leading-snug'>
+                        Relax, We&apos;ve Got You Covered
+                      </h2>
+                      <p className='text-lg md:text-xl font-heading font-medium text-gray-500'>
+                        With Always Clean Pool Service, you can relax knowing
+                        your pool is in expert hands. Our commitment to
+                        excellence guarantees a crystal-clear pool that&apos;s
+                        always ready for your next swim.
+                      </p>
+                    </div>
+                  </div>
+                  <div className='w-full lg:w-[20%] px-4'>
+                    <div className='flex flex-wrap items-center lg:justify-end'>
+                      <Button size='lg'>
+                        <Link href='/booking'>Book Now</Link>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
           <div className='relative -mb-40 py-16 px-4 md:px-8 lg:px-16 bg-gray-800 rounded-md overflow-hidden'>
             <Image
               className='absolute top-0 left-0 h-full w-full object-cover'
@@ -281,16 +287,16 @@ const Page = () => {
               </h3>
               <p className='mb-6 text-base md:text-xl text-gray-400'>
                 If you have any specific queries or need detailed insights into
-                our pool chemical balancing services, don&apos;t hesitate to reach
-                out. Our team is dedicated to providing you with comprehensive
-                support and tailored solutions.
+                our pool chemical balancing services, don&apos;t hesitate to
+                reach out. Our team is dedicated to providing you with
+                comprehensive support and tailored solutions.
               </p>
               <Link
                 className='flex flex-col items-center justify-center px-7 py-3 h-14 max-w-fit md:w-auto mb-2 md:mb-0 md:mr-4 text-lg leading-7 text-blue-50 bg-primary hover:bg-primary/75 font-medium focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border border-transparent rounded-md shadow-sm'
                 href='tel:760-912-7396'
-                
               >
-                <span className='md:hidden block'>Click to Call</span> <span className='md:block hidden'>760-912-7396</span>
+                <span className='md:hidden block'>Click to Call</span>{' '}
+                <span className='md:block hidden'>760-912-7396</span>
               </Link>
             </div>
           </div>
