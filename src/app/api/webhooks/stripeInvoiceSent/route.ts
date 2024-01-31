@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.UPDATE_BALANCE_DUE_WEBHOOK_SECRET || ''
+      process.env.INVOICE_SENT_WEBHOOK_SECRET || ''
     );
   } catch (err) {
     return new Response(
