@@ -9,6 +9,7 @@ import { getUserSubscriptionPlan, stripe } from '@/lib/stripe';
 import { absoluteUrl } from '@/lib/utils';
 import { addDays, format } from 'date-fns';
 import sgMail from '@sendgrid/mail';
+import {PLANS, Plan} from '@/lib/PLANS';
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -814,6 +815,87 @@ export const appRouter = router({
     });
     return { url: stripeSession.url };
   }),
+
+  getCreateInvoice: privateProcedure
+  .input(
+    z.object({
+      customerId: z.string(),
+      serviceEventId: z.string(),
+      serviceName: z.string(),
+      notes: z.string().optional(),
+      serviceChemicals: z.array(z.object({ 
+        chemical: z.object({
+          id: z.string(),
+          name: z.string(),
+          price: z.number(),
+          units: z.string(),
+        }),
+        quantity: z.number(),
+        id: z.string(),
+        serviceEventId: z.string(),
+        chemicalId: z.string(),
+      })),
+      tasksPerformed: z.string(),
+      dateCompleted: z.date(),
+    }))
+    .mutation(async({ ctx, input }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      
+      const sendInvoice = async function (email) {
+        // Look up a customer in your database
+        let customer = await db.customer.findUnique({
+          where: {
+            id: input.customerId,
+          }
+        });
+
+        let customerStripeId;
+        let stripeCustomer;
+
+        if (!customer?.stripeCustomerId) {
+          // Create a new Customer
+          stripeCustomer = await stripe.customers.create({
+            email,
+            description: 'Customer to invoice',
+          });
+          // Store the Customer ID in your database to use for future purchases
+         await db.customer.update({
+          where: {
+            id: input.customerId,
+          },
+          data : {
+            stripeCustomerId: stripeCustomer.id,
+          }
+         });
+         customerStripeId = stripeCustomer.id;
+        } else {
+          // Read the Customer ID from your database
+          customerStripeId = customer.stripeCustomerId;
+        }
+      
+        // Create an Invoice
+        const invoice = await stripe.invoices.create({
+          customer: customerStripeId,
+          collection_method: 'send_invoice',
+          days_until_due: 30,
+        });
+      
+        // Create an Invoice Item with the Price, and Customer you want to charge
+        const invoiceItem = await stripe.invoiceItems.create({ 
+          customer: customerStripeId,
+          price: PLANS.find((plan) => plan.name === input.serviceName)?.priceIds.test,
+          invoice: invoice.id
+        });
+      
+        // Send the Invoice
+        await stripe.invoices.sendInvoice(invoice.id);
+      };
+  })
 });
 
 export type AppRouter = typeof appRouter;

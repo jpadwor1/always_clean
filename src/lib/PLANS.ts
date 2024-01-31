@@ -13,6 +13,10 @@ export const PLANS = [
     ],
     bookingLink: '/booking',
     learnMoreLink: '/services',
+    priceIds: {
+      test: '',
+      production: '',
+    },
   },
   {
     name: 'Diving or Extra Large',
@@ -27,6 +31,10 @@ export const PLANS = [
     ],
     bookingLink: '/booking',
     learnMoreLink: '/services',
+    priceIds: {
+      test: '',
+      production: '',
+    },
   },
   {
     name: 'Commercial and Community Pools',
@@ -39,10 +47,14 @@ export const PLANS = [
       'Tailored services for high-traffic pools',
       'High-capacity skimmer and filter cleaning',
       'Full deck and surrounding area cleaning',
-      'And more...'
+      'And more...',
     ],
     callToAction: 'Call (760) 912-7396',
     learnMoreLink: '/services',
+    priceIds: {
+      test: '',
+      production: '',
+    },
   },
 ];
 

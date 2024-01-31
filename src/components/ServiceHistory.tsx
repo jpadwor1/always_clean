@@ -47,6 +47,7 @@ interface ServiceHistoryProps {
     notes: string | null;
     name: string;
     role: string | undefined;
+    technicianId: string | null;
     serviceChemicals: ({
       chemical: {
         id: string;
@@ -126,6 +127,7 @@ const poolTasks: PoolTask[] = [
 const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
   const tasksPerformed = serviceEvent?.tasksPerformed.split(',');
   const router = useRouter();
+  const createInvoice = trpc.getCreateInvoice.useMutation();
   const handleRefresh = () => {
     router.refresh();
   };
@@ -239,6 +241,47 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
     );
   };
 
+  const handleInvoice = () => {
+    const invoiceData = {
+      customerId: serviceEvent?.customerId as string,
+      serviceEventId: serviceEvent?.id,
+      dateCompleted: serviceEvent?.dateCompleted,
+      serviceName: serviceEvent?.name,
+      notes: serviceEvent?.notes as string,
+      technician: technician.name,
+      technicianId: serviceEvent.technicianId,
+      tasksPerformed: serviceEvent?.tasksPerformed,
+      serviceChemicals: serviceEvent?.serviceChemicals,
+    }
+    
+  createInvoice.mutate(invoiceData,{
+    onSuccess: () => {
+      toast({
+        title: 'Invoice Sent',
+        description: (
+          <>
+            <p>Invoice Sent</p>
+          </>
+        ),
+      });
+      router.push(`/dashboard/customer/${serviceEvent?.customerId}`);
+      handleRefresh()
+    },
+    onError: (error: any) => {
+      toast({
+        title: 'Oops Something went wrong',
+        description: (
+          <>
+            <p>try again later</p>
+            <p>{error.message}</p>
+          </>
+        ),
+      });
+      handleRefresh();
+    },
+  })
+  }
+ console.log(serviceEvent);
   return (
     <div className='flex flex-col bg-white shadow-md p-6 rounded-md min-h-[calc(100vh-30rem)]'>
       <div className='flex flex-col justify-center items-center text-center space-y-4'>
@@ -312,6 +355,10 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
       </div>
 
       <Button className='my-8'>Contact us</Button>
+      {serviceEvent.role === 'ADMIN' && (
+      <Button onClick={handleInvoice} className='bg-gray-600'>Send Invoice</Button>
+
+      )}
 
       <Separator />
 
