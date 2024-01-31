@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FlaskConical, Pipette, Target, TestTubes, Wrench } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import AlgaeFeatures from '@/components/Services/algaeFeatures';
+import AlgaeFeatures from '@/components/Services/AlgaeTreatment/AlgaeFeatures';
 
 const Page = () => {
   return (
