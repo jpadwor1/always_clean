@@ -28,7 +28,7 @@ const Dashboard = async () => {
           <div className='flex flex-col sm:flex-row items-center justify-between space-y-2'>
             <h2 className='text-3xl font-bold tracking-tight'>Dashboard</h2>
           </div>
-          <Tabs defaultValue='utilities' className='space-y-4'>
+          <Tabs defaultValue='customers' className='space-y-4'>
             <TabsList>
               <TabsTrigger value='overview'>Overview</TabsTrigger>
               <TabsTrigger value='customers'>Customers</TabsTrigger>
