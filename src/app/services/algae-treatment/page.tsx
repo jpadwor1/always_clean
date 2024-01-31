@@ -111,11 +111,11 @@ const Page = () => {
               FAQ
             </span>
             <h2 className='mb-4 text-4xl md:text-5xl leading-tight text-gray-900 font-bold tracking-tighter'>
-              Chemical Balancing: Your Questions Answered
+              Algae Treatment FAQs
             </h2>
             <p className='text-lg md:text-xl text-gray-500 font-medium'>
-              Explore our detailed FAQ section to understand better how chemical
-              balancing ensures a safe and pristine swimming experience.
+              Dive into our FAQ section to learn more about algae prevention and
+              treatment, ensuring your pool remains clean and inviting.
             </p>
           </div>
           <div className='flex flex-wrap pb-16 -mx-4'>
@@ -130,12 +130,11 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  What is involved in chemical balancing?
+                  What is algae and why is it a problem for pools?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Chemical balancing involves adjusting chlorine, pH, and other
-                  chemical levels in your pool to maintain a safe, algae-free
-                  environment.
+                  Algae are microscopic plants that can cause slippery surfaces
+                  and cloudy water, making your pool unsightly and unsafe.
                 </p>
               </div>
             </div>
@@ -150,11 +149,11 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  How often should chemical levels be tested?
+                  How often should I treat my pool for algae?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  We recommend testing chemical levels weekly to maintain
-                  optimal water quality and safety.
+                  Regular maintenance, including monthly treatments, is key to
+                  preventing algae growth in your pool.
                 </p>
               </div>
             </div>
@@ -169,11 +168,11 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  Is chemical balancing necessary for all pools?
+                  Can algae lead to other pool problems?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Yes, every pool requires chemical balancing to ensure the
-                  water is safe and hygienic for swimmers.
+                  Yes, unchecked algae growth can clog filters and affect water
+                  balance, leading to larger pool maintenance issues.
                 </p>
               </div>
             </div>
@@ -188,12 +187,12 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  How does weather impact pool chemical balance?
+                  What types of algae can infest a pool?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Weather conditions like rain, sunshine, and temperature
-                  changes can alter your pool&apos;s chemical balance, making
-                  regular checks essential.
+                  Pools can be affected by different types of algae, such as
+                  green, black, and mustard algae, each requiring specific
+                  treatment methods.
                 </p>
               </div>
             </div>
@@ -208,11 +207,13 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  Can unbalanced chemicals harm my pool equipment?
+                  Are there any signs that indicate the beginning of an algae
+                  problem?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Yes, improper chemical levels can lead to corrosion or scaling
-                  on pool equipment, affecting its longevity and performance.
+                  Early signs include slight discoloration or cloudiness of the
+                  water, a slippery feel on pool surfaces, and visible algae
+                  patches.
                 </p>
               </div>
             </div>
@@ -227,12 +228,12 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  Will chemical balancing affect the temperature of my pool?
+                  Is professional treatment necessary for algae removal?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Chemical balancing doesn&apos;t directly affect water
-                  temperature, but it ensures the water remains safe and
-                  enjoyable at any temperature.
+                  While some minor algae issues can be handled with home
+                  treatments, professional services ensure thorough removal and
+                  prevention of future growth.
                 </p>
               </div>
             </div>
@@ -287,9 +288,9 @@ const Page = () => {
               </h3>
               <p className='mb-6 text-base md:text-xl text-gray-400'>
                 If you have any specific queries or need detailed insights into
-                our pool chemical balancing services, don&apos;t hesitate to
-                reach out. Our team is dedicated to providing you with
-                comprehensive support and tailored solutions.
+                our algae treatment services, don&apos;t hesitate to reach out.
+                Our team is dedicated to providing you with comprehensive
+                support and tailored solutions.
               </p>
               <Link
                 className='flex flex-col items-center justify-center px-7 py-3 h-14 max-w-fit md:w-auto mb-2 md:mb-0 md:mr-4 text-lg leading-7 text-blue-50 bg-primary hover:bg-primary/75 font-medium focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border border-transparent rounded-md shadow-sm'
