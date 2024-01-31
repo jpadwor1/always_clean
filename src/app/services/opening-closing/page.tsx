@@ -17,13 +17,16 @@ const Page = () => {
         <div className='container px-4 mx-auto'>
           <div className='md:max-w-4xl mx-auto mb-16 md:mb-20 text-center'>
             <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium uppercase rounded-full shadow-sm'>
-            Opening and Closing Services
+              Opening and Closing Services
             </span>
             <h1 className='mb-4 text-3xl md:text-4xl leading-tight text-gray-900 font-bold tracking-tighter'>
-            Professional Pool Opening and Closing for Every Season
+              Professional Pool Opening and Closing for Every Season
             </h1>
             <p className='text-lg md:text-xl text-gray-500 font-medium'>
-            Ensure your pool is ready for the season with our professional opening and closing services. We prepare your pool for the summer fun and winter hibernation, taking care of all the necessary steps for a seamless transition.
+              Ensure your pool is ready for the season with our professional
+              opening and closing services. We prepare your pool for the summer
+              fun and winter hibernation, taking care of all the necessary steps
+              for a seamless transition.
             </p>
           </div>
           <div className='relative mb-8 md:mb-24 mx-auto max-w-max'>
@@ -56,10 +59,12 @@ const Page = () => {
                   <FlaskConical className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                Seasonal Pool Opening
+                  Seasonal Pool Opening
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                Kickstart your swimming season with our comprehensive pool opening services, including cleaning, chemical balancing, and equipment checks.
+                  Kickstart your swimming season with our comprehensive pool
+                  opening services, including cleaning, chemical balancing, and
+                  equipment checks.
                 </p>
               </div>
             </div>
@@ -69,10 +74,12 @@ const Page = () => {
                   <TestTubes className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                Winterizing Your Pool
+                  Winterizing Your Pool
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                Safeguard your pool during the colder months with our thorough closing services, preventing damage and maintaining water quality.
+                  Safeguard your pool during the colder months with our thorough
+                  closing services, preventing damage and maintaining water
+                  quality.
                 </p>
               </div>
             </div>
@@ -85,7 +92,8 @@ const Page = () => {
                   Regular Maintenance Checks
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                Regular maintenance is integral to our service, ensuring your pool remains in top condition throughout the year.
+                  Regular maintenance is integral to our service, ensuring your
+                  pool remains in top condition throughout the year.
                 </p>
               </div>
             </div>
@@ -105,10 +113,12 @@ const Page = () => {
               FAQ
             </span>
             <h2 className='mb-4 text-4xl md:text-5xl leading-tight text-gray-900 font-bold tracking-tighter'>
-            Opening and Closing Services: FAQs
+              Opening and Closing Services: FAQs
             </h2>
             <p className='text-lg md:text-xl text-gray-500 font-medium'>
-            Navigate through our FAQs to understand more about our comprehensive pool opening and closing services, ensuring your pool is ready for every season.
+              Navigate through our FAQs to understand more about our
+              comprehensive pool opening and closing services, ensuring your
+              pool is ready for every season.
             </p>
           </div>
           <div className='flex flex-wrap pb-16 -mx-4'>
@@ -123,10 +133,12 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                What does pool opening/closing service include?
+                  What does pool opening/closing service include?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                Our service includes cleaning, covering or uncovering the pool, chemical balancing, and equipment checks for season readiness.
+                  Our service includes cleaning, covering or uncovering the
+                  pool, chemical balancing, and equipment checks for season
+                  readiness.
                 </p>
               </div>
             </div>
@@ -141,10 +153,13 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                When is the right time to open/close my pool?
+                  When is the right time to open/close my pool?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                In Pinal County, Arizona, the optimal time to open your pool is typically in early spring, as the region enjoys a warmer climate. For closing, late October is generally suitable, considering the mild fall temperatures in the area.
+                  In Pinal County, Arizona, the optimal time to open your pool
+                  is typically in early spring, as the region enjoys a warmer
+                  climate. For closing, late October is generally suitable,
+                  considering the mild fall temperatures in the area.
                 </p>
               </div>
             </div>
@@ -159,10 +174,11 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                How can I prepare my pool for opening/closing?
+                  How can I prepare my pool for opening/closing?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                We recommend clearing debris and maintaining water levels before our team arrives for a smooth service process.
+                  We recommend clearing debris and maintaining water levels
+                  before our team arrives for a smooth service process.
                 </p>
               </div>
             </div>
@@ -177,14 +193,18 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                How does Pinal County&apos;s climate affect pool opening and closing schedules?
+                  How does Pinal County&apos;s climate affect pool opening and
+                  closing schedules?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                In Pinal County, Arizona, known for its hot summers and mild winters, pool opening can typically be scheduled earlier in the year, around March or April, and closing can often be delayed until late October or even November, maximizing the swimming season.
+                  In Pinal County, Arizona, known for its hot summers and mild
+                  winters, pool opening can typically be scheduled earlier in
+                  the year, around March or April, and closing can often be
+                  delayed until late October or even November, maximizing the
+                  swimming season.
                 </p>
               </div>
             </div>
-            
           </div>
           <section className='relative py-16'>
             <div className='absolute top-0 left-0 h-1/2 w-full bg-blue-500' />
@@ -236,7 +256,7 @@ const Page = () => {
               </h3>
               <p className='mb-6 text-base md:text-xl text-gray-400'>
                 If you have any specific queries or need detailed insights into
-                our algae treatment services, don&apos;t hesitate to reach out.
+                our opening-closing services, don&apos;t hesitate to reach out.
                 Our team is dedicated to providing you with comprehensive
                 support and tailored solutions.
               </p>
