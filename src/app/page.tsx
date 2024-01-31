@@ -73,7 +73,7 @@ function HomeInside() {
       </div>
 
       {/* Pricing Section */}
-      <PricingModule />
+      <PricingModule linkVisibility={true} />
 
       {/* Contact Section */}
       <ContactSection />

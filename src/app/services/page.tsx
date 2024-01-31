@@ -141,7 +141,7 @@ const Page = () => {
 
       {/* Pricing Section */}
 
-      <PricingModule />
+      <PricingModule linkVisibility={false} />
     </div>
   );
 };

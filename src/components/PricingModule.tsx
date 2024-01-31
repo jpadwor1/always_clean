@@ -4,7 +4,11 @@ import React from 'react';
 import { Button } from './ui/button';
 import { PLANS } from '@/lib/PLANS';
 
-const PricingModule = () => {
+interface PricingModuleProps {
+  linkVisibility?: boolean;
+}
+
+const PricingModule = ({linkVisibility}: PricingModuleProps) => {
   
   return (
     <section
@@ -61,7 +65,8 @@ const PricingModule = () => {
                             Book Now
                           </Button>
                         </Link>
-                        <Link href='/services'>
+                        {linkVisibility && (
+                          <Link href='/services'>
                           <Button
                             variant='secondary'
                             className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
@@ -69,6 +74,8 @@ const PricingModule = () => {
                             Learn More
                           </Button>
                         </Link>
+                        )}
+                        
                       </>
                     ) : plan.name === 'Diving or Extra Large' ? (
                       <>
@@ -77,7 +84,8 @@ const PricingModule = () => {
                             Book Now
                           </Button>
                         </Link>
-                        <Link href='/services'>
+                        {linkVisibility && (
+                          <Link href='/services'>
                           <Button
                             variant='secondary'
                             className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
@@ -85,6 +93,7 @@ const PricingModule = () => {
                             Learn More
                           </Button>
                         </Link>
+                        )}
                       </>
                     ) : (
                       <>
@@ -93,7 +102,8 @@ const PricingModule = () => {
                             {plan.callToAction}
                           </Button>
                         </Link>
-                        <Link href='/services'>
+                        {linkVisibility && (
+                          <Link href='/services'>
                           <Button
                             variant='secondary'
                             className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
@@ -101,6 +111,7 @@ const PricingModule = () => {
                             Learn More
                           </Button>
                         </Link>
+                        )}
                       </>
                     )}
                   </div>
