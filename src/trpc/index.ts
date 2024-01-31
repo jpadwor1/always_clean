@@ -9,7 +9,7 @@ import { getUserSubscriptionPlan, stripe } from '@/lib/stripe';
 import { absoluteUrl } from '@/lib/utils';
 import { addDays, format } from 'date-fns';
 import sgMail from '@sendgrid/mail';
-import {PLANS, Plan} from '@/lib/PLANS';
+import {PLANS} from '@/lib/PLANS';
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -845,6 +845,17 @@ export const appRouter = router({
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
 
+      const price = await stripe.prices.create({
+        currency: 'usd',
+        unit_amount: 1,
+        recurring: {
+          interval: 'month',
+        },
+        product_data: {
+          name: 'Gold Plan',
+        },
+      });
+
       
       const sendInvoice = async function (email) {
         // Look up a customer in your database
@@ -862,6 +873,8 @@ export const appRouter = router({
           stripeCustomer = await stripe.customers.create({
             email,
             description: 'Customer to invoice',
+            name: customer?.name,
+            phone: customer?.phone,
           });
           // Store the Customer ID in your database to use for future purchases
          await db.customer.update({
@@ -881,14 +894,18 @@ export const appRouter = router({
         // Create an Invoice
         const invoice = await stripe.invoices.create({
           customer: customerStripeId,
+          currency: 'usd',
           collection_method: 'send_invoice',
           days_until_due: 30,
+          automatic_tax: {
+            enabled: false
+          },
         });
       
         // Create an Invoice Item with the Price, and Customer you want to charge
         const invoiceItem = await stripe.invoiceItems.create({ 
           customer: customerStripeId,
-          price: PLANS.find((plan) => plan.name === input.serviceName)?.priceIds.test,
+          price: PLANS.find((plan) => plan.type === input.serviceName)?.priceIds.test,
           invoice: invoice.id
         });
       

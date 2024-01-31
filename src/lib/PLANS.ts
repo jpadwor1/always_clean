@@ -1,6 +1,7 @@
 export const PLANS = [
   {
     name: 'Play Pools',
+    type: 'Regular Pool Cleaning',
     price: 99,
     priceFrequency: 'per month',
     description: 'Ideal for residential pools',
@@ -14,7 +15,7 @@ export const PLANS = [
     bookingLink: '/booking',
     learnMoreLink: '/services',
     priceIds: {
-      test: '',
+      test: 'price_1OelNvDAvxyq4Y7vw5eO9Y86',
       production: '',
     },
   },
