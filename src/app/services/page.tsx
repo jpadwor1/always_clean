@@ -1,11 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
+import PricingModule from '@/components/PricingModule';
 
 const Page = () => {
   return (
-    <div className='px-10'>
+    <div className='px-10 py-18'>
       <section
-        className='py-18 bg-white overflow-hidden'
+        className='py-20 bg-white overflow-hidden'
         style={{
           backgroundImage: 'url("/pattern-white.svg")',
           backgroundPosition: 'center',
@@ -137,6 +138,10 @@ const Page = () => {
           </div>
         </div>
       </section>
+
+      {/* Pricing Section */}
+
+      <PricingModule />
     </div>
   );
 };
