@@ -4,6 +4,7 @@ import PricingModule from '@/components/PricingModule';
 import { Home, Hotel, School } from 'lucide-react';
 import AlgaeFeatureCards from '@/components/Services/AlgaeTreatment/AlgaeFeatureCards';
 import RegularCleaningFeatureCards from '@/components/Services/RegularPoolCleaning/RegularCleaningFeatureCards';
+import ServiceCTACard from '@/components/Services/ServiceCTACard';
 
 const Page = () => {
   return (
@@ -133,6 +134,9 @@ const Page = () => {
 
       {/* Algae Treatment Section */}
       <AlgaeFeatureCards />
+
+      {/* CTA Card */}
+      <ServiceCTACard />
 
 
     </div>
