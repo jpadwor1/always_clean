@@ -17,13 +17,15 @@ const Page = () => {
         <div className='container px-4 mx-auto'>
           <div className='md:max-w-4xl mx-auto mb-16 md:mb-20 text-center'>
             <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium uppercase rounded-full shadow-sm'>
-            Tile and Deck Cleaning Services
+              Tile and Deck Cleaning Services
             </span>
             <h1 className='mb-4 text-3xl md:text-4xl leading-tight text-gray-900 font-bold tracking-tighter'>
-            Revitalize Your Pool Area with Professional Tile and Deck Cleaning
+              Revitalize Your Pool Area with Professional Tile and Deck Cleaning
             </h1>
             <p className='text-lg md:text-xl text-gray-500 font-medium'>
-            Transform your poolside experience with our specialized tile and deck cleaning services. We remove buildup, restore shine, and ensure a safe, slip-free surface for your enjoyment.
+              Transform your poolside experience with our specialized tile and
+              deck cleaning services. We remove buildup, restore shine, and
+              ensure a safe, slip-free surface for your enjoyment.
             </p>
           </div>
           <div className='relative mb-8 md:mb-24 mx-auto max-w-max'>
@@ -56,10 +58,11 @@ const Page = () => {
                   <FlaskConical className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                Deep Cleaning for Tiles
+                  Deep Cleaning for Tiles
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                Our deep cleaning process effectively removes calcium deposits and grime, leaving your pool tiles sparkling clean.
+                  Our deep cleaning process effectively removes calcium deposits
+                  and grime, leaving your pool tiles sparkling clean.
                 </p>
               </div>
             </div>
@@ -69,10 +72,11 @@ const Page = () => {
                   <TestTubes className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                Deck Restoration
+                  Deck Restoration
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                Revitalize your pool deck with our thorough cleaning services, enhancing its appearance and longevity.
+                  Revitalize your pool deck with our thorough cleaning services,
+                  enhancing its appearance and longevity.
                 </p>
               </div>
             </div>
@@ -82,10 +86,11 @@ const Page = () => {
                   <Pipette className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                Safe & Eco-Friendly Solutions
+                  Safe & Eco-Friendly Solutions
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                We use eco-friendly and safe cleaning agents that are tough on dirt but gentle on your pool&apos;s surroundings.
+                  We use eco-friendly and safe cleaning agents that are tough on
+                  dirt but gentle on your pool&apos;s surroundings.
                 </p>
               </div>
             </div>
@@ -105,12 +110,11 @@ const Page = () => {
               FAQ
             </span>
             <h2 className='mb-4 text-4xl md:text-5xl leading-tight text-gray-900 font-bold tracking-tighter'>
-              Opening and Closing Services: FAQs
+              FAQs on Tile and Deck Cleaning Services
             </h2>
             <p className='text-lg md:text-xl text-gray-500 font-medium'>
-              Navigate through our FAQs to understand more about our
-              comprehensive pool opening and closing services, ensuring your
-              pool is ready for every season.
+              Explore our FAQs to learn more about our tile and deck cleaning
+              services and how they can rejuvenate your pool area.
             </p>
           </div>
           <div className='flex flex-wrap pb-16 -mx-4'>
@@ -125,12 +129,12 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  What does pool opening/closing service include?
+                  How often should I clean my pool tiles and deck?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Our service includes cleaning, covering or uncovering the
-                  pool, chemical balancing, and equipment checks for season
-                  readiness.
+                  For optimal maintenance, we recommend a thorough cleaning at
+                  least once a year or more frequently depending on usage and
+                  exposure to elements.
                 </p>
               </div>
             </div>
@@ -145,13 +149,12 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  When is the right time to open/close my pool?
+                  What methods are used for tile and deck cleaning?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  In Pinal County, Arizona, the optimal time to open your pool
-                  is typically in early spring, as the region enjoys a warmer
-                  climate. For closing, late October is generally suitable,
-                  considering the mild fall temperatures in the area.
+                  We utilize a combination of pressure washing, gentle
+                  scrubbing, and specialized cleaning agents tailored to each
+                  surface type.
                 </p>
               </div>
             </div>
@@ -166,11 +169,13 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  How can I prepare my pool for opening/closing?
+                  Are there specific challenges for tile and deck cleaning in
+                  Pinal County?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  We recommend clearing debris and maintaining water levels
-                  before our team arrives for a smooth service process.
+                  In Pinal County, the high mineral content in water can lead to
+                  quicker buildup on tiles and decks. Our cleaning methods are
+                  designed to effectively tackle these local challenges.
                 </p>
               </div>
             </div>
@@ -185,15 +190,13 @@ const Page = () => {
                   />
                 </div>
                 <h3 className='mb-6 text-xl text-gray-900 font-bold'>
-                  How does Pinal County&apos;s climate affect pool opening and
-                  closing schedules?
+                  Can tile and deck cleaning improve the overall safety of my
+                  pool area?
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  In Pinal County, Arizona, known for its hot summers and mild
-                  winters, pool opening can typically be scheduled earlier in
-                  the year, around March or April, and closing can often be
-                  delayed until late October or even November, maximizing the
-                  swimming season.
+                  Absolutely. Regular cleaning of tiles and decks not only
+                  enhances appearance but also removes algae and other slippery
+                  buildups, significantly improving safety around the pool area.
                 </p>
               </div>
             </div>
@@ -248,9 +251,9 @@ const Page = () => {
               </h3>
               <p className='mb-6 text-base md:text-xl text-gray-400'>
                 If you have any specific queries or need detailed insights into
-                our opening-closing services, don&apos;t hesitate to reach out.
-                Our team is dedicated to providing you with comprehensive
-                support and tailored solutions.
+                our Tile and Deck cleaning services, don&apos;t hesitate to
+                reach out. Our team is dedicated to providing you with
+                comprehensive support and tailored solutions.
               </p>
               <Link
                 className='flex flex-col items-center justify-center px-7 py-3 h-14 max-w-fit md:w-auto mb-2 md:mb-0 md:mr-4 text-lg leading-7 text-blue-50 bg-primary hover:bg-primary/75 font-medium focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 border border-transparent rounded-md shadow-sm'
