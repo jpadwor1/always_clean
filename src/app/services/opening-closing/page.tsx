@@ -1,7 +1,14 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FlaskConical, Pipette, TestTubes } from 'lucide-react';
+import {
+  FlaskConical,
+  Pipette,
+  Snowflake,
+  Sun,
+  TestTubes,
+  Wrench,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Page = () => {
@@ -56,7 +63,7 @@ const Page = () => {
             <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
               <div className='h-full p-8 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
                 <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-blue-500 rounded-lg'>
-                  <FlaskConical className='h-8 w-8' />
+                  <Sun className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
                   Seasonal Pool Opening
@@ -71,7 +78,7 @@ const Page = () => {
             <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
               <div className='h-full p-8 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
                 <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-blue-500 rounded-lg'>
-                  <TestTubes className='h-8 w-8' />
+                  <Snowflake className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
                   Winterizing Your Pool
@@ -86,7 +93,7 @@ const Page = () => {
             <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
               <div className='h-full p-8 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
                 <div className='inline-flex h-16 w-16 mb-7 mx-auto items-center justify-center text-white bg-blue-500 rounded-lg'>
-                  <Pipette className='h-8 w-8' />
+                  <Wrench className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
                   Regular Maintenance Checks
