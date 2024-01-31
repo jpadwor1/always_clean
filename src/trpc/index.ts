@@ -883,6 +883,7 @@ export const appRouter = router({
           },
           data : {
             stripeCustomerId: stripeCustomer.id,
+            stripeBalanceDue: true,
           }
          });
          customerStripeId = stripeCustomer.id;
