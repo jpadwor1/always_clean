@@ -17,16 +17,13 @@ const Page = () => {
         <div className='container px-4 mx-auto'>
           <div className='md:max-w-4xl mx-auto mb-16 md:mb-20 text-center'>
             <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium uppercase rounded-full shadow-sm'>
-              Opening and Closing Services
+            Tile and Deck Cleaning Services
             </span>
             <h1 className='mb-4 text-3xl md:text-4xl leading-tight text-gray-900 font-bold tracking-tighter'>
-              Professional Pool Opening and Closing for Every Season
+            Revitalize Your Pool Area with Professional Tile and Deck Cleaning
             </h1>
             <p className='text-lg md:text-xl text-gray-500 font-medium'>
-              Ensure your pool is ready for the season with our professional
-              opening and closing services. We prepare your pool for the summer
-              fun and winter hibernation, taking care of all the necessary steps
-              for a seamless transition.
+            Transform your poolside experience with our specialized tile and deck cleaning services. We remove buildup, restore shine, and ensure a safe, slip-free surface for your enjoyment.
             </p>
           </div>
           <div className='relative mb-8 md:mb-24 mx-auto max-w-max'>
@@ -59,12 +56,10 @@ const Page = () => {
                   <FlaskConical className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                  Seasonal Pool Opening
+                Deep Cleaning for Tiles
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Kickstart your swimming season with our comprehensive pool
-                  opening services, including cleaning, chemical balancing, and
-                  equipment checks.
+                Our deep cleaning process effectively removes calcium deposits and grime, leaving your pool tiles sparkling clean.
                 </p>
               </div>
             </div>
@@ -74,12 +69,10 @@ const Page = () => {
                   <TestTubes className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                  Winterizing Your Pool
+                Deck Restoration
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Safeguard your pool during the colder months with our thorough
-                  closing services, preventing damage and maintaining water
-                  quality.
+                Revitalize your pool deck with our thorough cleaning services, enhancing its appearance and longevity.
                 </p>
               </div>
             </div>
@@ -89,11 +82,10 @@ const Page = () => {
                   <Pipette className='h-8 w-8' />
                 </div>
                 <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                  Regular Maintenance Checks
+                Safe & Eco-Friendly Solutions
                 </h3>
                 <p className='text-gray-500 font-medium'>
-                  Regular maintenance is integral to our service, ensuring your
-                  pool remains in top condition throughout the year.
+                We use eco-friendly and safe cleaning agents that are tough on dirt but gentle on your pool&apos;s surroundings.
                 </p>
               </div>
             </div>
