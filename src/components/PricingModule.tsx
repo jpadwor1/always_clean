@@ -8,8 +8,7 @@ interface PricingModuleProps {
   linkVisibility?: boolean;
 }
 
-const PricingModule = ({linkVisibility}: PricingModuleProps) => {
-  
+const PricingModule = ({ linkVisibility }: PricingModuleProps) => {
   return (
     <section
       className='py-20 xl:py-24 bg-white rounded-xl shadow-xl'
@@ -54,7 +53,7 @@ const PricingModule = ({linkVisibility}: PricingModuleProps) => {
                         {plan.priceFrequency}
                       </span>
                     </div>
-                    <p className='mb-6 text-zinc-400 font-medium'>
+                    <p className='mb-6 text-gray-500 font-medium tracking-tighter text-center min-h-[45px]'>
                       {plan.description}
                     </p>
 
@@ -67,15 +66,14 @@ const PricingModule = ({linkVisibility}: PricingModuleProps) => {
                         </Link>
                         {linkVisibility && (
                           <Link href='/services'>
-                          <Button
-                            variant='secondary'
-                            className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
-                          >
-                            Learn More
-                          </Button>
-                        </Link>
+                            <Button
+                              variant='secondary'
+                              className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
+                            >
+                              Learn More
+                            </Button>
+                          </Link>
                         )}
-                        
                       </>
                     ) : plan.name === 'Diving or Extra Large' ? (
                       <>
@@ -86,13 +84,13 @@ const PricingModule = ({linkVisibility}: PricingModuleProps) => {
                         </Link>
                         {linkVisibility && (
                           <Link href='/services'>
-                          <Button
-                            variant='secondary'
-                            className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
-                          >
-                            Learn More
-                          </Button>
-                        </Link>
+                            <Button
+                              variant='secondary'
+                              className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
+                            >
+                              Learn More
+                            </Button>
+                          </Link>
                         )}
                       </>
                     ) : (
@@ -104,22 +102,22 @@ const PricingModule = ({linkVisibility}: PricingModuleProps) => {
                         </Link>
                         {linkVisibility && (
                           <Link href='/services'>
-                          <Button
-                            variant='secondary'
-                            className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
-                          >
-                            Learn More
-                          </Button>
-                        </Link>
+                            <Button
+                              variant='secondary'
+                              className='w-full sm:text-md text-md shadow-md hover:shadow-lg '
+                            >
+                              Learn More
+                            </Button>
+                          </Link>
                         )}
                       </>
                     )}
                   </div>
                   <div className='border-b border-zinc-200' />
-                  <ul className='self-start px-8 pt-8'>
+                  <ul className='self-start mt-4 px-8 min-h-[320px]'>
                     {plan.features.map((feature) => (
                       <>
-                        <li className='flex items-center mb-3 text-zinc-500 font-medium'>
+                        <li className='flex items-center mb-3 text-gray-600 font-medium'>
                           <Image
                             height={20}
                             width={20}
