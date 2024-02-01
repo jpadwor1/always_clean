@@ -39,6 +39,7 @@ import UploadDropzone from '@/components/UploadDropzone';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Chemical } from '@prisma/client';
 
 type Option = {
   label: string;
@@ -171,7 +172,7 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
     },
   });
 
-  const chemicalOptions = chemicals?.map((chemical) => ({
+  const chemicalOptions = chemicals?.map((chemical: Chemical) => ({
     label: chemical.name,
     value: chemical.name,
   }));

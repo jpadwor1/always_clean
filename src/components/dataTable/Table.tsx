@@ -34,6 +34,7 @@ import {
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { CustomerType } from '@/lib/utils';
+import { Customer } from '@prisma/client';
 
 interface TaskProps {
   userId: string | undefined;
@@ -44,7 +45,7 @@ type SelectSingleEventHandler = (date: Date | undefined) => void;
 export default function TaskPage({ userId }: TaskProps) {
   const { data: customers, isLoading, error } = trpc.getCustomers.useQuery();
   const { toast } = useToast();
-  const customerData = customers?.map((customer) => {
+  const customerData = customers?.map((customer: Customer) => {
     const {
       id,
       name,
@@ -404,7 +405,7 @@ export default function TaskPage({ userId }: TaskProps) {
 
         <DataTable
           data={
-            customerData?.map((customer) => ({
+            customerData?.map((customer: Customer) => ({
               ...customer,
               nextServiceDate: customer.formattedNextServiceDate.toISOString(),
               lastServiceDate: customer.formattedLastServiceDate.toISOString(),

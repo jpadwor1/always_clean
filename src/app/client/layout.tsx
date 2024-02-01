@@ -4,6 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { SidebarNav } from './sidebarNav';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { db } from '@/db';
+import { ServiceEvent } from '@prisma/client';
 export const metadata: Metadata = {
   title: 'Forms',
   description: 'Advanced form example using react-hook-form and Zod.',
@@ -30,6 +31,7 @@ interface SettingsLayoutProps {
   children: React.ReactNode;
 }
 
+
 export default async function SettingsLayout({ children }: SettingsLayoutProps) {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -51,10 +53,10 @@ export default async function SettingsLayout({ children }: SettingsLayoutProps) 
     },
   });
   
-  const formattedServiceEvents = customerServiceEvents.map((event) => ({
+  const formattedServiceEvents = customerServiceEvents.map((event: ServiceEvent) => ({
     ...event,
     dateCompleted: new Date(event.dateCompleted),
-    chemicalsUsed: [], // Convert to Date object if necessary
+    chemicalsUsed: [],
   }));
 
   return (

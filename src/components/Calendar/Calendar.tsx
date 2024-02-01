@@ -144,7 +144,7 @@ const Calendar = () => {
 
   useEffect(() => {
     if (customers) {
-      const formattedCustomerEvents = customers.map((customer) => ({
+      const formattedCustomerEvents = customers.map((customer: Customer) => ({
         title: customer.name,
         start: customer.nextServiceDate,
         editable: true,
@@ -162,7 +162,7 @@ const Calendar = () => {
       }));
       setAllEvents((prevEvents) => {
         const newEvents = formattedCustomerEvents.filter(
-          (fe) => !prevEvents.some((pe) => pe.id === fe.id)
+          (fe: Event) => !prevEvents.some((pe) => pe.id === fe.id)
         );
         return [...prevEvents, ...newEvents];
       });
@@ -171,22 +171,36 @@ const Calendar = () => {
 
   useEffect(() => {
     if (calendarEvents) {
-      const formattedCalendarEvents = calendarEvents.map((event) => ({
-        title: event.title,
-        start: event.start,
-        end: event.end,
-        allDay: event.allDay,
-        id: event.id,
-        editable: true,
-        extendedProps: {
-          location: event.location,
-          email: event.email,
-          phone: event.phone,
-          customerId: event.customerId,
-          description: event.description,
-          customerName: event.customerName,
-        },
-      }));
+      const formattedCalendarEvents = calendarEvents.map(
+        (event: {
+          title: string;
+          start: Date | string;
+          end: Date | string;
+          allDay: boolean | string;
+          id: string;
+          location: string;
+          email: string;
+          phone: string;
+          customerId: string;
+          description: string;
+          customerName: string;
+        }) => ({
+          title: event.title,
+          start: event.start,
+          end: event.end,
+          allDay: event.allDay,
+          id: event.id,
+          editable: true,
+          extendedProps: {
+            location: event.location,
+            email: event.email,
+            phone: event.phone,
+            customerId: event.customerId,
+            description: event.description,
+            customerName: event.customerName,
+          },
+        })
+      );
       setAllEvents((prevEvents) => [...prevEvents, ...formattedCalendarEvents]);
     }
   }, [calendarEvents]);
@@ -273,7 +287,7 @@ const Calendar = () => {
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsPageLoading(true);
     const eventCustomer = customers?.find(
-      (customer) => customer.id === data.customer
+      (customer: Customer) => customer.id === data.customer
     );
     const updatedEvent = {
       title: data.title,
@@ -335,7 +349,7 @@ const Calendar = () => {
 
   const showEventDetails = (data: EventClickArg) => {
     const eventCustomer = customers?.find(
-      (customer) => customer.id === data.event.id
+      (customer: Customer) => customer.id === data.event.id
     );
     const event = data.event._def;
     const eventDetails: Event = {
@@ -363,7 +377,7 @@ const Calendar = () => {
   const handleCustomerChange = (customerId: string) => {
     if (customerId) {
       const customer = customers?.find(
-        (customer) => customer.id === customerId
+        (customer: Customer) => customer.id === customerId
       );
       if (customer) {
         setCustomerAttending(customer);
@@ -372,7 +386,7 @@ const Calendar = () => {
       }
     }
   };
-  
+
   return (
     <main className='flex min-h-screen flex-col p-0 md:p-6'>
       <FullCalendar
@@ -398,7 +412,7 @@ const Calendar = () => {
       >
         <DialogContent className=''>
           <div className='flex flex-col items-start'>
-          <div>
+            <div>
               <h1 className='text-2xl text-gray-900 font-medium'>
                 {currentEventDetails?.title}
               </h1>
@@ -415,7 +429,7 @@ const Calendar = () => {
                       hour: 'numeric',
                       minute: 'numeric',
                       hour12: true,
-                      timeZone: 'America/Los_Angeles'
+                      timeZone: 'America/Los_Angeles',
                     }
                   )}{' '}
                   -{' '}
@@ -427,24 +441,21 @@ const Calendar = () => {
               )}
             </div>
 
-            
-
             <Separator className='mb-4' />
 
             <div className='flex flex-row space-x-2 items-center justify-center mb-3'>
               <div className='flex items-center justify-center bg-blue-200 rounded-full px-2 py-2'>
                 <User className='h-5 w-5 text-blue-500' aria-hidden='true' />
               </div>
-              
+
               <div className='flex flex-col items-start justify-start'>
-              <p className='text-sm text-gray-700 font-medium'>
-                {currentEventDetails?.extendedProps.customerName}
-              </p>
-              <p className='text-xs text-gray-700 font-medium'>
-                {currentEventDetails?.extendedProps.phone}
-              </p>
+                <p className='text-sm text-gray-700 font-medium'>
+                  {currentEventDetails?.extendedProps.customerName}
+                </p>
+                <p className='text-xs text-gray-700 font-medium'>
+                  {currentEventDetails?.extendedProps.phone}
+                </p>
               </div>
-             
             </div>
 
             <div className='flex flex-row space-x-2 items-center justify-center mb-3'>
@@ -464,10 +475,9 @@ const Calendar = () => {
             </div>
 
             <div className='flex flex-row space-x-2 items-center justify-center'>
-            <div className='flex items-center justify-center bg-gray-200 rounded-full px-2 py-2'>
-            <Info className='h-5 w-5 text-gray-500' />
-
-                  </div>
+              <div className='flex items-center justify-center bg-gray-200 rounded-full px-2 py-2'>
+                <Info className='h-5 w-5 text-gray-500' />
+              </div>
               <h3 className='text-sm text-gray-700 font-medium tracking-wider'>
                 {currentEventDetails?.extendedProps.description}
               </h3>
@@ -580,7 +590,7 @@ const Calendar = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {customers?.map((customer) => {
+                              {customers?.map((customer: Customer) => {
                                 return (
                                   <SelectItem
                                     key={customer.id}

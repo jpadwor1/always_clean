@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { SidebarNav } from './sidebarNav';
 import { db } from '@/db';
+import { ServiceEvent } from '@prisma/client';
 
 export const metadata: Metadata = {
   title: 'Forms',
@@ -221,7 +222,7 @@ export default async function SettingsLayout({
     },
   });
 
-  const formattedServiceEvents = customerServiceEvents.map((event) => ({
+  const formattedServiceEvents = customerServiceEvents.map((event: ServiceEvent) => ({
     ...event,
     dateCompleted: new Date(event.dateCompleted),
     chemicalsUsed: [], // Convert to Date object if necessary
