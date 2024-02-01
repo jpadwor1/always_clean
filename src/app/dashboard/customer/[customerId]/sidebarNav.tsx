@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Collapsible,
   CollapsibleContent,
@@ -16,6 +16,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChevronsUpDown } from 'lucide-react';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -82,13 +83,8 @@ export function SidebarNav({
         </Link>
       ))}
       <Sheet>
-        <SheetTrigger
-          className={cn(
-            buttonVariants({ variant: 'ghost' }),
-            'hover:bg-primary hover:text-white sm:hidden'
-          )}
-        >
-          Service History
+        <SheetTrigger asChild>
+          <Button variant='ghost'>Service History</Button>
         </SheetTrigger>
         <SheetContent className=' flex flex-col items-center'>
           <SheetHeader>
@@ -97,7 +93,7 @@ export function SidebarNav({
           </SheetHeader>
           <div className='flex flex-col items-center h-full w-full overflow-y-scroll'>
             {serviceHistoryData.map((service) => (
-              <React.Fragment key={service.id}>
+              <SheetClose asChild key={service.id}>
                 <Link
                   key={service.id}
                   className={cn(
@@ -108,7 +104,7 @@ export function SidebarNav({
                 >
                   {format(service.dateCompleted, 'MMMM d, yyyy')}
                 </Link>
-              </React.Fragment>
+              </SheetClose>
             ))}
           </div>
         </SheetContent>
