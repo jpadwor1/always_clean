@@ -49,7 +49,7 @@ model Customer {
   stripePriceId          String?         @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime?       @map(name: "stripe_current_period_end")
   stripeBalanceDue       Boolean?
-  dueDate                DateTime?
+  dueDate                String?
   CalendarEvent          CalendarEvent[]
 }
 
