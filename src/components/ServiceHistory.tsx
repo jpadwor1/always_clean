@@ -71,14 +71,10 @@ interface ServiceHistoryProps {
       serviceEventId: string | null;
     }[];
     tasksPerformed: string;
+    technicianName: string;
+    technicianPhotoURL: string;
   };
 }
-
-const technician = {
-  name: 'John Doe',
-  photoURL:
-    'https://lh3.googleusercontent.com/a/ACg8ocJcg4cTZ7bX6_idgIdE0CG3FtMgstADR8iwUuCM2_cfqA=s96-c',
-};
 
 type PoolTask = {
   label: string;
@@ -126,6 +122,10 @@ const poolTasks: PoolTask[] = [
 
 const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
   const tasksPerformed = serviceEvent?.tasksPerformed.split(',');
+  const technician = {
+    name: serviceEvent.technicianName,
+    photoURL: serviceEvent.technicianPhotoURL,
+  };
   const router = useRouter();
   const createInvoice = trpc.getCreateInvoice.useMutation();
   const handleRefresh = () => {
@@ -207,7 +207,6 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
   const deleteServiceEvent = trpc.getDeleteServiceEvent.useMutation();
 
   const handleDelete = () => {
-
     deleteServiceEvent.mutate(
       {
         id: serviceEvent.id,
@@ -223,7 +222,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
             ),
           });
           router.push(`/dashboard/customer/${serviceEvent?.customerId}`);
-          handleRefresh()
+          handleRefresh();
         },
         onError: (error: any) => {
           toast({
@@ -252,35 +251,35 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
       technicianId: serviceEvent.technicianId,
       tasksPerformed: serviceEvent?.tasksPerformed,
       serviceChemicals: serviceEvent?.serviceChemicals,
-    }
+    };
 
-  createInvoice.mutate(invoiceData,{
-    onSuccess: () => {
-      toast({
-        title: 'Invoice Sent',
-        description: (
-          <>
-            <p>Invoice Sent</p>
-          </>
-        ),
-      });
-      router.push(`/dashboard/customer/${serviceEvent?.customerId}`);
-      handleRefresh()
-    },
-    onError: (error: any) => {
-      toast({
-        title: 'Oops Something went wrong',
-        description: (
-          <>
-            <p>try again later</p>
-            <p>{error.message}</p>
-          </>
-        ),
-      });
-      handleRefresh();
-    },
-  })
-  }
+    createInvoice.mutate(invoiceData, {
+      onSuccess: () => {
+        toast({
+          title: 'Invoice Sent',
+          description: (
+            <>
+              <p>Invoice Sent</p>
+            </>
+          ),
+        });
+        router.push(`/dashboard/customer/${serviceEvent?.customerId}`);
+        handleRefresh();
+      },
+      onError: (error: any) => {
+        toast({
+          title: 'Oops Something went wrong',
+          description: (
+            <>
+              <p>try again later</p>
+              <p>{error.message}</p>
+            </>
+          ),
+        });
+        handleRefresh();
+      },
+    });
+  };
   return (
     <div className='flex flex-col bg-white shadow-md p-6 rounded-md min-h-[calc(100vh-30rem)]'>
       <div className='flex flex-col justify-center items-center text-center space-y-4'>
@@ -317,8 +316,8 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
           </Popover>
         </div>
 
-        <div className='flex flex-row justify-between w-full'>
-          <h4 className='mb-2 sm:text-sm text-md font-medium leading-none text-gray-700'>
+        <div className='flex flex-row justify-between items-center w-full'>
+          <h4 className='sm:mb-2 sm:text-sm text-md font-medium leading-none text-gray-700'>
             Completed on
           </h4>
           <p className='sm:text-sm text-md text-gray-900 font-medium tracking-wider'>
@@ -327,7 +326,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
         </div>
 
         <div className='flex flex-row justify-between items-center w-full'>
-          <h4 className='mb-2 sm:text-sm text-md font-medium leading-none text-gray-700'>
+          <h4 className='sm:mb-2 sm:text-sm text-md font-medium leading-none text-gray-700'>
             Technician
           </h4>
           <div className='flex flex-row gap-1 items-center'>
@@ -343,7 +342,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
           </div>
         </div>
 
-        <div className='flex flex-row justify-between w-full'>
+        <div className='flex flex-row justify-between items-center w-full'>
           <h4 className='mb-2 sm:text-sm text-md font-medium leading-none text-gray-700'>
             Service completed
           </h4>
@@ -355,8 +354,9 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
 
       <Button className='my-8'>Contact us</Button>
       {serviceEvent.role === 'ADMIN' && (
-      <Button onClick={handleInvoice} className='bg-gray-600'>Send Invoice</Button>
-
+        <Button onClick={handleInvoice} className='bg-gray-600'>
+          Send Invoice
+        </Button>
       )}
 
       <Separator />

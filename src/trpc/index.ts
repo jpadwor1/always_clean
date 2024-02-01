@@ -35,6 +35,7 @@ export const appRouter = router({
           name: '',
           address: '',
           phone: '',
+          photoURL: user.picture,
         },
       });
 
@@ -45,6 +46,7 @@ export const appRouter = router({
           name: '',
           address: '',
           phone: '',
+          photoURL: user.picture,
         },
       });
     }

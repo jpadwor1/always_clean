@@ -2,6 +2,7 @@ import { getUserSubscriptionPlan } from '@/lib/stripe';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import ServiceHistory from '@/components/ServiceHistory';
 import { db } from '@/db';
+import { User } from '@prisma/client';
 
 interface PageProps {
   params: {
@@ -14,7 +15,7 @@ const Page = async ({ params }: PageProps) => {
   const subscriptionPlan = await getUserSubscriptionPlan();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-
+  console.log(user);
   const serviceEvent = await db.serviceEvent.findFirst({
     where: {
       id: serviceId,
@@ -26,7 +27,13 @@ const Page = async ({ params }: PageProps) => {
           chemical: true,
         },
       },
-      }
+    },
+  });
+
+  const technician: User = await db.user.findFirst({
+    where: {
+      id: serviceEvent.technicianId,
+    },
   });
 
   const userRole = await db.customer.findFirst({
@@ -36,7 +43,7 @@ const Page = async ({ params }: PageProps) => {
     select: {
       role: true,
     },
-  })
+  });
 
   if (!serviceEvent) {
     return <div>Service event not found</div>;
@@ -46,6 +53,9 @@ const Page = async ({ params }: PageProps) => {
     ...serviceEvent,
     tasksPerformed: serviceEvent.tasksPerformed || '',
     role: userRole?.role || 'USER',
+    technicianId: technician.id,
+    technicianName: technician.name,
+    technicianPhotoUrl: technician.photoURL,
   };
   return <ServiceHistory serviceEvent={transformedServiceEvent} />;
 };

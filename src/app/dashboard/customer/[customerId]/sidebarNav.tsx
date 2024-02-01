@@ -84,7 +84,7 @@ export function SidebarNav({
       ))}
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant='ghost'>Service History</Button>
+          <Button className='sm:hidden' variant='ghost'>Service History</Button>
         </SheetTrigger>
         <SheetContent className=' flex flex-col items-center'>
           <SheetHeader>
