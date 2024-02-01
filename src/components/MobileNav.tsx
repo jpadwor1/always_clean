@@ -30,7 +30,7 @@ const MobileNav = ({ isAuth }: MobileNavProps) => {
 
   return (
     <div className='cursor-pointer sm:hidden flex items-center'>
-          <NavbarMenu />
+      <NavbarMenu />
 
       <Menu
         onClick={toggleOpen}
@@ -84,13 +84,13 @@ const MobileNav = ({ isAuth }: MobileNavProps) => {
                       Dashboard
                     </Link>
                   </li>
-                  
+
                   <li className='my-3 h-px w-full bg-gray-300'></li>
 
                   <li>
                     <Link
                       className='flex items-center w-full font-semibold '
-                      href='/api/auth/logout'
+                      href='/sign-out'
                     >
                       Sign out
                     </Link>
