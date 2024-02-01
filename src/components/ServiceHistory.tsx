@@ -441,7 +441,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
                 key={chemical.chemical.id}
                 className='flex items-center justify-center rounded-full px-2 py-1 bg-black max-w-fit'
               >
-                <p className='text-yellow-400 font-medium text-md '>
+                <p className='text-yellow-400 font-medium text-xs md:text-md '>
                   {chemical.chemical.name}
                 </p>
               </div>
