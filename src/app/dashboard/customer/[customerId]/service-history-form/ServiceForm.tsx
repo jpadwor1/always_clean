@@ -15,7 +15,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { format } from 'date-fns';
 import { Input } from '@/components/ui/input';
 import { CustomerType, cn } from '@/lib/utils';
 import { trpc } from '@/app/_trpc/client';
@@ -27,19 +26,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { CalendarIcon } from 'lucide-react';
-import { Calendar } from '@/components/ui/calendar';
 import { MultiSelect } from 'react-multi-select-component';
 import UploadDropzone from '@/components/UploadDropzone';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Chemical } from '@prisma/client';
+import { Chemical, User } from '@prisma/client';
 
 type Option = {
   label: string;
@@ -55,6 +47,7 @@ interface FileData {
 
 interface ServiceFormProps {
   customerId: string | undefined;
+  user: User;
 }
 
 type ChemicalQuantities = {
@@ -82,7 +75,7 @@ const FormSchema = z.object({
     .optional(),
 });
 
-const ServiceForm = ({ customerId }: ServiceFormProps) => {
+const ServiceForm = ({ customerId, user }: ServiceFormProps) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -199,12 +192,12 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
       files: fileData.map((file) => ({
         ...file,
         id: file.id || '',
-        serviceEventId: '', // replace with the actual serviceEventId
+        serviceEventId: '',
       })),
     };
 
     try {
-      // Wait for all file uploads to complete
+      
       await Promise.all(
         fileData.map(async (file) => {
           await createFile({
