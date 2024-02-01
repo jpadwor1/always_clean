@@ -1,4 +1,5 @@
 import { db } from '@/db';
+import { Customer } from '@prisma/client';
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -13,7 +14,7 @@ export async function POST(request: Request) {
     });
 
     const updatedCustomers = await Promise.all(
-      customers.map(async (customer) => {
+      customers.map(async (customer: Customer) => {
         return await db.customer.update({
           where: {
             id: customer.id,
