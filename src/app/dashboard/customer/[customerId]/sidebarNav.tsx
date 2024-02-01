@@ -14,7 +14,14 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChevronsUpDown } from 'lucide-react';
-
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
     href: string;
@@ -73,19 +80,50 @@ export function SidebarNav({
           {item.title}
         </Link>
       ))}
-
-      <Collapsible>
+      <Sheet>
+        <SheetTrigger
+          className={cn(
+            buttonVariants({ variant: 'ghost' }),
+            'hover:bg-primary hover:text-white sm:hidden'
+          )}
+        >
+          Service History
+        </SheetTrigger>
+        <SheetContent className=' flex flex-col items-center'>
+          <SheetHeader>
+            <SheetTitle>Service Dates</SheetTitle>
+            <SheetDescription className='overflow-y-scroll'></SheetDescription>
+          </SheetHeader>
+          <div className='flex flex-col items-center h-full w-full overflow-y-scroll'>
+            {serviceHistoryData.map((service) => (
+              <React.Fragment key={service.id}>
+                <Link
+                  key={service.id}
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'text-sm cursor-pointer my-1'
+                  )}
+                  href={`/dashboard/customer/${service.customerId}/service-history/${service.id}`}
+                >
+                  {format(service.dateCompleted, 'MMMM d, yyyy')}
+                </Link>
+              </React.Fragment>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
+      <Collapsible className=''>
         <CollapsibleTrigger
           className={cn(
             buttonVariants({ variant: 'ghost' }),
-            'hover:bg-primary hover:text-white'
+            'hover:bg-primary hover:text-white hidden md:flex'
           )}
         >
           Service History
           <ChevronsUpDown className='ml-5 h-4 w-4' />
           <span className='sr-only'>Toggle</span>
         </CollapsibleTrigger>
-        <CollapsibleContent>
+        <CollapsibleContent className='z-40'>
           <ScrollArea type='auto' className='p-2 max-h-fit md:h-60'>
             {serviceHistoryData.map((service) => (
               <React.Fragment key={service.id}>
