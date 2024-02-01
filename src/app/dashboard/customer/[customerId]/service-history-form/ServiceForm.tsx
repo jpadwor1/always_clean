@@ -194,6 +194,7 @@ const ServiceForm = ({ customerId, user }: ServiceFormProps) => {
         id: file.id || '',
         serviceEventId: '',
       })),
+      technicianId: user?.id,
     };
 
     try {
