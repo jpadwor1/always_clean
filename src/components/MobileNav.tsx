@@ -88,12 +88,12 @@ const MobileNav = ({ isAuth }: MobileNavProps) => {
                   <li className='my-3 h-px w-full bg-gray-300'></li>
 
                   <li>
-                    <Link
+                    <a
                       className='flex items-center w-full font-semibold '
                       href='/sign-out'
                     >
                       Sign out
-                    </Link>
+                    </a>
                   </li>
                 </>
               )}
