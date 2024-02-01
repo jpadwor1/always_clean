@@ -123,7 +123,6 @@ const UtilityPage = () => {
   };
 
   const handleSave = () => {
-    console.log('Saved:', selectedChemical);
 
     const updatedChemical = {
       id: selectedChemical?.id || '',

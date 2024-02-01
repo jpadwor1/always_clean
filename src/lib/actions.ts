@@ -16,7 +16,6 @@ export const startFileUpload = async ({ file }: { file: File | null }) => {
 
     // After a successful upload, get the download URL
     const downloadURL = await getDownloadURL(snapshot.ref);
-    console.log('File available at', downloadURL);
 
     return { downloadURL, fileName: file.name }; // Return the download URL on success
   } catch (error) {

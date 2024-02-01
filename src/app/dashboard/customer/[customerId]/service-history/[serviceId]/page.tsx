@@ -15,7 +15,6 @@ const Page = async ({ params }: PageProps) => {
   const subscriptionPlan = await getUserSubscriptionPlan();
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  console.log(user);
   const serviceEvent = await db.serviceEvent.findFirst({
     where: {
       id: serviceId,

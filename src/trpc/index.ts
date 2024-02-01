@@ -342,7 +342,6 @@ export const appRouter = router({
         sgMail
           .send(msg)
           .then(() => {
-            console.log('Email sent');
           })
           .catch((error: any) => {
             console.error(error);
@@ -379,7 +378,6 @@ export const appRouter = router({
 
         try {
           await sgMail.send(msg);
-          console.log('Email sent');
         } catch (error) {
           console.error('Error sending email:', error);
 
@@ -418,7 +416,6 @@ export const appRouter = router({
       if (!userId || !user) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
-      console.log('files', input.files);
       const dbCustomer = await db.customer.findFirst({
         where: {
           id: input.customerId,
@@ -655,7 +652,6 @@ export const appRouter = router({
       if (!userId || !user) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
-      console.log('Input received:', input);
       const doesFileExist = await db.file.findFirst({
         where: {
           key: input.downloadURL,
@@ -663,7 +659,6 @@ export const appRouter = router({
       });
 
       if (doesFileExist) return;
-      console.log('going to create file');
 
       const createdFile = await db.file.create({
         data: {
@@ -718,7 +713,6 @@ export const appRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
-      console.log('input', input);
       if (!userId || !user) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
@@ -935,7 +929,6 @@ export const appRouter = router({
 
           try {
             await sgMail.send(msg);
-            console.log('Email sent');
           } catch (error) {
             console.error('Error sending email:', error);
 
