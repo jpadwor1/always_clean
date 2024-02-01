@@ -16,7 +16,7 @@ export const PLANS = [
     learnMoreLink: '/services',
     priceIds: {
       test: 'price_1OelNvDAvxyq4Y7vw5eO9Y86',
-      production: '',
+      production: 'price_1OenuvDAvxyq4Y7voul8c3Nw',
     },
   },
   {

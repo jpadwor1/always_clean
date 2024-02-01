@@ -9,7 +9,7 @@ import { getUserSubscriptionPlan, stripe } from '@/lib/stripe';
 import { absoluteUrl } from '@/lib/utils';
 import { addDays, format } from 'date-fns';
 import sgMail from '@sendgrid/mail';
-import {PLANS} from '@/lib/PLANS';
+import { PLANS } from '@/lib/PLANS';
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -359,13 +359,12 @@ export const appRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-     
       sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
       const sendEmail = async (to: string) => {
         const msg = {
           to: to,
-          from: 'john@johnpadworski.dev', 
+          from: 'john@johnpadworski.dev',
           subject: ' ',
           html: ' ',
           text: ' ',
@@ -817,53 +816,45 @@ export const appRouter = router({
   }),
 
   getCreateInvoice: privateProcedure
-  .input(
-    z.object({
-      customerId: z.string(),
-      serviceEventId: z.string(),
-      serviceName: z.string(),
-      notes: z.string().optional(),
-      serviceChemicals: z.array(z.object({ 
-        chemical: z.object({
-          id: z.string(),
-          name: z.string(),
-          price: z.number(),
-          units: z.string(),
-        }),
-        quantity: z.number(),
-        id: z.string(),
+    .input(
+      z.object({
+        customerId: z.string(),
         serviceEventId: z.string(),
-        chemicalId: z.string(),
-      })),
-      tasksPerformed: z.string(),
-      dateCompleted: z.date(),
-    }))
-    .mutation(async({ ctx, input }) => {
+        serviceName: z.string(),
+        notes: z.string().optional(),
+        serviceChemicals: z.array(
+          z.object({
+            chemical: z.object({
+              id: z.string(),
+              name: z.string(),
+              price: z.number(),
+              units: z.string(),
+            }),
+            quantity: z.number(),
+            id: z.string(),
+            serviceEventId: z.string(),
+            chemicalId: z.string(),
+          })
+        ),
+        tasksPerformed: z.string(),
+        dateCompleted: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
 
       if (!userId || !user) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
 
-      const price = await stripe.prices.create({
-        currency: 'usd',
-        unit_amount: 1,
-        recurring: {
-          interval: 'month',
-        },
-        product_data: {
-          name: 'Gold Plan',
-        },
-      });
-
-      
-      const sendInvoice = async function (email) {
+      try {
         // Look up a customer in your database
         let customer = await db.customer.findUnique({
           where: {
             id: input.customerId,
-          }
+          },
         });
+        let email = customer?.email;
 
         let customerStripeId;
         let stripeCustomer;
@@ -877,21 +868,21 @@ export const appRouter = router({
             phone: customer?.phone,
           });
           // Store the Customer ID in your database to use for future purchases
-         await db.customer.update({
-          where: {
-            id: input.customerId,
-          },
-          data : {
-            stripeCustomerId: stripeCustomer.id,
-            stripeBalanceDue: true,
-          }
-         });
-         customerStripeId = stripeCustomer.id;
+          await db.customer.update({
+            where: {
+              id: input.customerId,
+            },
+            data: {
+              stripeCustomerId: stripeCustomer.id,
+              stripeBalanceDue: true,
+            },
+          });
+          customerStripeId = stripeCustomer.id;
         } else {
           // Read the Customer ID from your database
           customerStripeId = customer.stripeCustomerId;
         }
-      
+
         // Create an Invoice
         const invoice = await stripe.invoices.create({
           customer: customerStripeId,
@@ -899,21 +890,52 @@ export const appRouter = router({
           collection_method: 'send_invoice',
           days_until_due: 30,
           automatic_tax: {
-            enabled: false
+            enabled: false,
           },
         });
-      
+
         // Create an Invoice Item with the Price, and Customer you want to charge
-        const invoiceItem = await stripe.invoiceItems.create({ 
+        const invoiceItem = await stripe.invoiceItems.create({
           customer: customerStripeId,
-          price: PLANS.find((plan) => plan.type === input.serviceName)?.priceIds.test,
-          invoice: invoice.id
+          price: PLANS.find((plan) => plan.type === input.serviceName)?.priceIds
+            .production,
+          invoice: invoice.id,
         });
-      
+
         // Send the Invoice
         await stripe.invoices.sendInvoice(invoice.id);
-      };
-  })
+
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+
+        const sendEmail = async (to: string) => {
+          const msg = {
+            to: to,
+            from: 'john@johnpadworski.dev',
+            subject: ' ',
+            html: ' ',
+            text: ' ',
+            template_id: 'd-88b5d2c4ae1a4896be481061e664a409',
+            dynamic_template_data: {
+              sender_message: `Invoice Sent to Customer, ${customer.name}`,
+            },
+          };
+
+          try {
+            await sgMail.send(msg);
+            console.log('Email sent');
+          } catch (error) {
+            console.error('Error sending email:', error);
+
+            throw new Error('Failed to send email');
+          }
+        };
+
+        await sendEmail('johnpadworski@gmail.com');
+      } catch (err) {
+        console.error(err);
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+      }
+    }),
 });
 
 export type AppRouter = typeof appRouter;

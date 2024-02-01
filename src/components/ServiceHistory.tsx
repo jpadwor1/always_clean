@@ -245,7 +245,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
     const invoiceData = {
       customerId: serviceEvent?.customerId as string,
       serviceEventId: serviceEvent?.id,
-      dateCompleted: serviceEvent?.dateCompleted,
+      dateCompleted: serviceEvent?.dateCompleted.toISOString() as string,
       serviceName: serviceEvent?.name,
       notes: serviceEvent?.notes as string,
       technician: technician.name,
@@ -253,7 +253,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
       tasksPerformed: serviceEvent?.tasksPerformed,
       serviceChemicals: serviceEvent?.serviceChemicals,
     }
-    
+
   createInvoice.mutate(invoiceData,{
     onSuccess: () => {
       toast({
@@ -281,7 +281,6 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
     },
   })
   }
- console.log(serviceEvent);
   return (
     <div className='flex flex-col bg-white shadow-md p-6 rounded-md min-h-[calc(100vh-30rem)]'>
       <div className='flex flex-col justify-center items-center text-center space-y-4'>

@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     );
   }
 
-  if (event.type === 'invoice.payment_succeeded') {
+  if (event.type === 'invoice.sent') {
     // Retrieve the details from Stripe.
     const customer = await stripe.customers.retrieve(
       event.data.object.customer as string

@@ -47,7 +47,6 @@ const Page = async ({ params }: PageProps) => {
     tasksPerformed: serviceEvent.tasksPerformed || '',
     role: userRole?.role || 'USER',
   };
-console.log(transformedServiceEvent)
   return <ServiceHistory serviceEvent={transformedServiceEvent} />;
 };
 
