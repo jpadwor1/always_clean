@@ -1,15 +1,23 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
+  },
   async redirects() {
     return [
       {
         source: '/sign-in',
-        destination: '/api/auth/login',
+        destination: '/api/auth/login?',
         permanent: true,
       },
       {
         source: '/sign-up',
-        destination: '/api/auth/register',
+        destination: '/api/auth/register?',
         permanent: true,
       },
       {
@@ -18,13 +26,6 @@ const nextConfig = {
         permanent: true,
       },
     ];
-  },
-  images: {
-    domains: [
-      'lh3.googleusercontent.com',
-      'unsplash.com',
-      'firebasestorage.googleapis.com',
-    ],
   },
 };
 
