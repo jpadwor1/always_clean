@@ -231,7 +231,7 @@ const Page = () => {
                         Relax, We&apos;ve Got You Covered
                       </h2>
                       <p className='text-lg md:text-xl font-heading font-medium text-gray-500'>
-                        With Always Clean Pool Service, you can relax knowing
+                        With Krystal Clean Pool Service, you can relax knowing
                         your pool is in expert hands. Our commitment to
                         excellence guarantees a crystal-clear pool that&apos;s
                         always ready for your next swim.

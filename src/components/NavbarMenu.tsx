@@ -66,9 +66,9 @@ export default function NavbarMenu() {
                       src='/logo.png'
                       width={80}
                       height={80}
-                      alt='Always Clean'
+                      alt='Krystal Clean'
                     />
-                    <div className='mb-2 text-lg font-medium'>Always Clean</div>
+                    <div className='mb-2 text-lg font-medium'>Krystal Clean</div>
                     <p className='text-sm leading-tight text-muted-foreground'>
                       Expert Pool Cleaning for a Sparkling, Hassle-Free Summer.
                       Honest. Reliable. Affordable.

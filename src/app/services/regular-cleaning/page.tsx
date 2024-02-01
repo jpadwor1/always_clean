@@ -22,14 +22,14 @@ const Page = () => {
               Features
             </span>
             <h1 className='mb-4 text-3xl md:text-4xl leading-tight font-bold tracking-tighter'>
-              Experience the Always Clean Difference
+              Experience the Krystal Clean Difference
             </h1>
             <p className='text-lg md:text-xl text-gray-600 font-medium'>
               Embark on a journey of uninterrupted cleanliness with our{' '}
               <span className='font-semibold text-gray-900'>
                 Regular Pool Cleaning Service
               </span>{' '}
-              at Always Clean Pool Service. We specialize in maintaining your
+              at Krystal Clean Pool Service. We specialize in maintaining your
               pool&apos;s pristine condition week after week, ensuring a
               sparkling, inviting oasis that&apos;s ready for enjoyment whenever
               you are.

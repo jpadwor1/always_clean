@@ -29,7 +29,7 @@ const Navbar = async () => {
       <MaxWidthWrapper>
         <div className='flex h-20 items-center justify-between border-b border-zinc-200'>
           <Link href='/' className='flex z-40 font-semibold'>
-            <Image src='/logo.png' width={120} height={80} alt='Always Clean' />
+            <Image src='/logo.png' width={120} height={80} alt='Krystal Clean' />
           </Link>
 
           <MobileNav isAuth={!!user}/>

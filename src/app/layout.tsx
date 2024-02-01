@@ -11,17 +11,15 @@ import type { Metadata } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
-  title: 'Always Clean Pool Service',
-  description: 'We are a father and son team, committed to providing top-notch pool services with integrity and unmatched quality. Founded by a proud veteran, we bring military precision and reliability to every job.',
+  title: 'Krystal Clean Pool Service',
+  description:
+    'We are a father and son team, committed to providing top-notch pool services with integrity and unmatched quality. Founded by a proud veteran, we bring military precision and reliability to every job.',
 };
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-  
-
   return (
     <html lang='en'>
       <Providers>
