@@ -842,6 +842,8 @@ export const appRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
+      const date = new Date();
+      const dueDate = date.setDate(date.getDate() + 30);
 
       if (!userId || !user) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
@@ -894,7 +896,7 @@ export const appRouter = router({
           },
         });
 
-        // Create an Invoice Item with the Price, and Customer you want to charge
+        // Create an Invoice Item with the Price, and Customer
         const invoiceItem = await stripe.invoiceItems.create({
           customer: customerStripeId,
           price: PLANS.find((plan) => plan.type === input.serviceName)?.priceIds
@@ -905,6 +907,15 @@ export const appRouter = router({
         // Send the Invoice
         await stripe.invoices.sendInvoice(invoice.id);
 
+        await db.customer.update({
+          where: {
+            id: input.customerId,
+          },
+          data: {
+            dueDate: dueDate.toString(),
+          },
+        });
+        //Confirmation email to owner
         sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
         const sendEmail = async (to: string) => {
