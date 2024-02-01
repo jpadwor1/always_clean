@@ -229,7 +229,7 @@ const ServiceForm = ({ customerId }: ServiceFormProps) => {
                 </>
               ),
             });
-            router.push(`/dashboard/customer/${customerId}/service-history`);
+            router.push(`/dashboard/customer/${customerId}/service-history/${dbServiceEvent.id}`);
           },
           onError: (error: any) => {
             toast({
