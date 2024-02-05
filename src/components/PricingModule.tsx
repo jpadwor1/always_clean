@@ -19,7 +19,7 @@ const PricingModule = ({ linkVisibility }: PricingModuleProps) => {
     >
       <div className='container px-4 mx-auto'>
         <div className='text-center'>
-          <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium uppercase rounded-9xl'>
+          <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium uppercase rounded-xl'>
             Pricing
           </span>
           <h3 className='mb-4 text-3xl md:text-5xl text-zinc-800 font-bold tracking-tighter'>
