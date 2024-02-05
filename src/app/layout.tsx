@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar';
 import Providers from '@/components/Providers';
 import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({
           <Footer />
         </body>
       </Providers>
+      <GoogleAnalytics gaId='G-CXG6005YVL' />
     </html>
   );
 }
