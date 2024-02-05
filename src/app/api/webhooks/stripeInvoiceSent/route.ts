@@ -29,8 +29,6 @@ export async function POST(request: Request) {
       });
 
       return new Response(null, { status: 200 });
-    } else if (event.type === 'invoice.paid') {
-      console.log('invoice.paid');
     } else {
       return new Response('Webhook event not handled', { status: 400 });
     }
