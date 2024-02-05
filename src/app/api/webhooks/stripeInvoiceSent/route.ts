@@ -11,8 +11,7 @@ export async function POST(request: Request) {
     const event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET || ''
-      // process.env.INVOICE_SENT_WEBHOOK_SECRET || ''
+      process.env.INVOICE_SENT_WEBHOOK_SECRET || ''
     );
 
     if (event.type === 'invoice.sent') {
@@ -22,7 +21,8 @@ export async function POST(request: Request) {
 
       await db.customer.update({
         where: {
-          stripeSubscriptionId: customer.id,
+          stripeCustomerId: customer.id,
+
         },
         data: {
           stripeBalanceDue: true,
