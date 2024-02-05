@@ -194,8 +194,8 @@ const Page = () => {
             understand your privacy rights and choices. If you do not agree with
             our policies and practices, please do not use our Services. If you
             still have any questions or concerns, please contact us at{' '}
-            <Link href='mailto:john@krystalclean.com'>
-              john@krystalclean.com
+            <Link href='mailto:support@krystalcleanpools.com'>
+              support@krystalcleanpools.com
             </Link>
             .
           </p>
@@ -560,8 +560,8 @@ const Page = () => {
           <p>
             If you have questions or comments about this notice, you may email
             us at{' '}
-            <Link href='mailto:john@krystalclean.com'>
-              john@krystalclean.com
+            <Link href='mailto:support@krystalcleanpools.com'>
+              support@krystalcleanpools.com
             </Link>{' '}
             or contact us by post at:
           </p>

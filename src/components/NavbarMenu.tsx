@@ -84,7 +84,7 @@ export default function NavbarMenu() {
                 A Step-by-Step Guide to Our Professional Pool Cleaning Process.
                 Efficiency and Transparency.
               </ListItem>
-              <ListItem href='/testimonials' title='Testimonials'>
+              <ListItem href='#' title='Testimonials'>
                 Hear From Our Satisfied Customers. Quality Service Guaranteed.
               </ListItem>
             </ul>
