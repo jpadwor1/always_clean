@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
     await db.customer.update({
       where: {
-        stripeSubscriptionId: customer.id,
+        stripeCustomerId: customer.id,
       },
       data: {
         stripeBalanceDue: false,

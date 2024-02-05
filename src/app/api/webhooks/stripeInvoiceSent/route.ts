@@ -5,7 +5,7 @@ import type Stripe from 'stripe';
 
 export async function POST(request: Request) {
   const body = await request.text();
-  const signature = request.headers.get('stripe-signature') || '';
+  const signature = headers().get('stripe-signature') || '';
 
   try {
     const event = stripe.webhooks.constructEvent(
@@ -22,7 +22,6 @@ export async function POST(request: Request) {
       await db.customer.update({
         where: {
           stripeCustomerId: customer.id,
-
         },
         data: {
           stripeBalanceDue: true,
