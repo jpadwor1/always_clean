@@ -13,8 +13,6 @@ export async function POST(request: Request) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      // "whsec_kNjkF5jNR0zmchaBsyQyD3OcufgMPeng",
-
       process.env.INVOICE_SENT_WEBHOOK_SECRET || ''
     );
   } catch (err) {
