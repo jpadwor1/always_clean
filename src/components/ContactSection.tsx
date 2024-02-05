@@ -128,7 +128,7 @@ const ContactSection = () => {
                 Contact
               </span>
               <h3 className='mb-1 text-4xl md:text-5xl text-zinc-900 font-bold tracking-tighter leading-tight'>
-                Let’s stay connected
+                Let&apos;s stay connected
               </h3>
 
               <p className='text-lg md:text-md text-gray-700 font-medium'>
@@ -162,9 +162,9 @@ const ContactSection = () => {
                     </h3>
                     <a
                       className='md:text-sm text-zinc-600 hover:text-zinc-600 font-medium text-medium text-lg'
-                      href='mailto:#'
+                      href='mailto:support@krystalcleanpools.com'
                     >
-                      contact@hydrocleanpools.com
+                      support@krystalcleanpools.com
                     </a>
                   </div>
                 </div>
