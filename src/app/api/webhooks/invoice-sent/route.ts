@@ -19,6 +19,7 @@ export async function POST(request: Request) {
       const customer = await stripe.customers.retrieve(
         event.data.object.customer as string
       );
+      console.log(customer);
 
       await db.customer.update({
         where: {
