@@ -5,8 +5,9 @@ import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Krysal Clean Pool Service',
-  description: 'We are a father and son team, committed to providing top-notch pool services with integrity and unmatched quality. Founded by a proud veteran, we bring military precision and reliability to every job.',
+  title: 'Krystal Clean Pool Service',
+  description:
+    'We are a father and son team, committed to providing top-notch pool services with integrity and unmatched quality. Founded by a proud veteran, we bring military precision and reliability to every job.',
 };
 
 const Page = () => {
