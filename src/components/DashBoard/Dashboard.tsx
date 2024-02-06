@@ -24,8 +24,8 @@ const Dashboard = async () => {
   return (
     <>
       <div className='flex-col md:flex'>
-        <div className='flex-1 space-y-4 p-8 pt-6'>
-          <div className='flex flex-col sm:flex-row items-center justify-between space-y-2'>
+        <div className='flex-1 sm:space-y-4 space-y-0 p-8 sm:pt-6 pt-2'>
+          <div className='sm:flex hidden sm:flex-row items-center justify-between space-y-2'>
             <h2 className='text-3xl font-bold tracking-tight'>Dashboard</h2>
           </div>
           <Tabs defaultValue='customers' className='space-y-4'>
