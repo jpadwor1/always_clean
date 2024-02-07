@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -8,13 +7,12 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CalendarDateRangePicker } from '@/components/ui/date-range-picker';
 import { Overview } from '@/components/ui/overview';
 import { RecentSales } from '@/components/ui/recent-sales';
 import Table from '@/components/dataTable/Table';
-import Calendar from '@/components/Calendar/Calendar';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import UtilityPage from '../UtilityPage';
+import MyCalendar from '../Calendar/BigCalendar';
 
 const Dashboard = async () => {
   const { getUser } = getKindeServerSession();
@@ -24,18 +22,18 @@ const Dashboard = async () => {
   return (
     <>
       <div className='flex-col md:flex'>
-        <div className='flex-1 sm:space-y-4 space-y-0 p-8 sm:pt-6 pt-2'>
+        <div className='flex-1 sm:space-y-4 space-y-0 sm:pt-6 pt-2 '>
           <div className='sm:flex hidden sm:flex-row items-center justify-between space-y-2'>
-            <h2 className='text-3xl font-bold tracking-tight'>Dashboard</h2>
+            <h2 className='text-3xl font-bold tracking-tight sm:p-4'>Dashboard</h2>
           </div>
           <Tabs defaultValue='customers' className='space-y-4'>
-            <TabsList>
+            <TabsList className='sm:p-4'>
               <TabsTrigger value='overview'>Overview</TabsTrigger>
               <TabsTrigger value='customers'>Customers</TabsTrigger>
               <TabsTrigger value='schedule'>Schedule</TabsTrigger>
               <TabsTrigger value='utilities'>Utilities</TabsTrigger>
             </TabsList>
-            <TabsContent value='overview' className='space-y-4'>
+            <TabsContent value='overview' className='space-y-4 p-4'>
               <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
                 <Card>
                   <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
@@ -162,12 +160,13 @@ const Dashboard = async () => {
               </div>
             </TabsContent>
 
-            <TabsContent value='customers' className='space-y-4'>
+            <TabsContent value='customers' className='space-y-4 p-2'>
               <Table userId={userId} />
             </TabsContent>
 
             <TabsContent value='schedule' className='space-y-4'>
-              <Calendar />
+            <MyCalendar />
+
             </TabsContent>
             <TabsContent value='utilities' className='space-y-4'>
               <UtilityPage />
