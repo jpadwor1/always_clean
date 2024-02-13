@@ -27,9 +27,12 @@ export async function POST(request: Request) {
       });
 
       dbCustomer.update({
+        where : {
+          id: dbCustomer.id,
+        },
         data: {
           stripeBalanceDue: true,
-          amountDue: event.data.object.amount_due,
+          amountDue: dbCustomer.amountDue + event.data.object.amount_due,
         },
       });
 
