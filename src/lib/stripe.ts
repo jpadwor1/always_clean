@@ -1,6 +1,7 @@
 import { PLANS } from '@/config/stripe';
 import { db } from '@/db';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { redirect } from 'next/navigation';
 import Stripe from 'stripe';
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
@@ -63,3 +64,52 @@ export async function getUserSubscriptionPlan() {
     isCanceled,
   };
 }
+
+
+export async function getCustomerInvoices(customerId? : string | null) {
+ let dbCustomer;
+
+ try {
+  if (!customerId) {
+    const {getUser} = getKindeServerSession();
+    const user = await getUser();
+
+  if (!user?.id) {
+    return [];
+  }
+
+  dbCustomer = await db.customer.findUnique({
+    where: {
+      id: user.id,
+    },
+  })
+
+  return dbCustomer ? dbCustomer : redirect('/auth-callback?origin=/client/billing');
+  }
+  
+  dbCustomer = await db.customer.findUnique({
+    where: {
+      id: customerId,
+    }
+  })
+
+  if (!dbCustomer) {
+    return new Error('Customer not found');
+  }
+
+  const invoices = await stripe.invoices.list({
+    customer: dbCustomer.stripeCustomerId,
+  });
+  
+  if (!invoices.data || invoices.data.length === 0) {
+    return [];
+  }
+
+  return invoices;
+ } catch (error) {
+  console.error(error);
+ }
+  
+}
+
+
