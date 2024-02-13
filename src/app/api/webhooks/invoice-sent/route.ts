@@ -20,12 +20,16 @@ export async function POST(request: Request) {
         event.data.object.customer as string
       );
 
-      await db.customer.update({
+      const dbCustomer = await db.customer.findFirst({
         where: {
           stripeCustomerId: customer.id,
         },
+      });
+
+      dbCustomer.update({
         data: {
           stripeBalanceDue: true,
+          amountDue: event.data.object.amount_due,
         },
       });
 
