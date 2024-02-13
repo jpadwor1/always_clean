@@ -9,9 +9,9 @@ interface PageProps {
 };
 
   const Page = async ({ params }: PageProps) => {
-
+    const {customerId} = params
     const subscriptionPlan = await getUserSubscriptionPlan();
-    const invoices = await getCustomerInvoices()
+    const invoices = await getCustomerInvoices(customerId)
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     const userId = user?.id;

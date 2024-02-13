@@ -104,8 +104,7 @@ export async function getCustomerInvoices(customerId? : string | null) {
   if (!invoices.data || invoices.data.length === 0) {
     return [];
   }
-
-  return invoices;
+  return invoices.data;
  } catch (error) {
   console.error(error);
  }
