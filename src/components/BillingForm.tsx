@@ -61,7 +61,22 @@ const BillingForm = ({
       currency: currencyCode,
     }).format(amount);
   }
-  console.log(invoices);
+
+  const invoiceTotal = () => {
+    let invoiceTotals = 0;
+
+    invoices.forEach(
+      (invoice: Awaited<ReturnType<typeof getCustomerInvoices>>) => {
+        // Assuming 'paid' status means the invoice is not to be counted
+        if (invoice.status !== 'paid') {
+          // Assuming invoice.total is in the smallest currency unit (e.g., cents)
+          invoiceTotals += parseInt(invoice.total, 10); // Use parseInt for whole numbers
+        }
+      }
+    );
+    return formatCurrency(invoiceTotals, 'USD');
+  };
+
   return (
     // <form
     //   className='mt-12'
@@ -121,13 +136,15 @@ const BillingForm = ({
       <CardHeader>
         <CardTitle>Billing History</CardTitle>
         <CardDescription>
-          {invoices.length === 0 ? 'You have no invoices' : 'Your invoices'}
+          {!invoices || invoices.length === 0 ? 'You have no billing history to display' : 'Your invoices'}
         </CardDescription>
+        {invoices && invoices.length > 0 && (
         <Table>
           <TableCaption>A list of your recent invoices.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className=''>Invoice Date</TableHead>
+              <TableHead className=''>Invoice Sent</TableHead>
+              <TableHead className=''>Due Date</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Amount Due</TableHead>
               <TableHead className='text-right'>Pay Invoice</TableHead>
@@ -137,10 +154,35 @@ const BillingForm = ({
             {invoices.map(
               (invoice: Awaited<ReturnType<typeof getCustomerInvoices>>) => (
                 <TableRow key={invoice.id}>
-                  <TableCell className='font-medium'>
+                  <TableCell>
                     {format(new Date(invoice.created * 1000), 'MM/dd/yyyy')}
                   </TableCell>
-                  <TableCell>{invoice.status}</TableCell>
+                  <TableCell
+                    className={cn(
+                      new Date(invoice.due_date * 1000) < new Date()
+                        ? 'text-red-600'
+                        : 'text-gray-900',
+                      'font-medium'
+                    )}
+                  >
+                    {format(new Date(invoice.due_date * 1000), 'MM/dd/yyyy')}
+                  </TableCell>
+
+                  <TableCell
+                    className={cn(
+                      new Date(invoice.due_date * 1000) < new Date()
+                        ? 'text-red-600'
+                        : 'text-gray-900',
+                      'font-medium'
+                    )}
+                  >
+                    {new Date(invoice.due_date * 1000) < new Date() &&
+                    !invoice.paid
+                      ? 'PAST DUE'
+                      : invoice.paid
+                      ? 'PAID'
+                      : 'Payment Due'}
+                  </TableCell>
 
                   <TableCell>{formatCurrency(invoice.total, 'USD')}</TableCell>
 
@@ -162,11 +204,22 @@ const BillingForm = ({
           <TableFooter>
             <TableRow>
               <TableCell colSpan={3}>Total</TableCell>
-              <TableCell className='text-right'>$2,500.00</TableCell>
+              <TableCell className=''>{invoiceTotal()}</TableCell>
             </TableRow>
           </TableFooter>
         </Table>
+        )}
       </CardHeader>
+      {!invoices || invoices.length === 0 ? (
+        <CardFooter>
+          <div className="flex flex-col space-y-2">
+        <p>
+        If this is a mistake, please contact support at 760-912-7396 or send us a message.</p>
+        <Link href='/contact' className={cn(buttonVariants({}))}>Contact Us</Link>
+        </div>
+        </CardFooter>
+      ): null}
+      
     </Card>
   );
 };
