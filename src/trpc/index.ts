@@ -890,6 +890,7 @@ export const appRouter = router({
           automatic_tax: {
             enabled: false,
           },
+          auto_advance: true,
         });
 
         // Create an Invoice Item with the Price, and Customer
