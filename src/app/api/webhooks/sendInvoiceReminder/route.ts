@@ -29,10 +29,7 @@ export async function POST(request: Request) {
               subject: ' ',
               html: ' ',
               text: ' ',
-              template_id: 'd-88b5d2c4ae1a4896be481061e664a409',
-              dynamic_template_data: {
-                sender_message: `Invoice Sent to Customer, ${customer.name}`,
-              },
+              template_id: 'd-278110de1f534178ac8e13e19a4f3c2c',
             };
   
             try {
@@ -47,8 +44,13 @@ export async function POST(request: Request) {
           await sendEmail(customer.email);
     }))
    
-  } catch (err) {
-   
+  } catch (error) {
+    return new Response(
+        `Webhook Error: ${
+          error instanceof Error ? error.message : 'Unknown Error'
+        }`,
+        { status: 400 }
+      );
   }
 
   
