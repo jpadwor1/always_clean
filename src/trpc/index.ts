@@ -322,7 +322,7 @@ export const appRouter = router({
 
         const msg = {
           to: to,
-          from: 'john@johnpadworski.dev',
+          from: 'support@krystalcleanpools.com',
           html: ' ',
           text: ' ',
           subject: subject,
@@ -341,8 +341,7 @@ export const appRouter = router({
 
         sgMail
           .send(msg)
-          .then(() => {
-          })
+          .then(() => {})
           .catch((error: any) => {
             console.error(error);
           });
@@ -365,7 +364,7 @@ export const appRouter = router({
       const sendEmail = async (to: string) => {
         const msg = {
           to: to,
-          from: 'john@johnpadworski.dev',
+          from: 'support@krystalcleanpools.com',
           subject: ' ',
           html: ' ',
           text: ' ',
@@ -918,7 +917,7 @@ export const appRouter = router({
         const sendEmail = async (to: string) => {
           const msg = {
             to: to,
-            from: 'john@johnpadworski.dev',
+            from: 'support@krystalcleanpools.com',
             subject: ' ',
             html: ' ',
             text: ' ',
