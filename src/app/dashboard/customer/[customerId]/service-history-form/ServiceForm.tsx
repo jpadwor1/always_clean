@@ -47,7 +47,7 @@ interface FileData {
 
 interface ServiceFormProps {
   customerId: string | undefined;
-  user: User;
+  userId: string | undefined;
 }
 
 type ChemicalQuantities = {
@@ -75,7 +75,7 @@ const FormSchema = z.object({
     .optional(),
 });
 
-const ServiceForm = ({ customerId, user }: ServiceFormProps) => {
+const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -194,11 +194,10 @@ const ServiceForm = ({ customerId, user }: ServiceFormProps) => {
         id: file.id || '',
         serviceEventId: '',
       })),
-      technicianId: user?.id,
+      technicianId: userId,
     };
 
     try {
-      
       await Promise.all(
         fileData.map(async (file) => {
           await createFile({
@@ -223,7 +222,9 @@ const ServiceForm = ({ customerId, user }: ServiceFormProps) => {
                 </>
               ),
             });
-            router.push(`/dashboard/customer/${customerId}/service-history/${dbServiceEvent.id}`);
+            router.push(
+              `/dashboard/customer/${customerId}/service-history/${dbServiceEvent.id}`
+            );
           },
           onError: (error: any) => {
             toast({
@@ -250,7 +251,7 @@ const ServiceForm = ({ customerId, user }: ServiceFormProps) => {
       });
     }
   }
-
+  console.log(userId);
   return (
     <div className='flex flex-col mb-8 rounded-md w-full text-center gap-2 items-center'>
       <h2 className='text-2xl font-bold'>Complete Service Details</h2>

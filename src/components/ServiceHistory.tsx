@@ -280,6 +280,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
       },
     });
   };
+  console.log(technician)
   return (
     <div className='flex flex-col bg-white shadow-md p-6 rounded-md min-h-[calc(100vh-30rem)]'>
       <div className='flex flex-col justify-center items-center text-center space-y-4'>
@@ -333,7 +334,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
             <Avatar>
               <AvatarImage src={technician.photoURL} />
               <AvatarFallback>
-                {technician.name[0] + technician.name.split(' ')[1][0]}
+                {/* {technician.name[0] + technician.name.split(' ')[1][0]} */}
               </AvatarFallback>
             </Avatar>
             <p className='sm:text-sm text-md text-gray-900 font-medium tracking-wider ml-2'>

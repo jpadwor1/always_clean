@@ -32,7 +32,7 @@ const Page = async ({ params }: PageProps) => {
         </p>
       </div>
       <Separator />
-      <ServiceForm customerId={dbCustomer?.id} user={user} />
+      <ServiceForm customerId={dbCustomer?.id} userId={user?.id} />
     </div>
   );
 };
