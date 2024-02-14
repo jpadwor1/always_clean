@@ -76,7 +76,6 @@ const BillingForm = ({
     );
     return formatCurrency(invoiceTotals, 'USD');
   };
-console.log(invoices)
   return (
     // <form
     //   className='mt-12'

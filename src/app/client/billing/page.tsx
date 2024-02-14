@@ -4,12 +4,12 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { db } from '@/db';
 
 const Page = async () => {
-
-  const subscriptionPlan = await getUserSubscriptionPlan();
-  const invoices = await getCustomerInvoices()
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   const userId = user?.id;
+  const subscriptionPlan = await getUserSubscriptionPlan();
+  const invoices = await getCustomerInvoices(userId)
+  
 
 
  
