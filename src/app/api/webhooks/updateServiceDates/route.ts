@@ -13,7 +13,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const updatedCustomers = await Promise.all(
+    await Promise.all(
       customers.map(async (customer: Customer) => {
         return await db.customer.update({
           where: {

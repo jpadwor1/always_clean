@@ -64,7 +64,7 @@ const UserAccountNav = async ({
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href={role === 'USER' ? '/client' : '/profile'}>Profile</Link>
+          <Link href={role === 'USER' ? '/client' : '/client'}>Profile</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
