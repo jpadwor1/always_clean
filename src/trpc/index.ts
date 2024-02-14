@@ -942,6 +942,35 @@ export const appRouter = router({
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
       }
     }),
+  sendInvoiceReminder: privateProcedure
+    .input(
+      z.object({
+        customerEmail: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      console.log(input);
+      const sendEmail = async (to: string) => {
+        const msg = {
+          to: to,
+          from: 'support@krystalcleanpools.com',
+          subject: ' ',
+          html: ' ',
+          text: ' ',
+          template_id: 'd-278110de1f534178ac8e13e19a4f3c2c',
+        };
+
+        try {
+          await sgMail.send(msg);
+        } catch (error) {
+          console.error('Error sending email:', error);
+
+          throw new Error('Failed to send email');
+        }
+      };
+
+      await sendEmail(input.customerEmail);
+    }),
 });
 
 export type AppRouter = typeof appRouter;

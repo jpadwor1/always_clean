@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import sgMail from '@sendgrid/mail';
+import { trpc } from '@/app/_trpc/client';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -22,3 +24,5 @@ export enum CustomerType {
   VIP = 'VIP',
   Lost = 'LOST',
 }
+
+
