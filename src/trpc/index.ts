@@ -326,7 +326,7 @@ export const appRouter = router({
           html: ' ',
           text: ' ',
           subject: subject,
-          template_id: 'd-83550735ad044882b563fd4f9600180e',
+          template_id: 'd-cd087546446846448257cfe5f199fc80',
           dynamic_template_data: {
             full_name: input.fullName,
             address: input.address,
@@ -368,7 +368,7 @@ export const appRouter = router({
           subject: ' ',
           html: ' ',
           text: ' ',
-          template_id: 'd-aa89f78d44df4fa9a92e24dcf3fcfbfe',
+          template_id: 'd-fc576d7863c54a16a540f8d27573ef0f',
           dynamic_template_data: {
             sender_email: input.email,
             sender_message: input.message,
@@ -921,7 +921,7 @@ export const appRouter = router({
             subject: ' ',
             html: ' ',
             text: ' ',
-            template_id: 'd-88b5d2c4ae1a4896be481061e664a409',
+            template_id: 'd-275d63f041db4530920b60e24948baa5',
             dynamic_template_data: {
               sender_message: `Invoice Sent to Customer, ${customer.name}`,
             },
@@ -957,7 +957,7 @@ export const appRouter = router({
           subject: ' ',
           html: ' ',
           text: ' ',
-          template_id: 'd-278110de1f534178ac8e13e19a4f3c2c',
+          template_id: 'd-30cbd6b7cd654c3888aa20c66b2b24aa',
         };
 
         try {
