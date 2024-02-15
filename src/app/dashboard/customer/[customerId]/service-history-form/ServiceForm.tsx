@@ -85,7 +85,19 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
   } = form;
   const components: { title: string; href: string; description: string }[] = [
     {
-      title: 'Regular Pool Cleaning',
+      title: 'Regular Pool Cleaning (Residential)',
+      href: '/services/regular-cleaning',
+      description:
+        'Routine cleaning services including skimming, vacuuming, and brushing to keep your pool pristine.',
+    },
+    {
+      title: 'Large Pool Cleaning',
+      href: '/services/regular-cleaning',
+      description:
+        'Routine cleaning services including skimming, vacuuming, and brushing to keep your pool pristine.',
+    },
+    {
+      title: 'Commercial Service',
       href: '/services/regular-cleaning',
       description:
         'Routine cleaning services including skimming, vacuuming, and brushing to keep your pool pristine.',
@@ -195,7 +207,10 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
         serviceEventId: '',
       })),
       technicianId: userId,
+      name: data.service,
     };
+
+  
 
     try {
       await Promise.all(
@@ -251,7 +266,7 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
       });
     }
   }
-  console.log(userId);
+  
   return (
     <div className='flex flex-col mb-8 rounded-md w-full text-center gap-2 items-center'>
       <h2 className='text-2xl font-bold'>Complete Service Details</h2>
