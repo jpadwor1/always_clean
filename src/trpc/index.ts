@@ -1011,6 +1011,46 @@ export const appRouter = router({
 
       await sendEmail(input.customerEmail);
     }),
+
+  updateCustomerPreferences: privateProcedure
+    .input(
+      z.object({
+        serviceDay: z
+          .enum(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'])
+          .optional(),
+        special_instructions: z.string().max(300).optional(),
+        communication_emails: z.boolean().default(true).optional(),
+        communication_texts: z.boolean().default(true).optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      const dbCustomer = await db.customer.findFirst({
+        where: {
+          id: userId,
+        },
+      });
+
+      if (dbCustomer) {
+        await db.customer.update({
+          where: {
+            id: userId,
+          },
+          data: {
+            preferredServiceDay: input.serviceDay,
+            specialInstructions: input.special_instructions,
+            communicationEmails: input.communication_emails,
+            communicationTexts: input.communication_texts,
+          },
+        });
+      }
+
+      return { success: true };
+    }),
 });
 
 export type AppRouter = typeof appRouter;

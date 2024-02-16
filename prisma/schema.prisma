@@ -34,24 +34,30 @@ model Customer {
   id    String @id @unique
   email String @unique
 
-  services               ServiceEvent[]
-  name                   String
-  address                String
-  phone                  String
-  lastServiceDate        DateTime        @default(now())
-  nextServiceDate        DateTime        @default(now())
-  role                   Role            @default(USER)
-  customerType           CustomerType    @default(LEAD)
-  isProfileComplete      Boolean         @default(false)
+  services            ServiceEvent[]
+  name                String
+  address             String
+  phone               String
+  lastServiceDate     DateTime       @default(now())
+  nextServiceDate     DateTime       @default(now())
+  role                Role           @default(USER)
+  customerType        CustomerType   @default(LEAD)
+  isProfileComplete   Boolean        @default(false)
+  specialInstructions String?        @db.VarChar(300)
+  preferredServiceDay Day?
+  communicationEmails Boolean        @default(true)
+  communicationTexts  Boolean        @default(true)
+
   photoURL               String?
-  stripeCustomerId       String?         @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?         @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?         @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime?       @map(name: "stripe_current_period_end")
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?   @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
   stripeBalanceDue       Boolean?
   amountDue              Float?
   dueDate                String?
-  CalendarEvent          CalendarEvent[]
+
+  CalendarEvent CalendarEvent[]
 }
 
 model ServiceEvent {
@@ -145,4 +151,14 @@ enum CustomerType {
   INACTIVE
   LOST
   VIP
+}
+
+enum Day {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
 }

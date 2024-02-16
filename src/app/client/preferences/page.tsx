@@ -1,7 +1,18 @@
 import { Separator } from "@/components/ui/separator"
 import { NotificationsForm } from "./notificationsForm"
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { db } from "@/db";
 
-export default function SettingsNotificationsPage() {
+export default async function SettingsNotificationsPage() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  const customer = await db.customer.findUnique({
+    where: {
+      id: user?.id
+    } 
+  })
+
   return (
     <div className="space-y-6 bg-white shadow-md p-6 rounded-md">
       <div>
@@ -11,7 +22,7 @@ export default function SettingsNotificationsPage() {
         </p>
       </div>
       <Separator />
-      <NotificationsForm />
+      <NotificationsForm customer={customer} />
     </div>
   )
 }
