@@ -160,6 +160,18 @@ export default function StepperForm() {
         'Routine cleaning services including skimming, vacuuming, and brushing to keep your pool pristine.',
     },
     {
+      title: 'Large Pool Cleaning',
+      href: '/services/regular-cleaning',
+      description:
+        'Routine cleaning services including skimming, vacuuming, and brushing to keep your pool pristine.',
+    },
+    {
+      title: 'Commercial Service',
+      href: '/services/regular-cleaning',
+      description:
+        'Routine cleaning services including skimming, vacuuming, and brushing to keep your pool pristine.',
+    },
+    {
       title: 'Chemical Balancing',
       href: '/services/chemical-balancing',
       description:

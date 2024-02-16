@@ -32,7 +32,10 @@ export const appRouter = router({
         data: {
           id: user.id,
           email: user.email,
-          name: user.given_name && user.family_name ? user.given_name + ' ' + user.family_name : '',
+          name:
+            user.given_name && user.family_name
+              ? user.given_name + ' ' + user.family_name
+              : '',
           address: '',
           phone: '',
           photoURL: user.picture,
@@ -43,7 +46,10 @@ export const appRouter = router({
         data: {
           id: user.id,
           email: user.email,
-          name: user.given_name && user.family_name ? user.given_name + ' ' + user.family_name : '',
+          name:
+            user.given_name && user.family_name
+              ? user.given_name + ' ' + user.family_name
+              : '',
           address: '',
           phone: '',
           photoURL: user.picture,
@@ -54,14 +60,17 @@ export const appRouter = router({
 
       const sendEmail = async () => {
         const msg = {
-          to: "support@krystalcleanpools.com",
+          to: 'support@krystalcleanpools.com',
           from: 'support@krystalcleanpools.com',
           subject: ' ',
           html: ' ',
           text: ' ',
           template_id: 'd-f1d2078cbff4449b8ea1ae8c0f60ecc9',
           dynamic_template_data: {
-            name: user.given_name && user.family_name ? user.given_name + ' ' + user.family_name : '',
+            name:
+              user.given_name && user.family_name
+                ? user.given_name + ' ' + user.family_name
+                : '',
             email: user.email,
           },
         };
@@ -375,6 +384,10 @@ export const appRouter = router({
       };
 
       await sendBookingConfirmationEmail(input.email, 'Booking Confirmation');
+      await sendBookingConfirmationEmail(
+        'support@krystalcleanpools.com',
+        'New Booking Request'
+      );
 
       return;
     }),

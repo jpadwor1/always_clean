@@ -128,7 +128,19 @@ const BookingForm: React.FC<BookingFormProps> = ({ activeStep }) => {
   ];
   const components: { title: string; href: string; description: string }[] = [
     {
-      title: 'Regular Pool Cleaning',
+      title: 'Regular Pool Cleaning (Residential)',
+      href: '/services/regular-cleaning',
+      description:
+        'Routine cleaning services including skimming, vacuuming, and brushing to keep your pool pristine.',
+    },
+    {
+      title: 'Large Pool Cleaning',
+      href: '/services/regular-cleaning',
+      description:
+        'Routine cleaning services including skimming, vacuuming, and brushing to keep your pool pristine.',
+    },
+    {
+      title: 'Commercial Service',
       href: '/services/regular-cleaning',
       description:
         'Routine cleaning services including skimming, vacuuming, and brushing to keep your pool pristine.',
@@ -158,6 +170,7 @@ const BookingForm: React.FC<BookingFormProps> = ({ activeStep }) => {
         'Seasonal services to prepare your pool for the summer and winterize it for the off-season.',
     },
   ];
+  
   const [formData, setFormData] = React.useState({
     fullName: '',
     email: '',
