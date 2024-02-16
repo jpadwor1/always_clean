@@ -78,7 +78,7 @@
     "date-fns": "^2.30.0",
     "date-fns-tz": "^2.0.0",
     "embla-carousel-react": "^8.0.0-rc17",
-    "firebase": "^10.7.1",
+    "firebase": "^10.8.0",
     "framer-motion": "^10.16.16",
     "fs": "^0.0.1-security",
     "lucide-react": "^0.294.0",

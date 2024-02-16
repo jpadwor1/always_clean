@@ -27,7 +27,7 @@ export async function GET() {
             subject: ' ',
             html: ' ',
             text: ' ',
-            template_id: 'd-278110de1f534178ac8e13e19a4f3c2c',
+            template_id: 'd-30cbd6b7cd654c3888aa20c66b2b24aa',
           };
 
           try {
