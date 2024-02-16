@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import NavbarMenu from './NavbarMenu';
-
+import {LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
 interface MobileNavProps {
   isAuth: boolean;
 }
@@ -54,13 +54,14 @@ const MobileNav = ({ isAuth }: MobileNavProps) => {
                   </li>
                   <li className='my-3 h-px w-full bg-gray-300'></li>
                   <li>
-                    <Link
+                    {/* <Link
                       onClick={() => closeOnCurrent('/sign-in')}
                       className='flex items-center w-full font-semibold '
                       href='/sign-in'
                     >
                       Sign in
-                    </Link>
+                    </Link> */}
+                    <LoginLink className='flex items-center w-full font-semibold'>Login</LoginLink>
                   </li>
                   <li className='my-3 h-px w-full bg-gray-300'></li>
                   <li>
