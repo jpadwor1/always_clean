@@ -26,9 +26,7 @@ const notificationsFormSchema = z.object({
   }),
   mobile: z.boolean().default(false).optional(),
   communication_emails: z.boolean().default(false).optional(),
-  social_emails: z.boolean().default(false).optional(),
-  marketing_emails: z.boolean().default(false).optional(),
-  security_emails: z.boolean(),
+  communication_texts: z.boolean().default(false).optional(),
 });
 
 type NotificationsFormValues = z.infer<typeof notificationsFormSchema>;
@@ -36,6 +34,7 @@ type NotificationsFormValues = z.infer<typeof notificationsFormSchema>;
 // This can come from your database or API.
 const defaultValues: Partial<NotificationsFormValues> = {
   communication_emails: true,
+  communication_texts: true,
   serviceDay: 'thursday',
 };
 
@@ -113,6 +112,29 @@ export function NotificationsForm() {
                     </FormLabel>
                     <FormDescription>
                       Receive emails about your account activity.
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+<FormField
+              control={form.control}
+              name='communication_texts'
+              render={({ field }) => (
+                <FormItem className='flex flex-row items-center justify-between rounded-lg border p-4'>
+                  <div className='space-y-0.5'>
+                    <FormLabel className='text-base'>
+                      Service notifications
+                    </FormLabel>
+                    <FormDescription>
+                      Receive text messages about your account activity.
                     </FormDescription>
                   </div>
                   <FormControl>
