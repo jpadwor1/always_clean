@@ -10,9 +10,8 @@ interface PageProps {
   };
 }
 
-
 const Page = async ({ params }: PageProps) => {
-  const {getUser} = getKindeServerSession();
+  const { getUser } = getKindeServerSession();
   const user = await getUser();
   const { customerId } = params;
   const dbCustomer = await db.customer.findFirst({
@@ -21,14 +20,12 @@ const Page = async ({ params }: PageProps) => {
     },
   });
 
- 
-
   return (
     <div className='space-y-6 bg-white shadow-md p-6 rounded-md'>
       <div>
         <h3 className='text-lg font-medium'>Customer Service Center</h3>
         <p className='text-sm text-muted-foreground'>
-          Create service events for {dbCustomer?.name}.
+          Create service event for {dbCustomer?.name}.
         </p>
       </div>
       <Separator />

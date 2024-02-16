@@ -885,7 +885,6 @@ export const appRouter = router({
       }
 
       try {
-        // Look up a customer in your database
         let customer = await db.customer.findUnique({
           where: {
             id: input.customerId,
@@ -949,6 +948,7 @@ export const appRouter = router({
           },
           data: {
             dueDate: dueDate.toString(),
+            lastInvoiceSent: new Date()
           },
         });
         //Confirmation email to owner
