@@ -14,6 +14,10 @@ const Page = () => {
           Your service appointment has been confirmed. You will receive a
           confirmation email shortly with additional details about our visit.
         </p>
+        <p className='text-xl mt-4 mb-10'>
+          We will reach out to you if changes need to be made to your scheduled
+          service.
+        </p>
         <div
           aria-hidden='true'
           className='pointer-events-none absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80'
