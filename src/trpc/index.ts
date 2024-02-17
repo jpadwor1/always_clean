@@ -1073,6 +1073,33 @@ export const appRouter = router({
 
       return { success: true };
     }),
+
+  createPost: privateProcedure.input(z.object({
+    title: z.string(),
+    desc: z.string(),
+    img: z.string(),
+    slug: z.string(),
+    catSlug: z.string(),
+  })).mutation(async ({ ctx, input }) => {
+    const { userId, user } = ctx;
+
+    if (!userId || !user) {
+      throw new TRPCError({ code: 'UNAUTHORIZED' });
+    }
+
+    await db.post.create({
+      data: {
+        title: input.title,
+        desc: input.desc,
+        img: input.img,
+        slug: input.slug,
+        userId: userId,
+      },
+    })
+
+    return { success: true };
+  })
+  
 });
 
 export type AppRouter = typeof appRouter;

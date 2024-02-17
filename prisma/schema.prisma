@@ -141,24 +141,13 @@ model Post {
   createdAt DateTime @default(now())
   slug      String   @unique
   title     String
-  desc      String
+  desc      String   @db.LongText
   img       String?
   views     Int      @default(0)
-  catSlug   String
-  cat       Category @relation(fields: [catSlug], references: [slug])
   userId    String
   user      User     @relation(fields: [userId], references: [email])
 
-  @@index([catSlug])
   @@index([userId])
-}
-
-model Category {
-  id    String  @id @default(cuid()) @map("_id")
-  slug  String  @unique
-  title String
-  img   String?
-  Posts Post[]
 }
 
 enum Role {
