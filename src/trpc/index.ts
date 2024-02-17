@@ -543,6 +543,28 @@ export const appRouter = router({
         });
       }
 
+      const msg = {
+        to: dbCustomer.email,
+        from: 'support@krystalcleanpools.com',
+        subject: ' ',
+        html: ' ',
+        text: ' ',
+        template_id: 'd-1db21318d80c47078998977e3f5a8b05',
+        dynamic_template_data: {
+          full_name: dbCustomer.name,
+          service_date: format(new Date(input.dateCompleted), 'EEEE, d MMMM'),
+
+        },
+      };
+
+      try {
+        await sgMail.send(msg);
+      } catch (error) {
+        console.error('Error sending email:', error);
+
+        throw new Error('Failed to send email');
+      }
+
       return dbServiceEvent;
     }),
 
@@ -989,7 +1011,7 @@ export const appRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      console.log(input);
+      
       const sendEmail = async (to: string) => {
         const msg = {
           to: to,
