@@ -28,6 +28,8 @@ model User {
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+
+  Post Post[]
 }
 
 model Customer {
@@ -49,16 +51,16 @@ model Customer {
   communicationTexts  Boolean        @default(true)
 
   photoURL               String?
-  stripeCustomerId       String?         @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?         @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?         @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime?       @map(name: "stripe_current_period_end")
+  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripePriceId          String?   @map(name: "stripe_price_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
   stripeBalanceDue       Boolean?
   amountDue              Float?
   dueDate                String?
   lastInvoiceSent        DateTime?
-  
-  CalendarEvent          CalendarEvent[]
+
+  CalendarEvent CalendarEvent[]
 }
 
 model ServiceEvent {
@@ -134,6 +136,30 @@ model File {
   @@index([serviceEventId])
 }
 
+model Post {
+  id        String   @id @default(cuid()) @map("_id")
+  createdAt DateTime @default(now())
+  slug      String   @unique
+  title     String
+  desc      String
+  img       String?
+  views     Int      @default(0)
+  catSlug   String
+  cat       Category @relation(fields: [catSlug], references: [slug])
+  userId    String
+  user      User     @relation(fields: [userId], references: [email])
+
+  @@index([catSlug])
+  @@index([userId])
+}
+
+model Category {
+  id    String  @id @default(cuid()) @map("_id")
+  slug  String  @unique
+  title String
+  img   String?
+  Posts Post[]
+}
 
 enum Role {
   USER
