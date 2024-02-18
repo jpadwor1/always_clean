@@ -24,6 +24,7 @@ const Navbar = async () => {
     },
   });
 
+  const role = dbCustomer?.role;
   return (
     <nav className='sticky h-20 inset-x-0 top-0 z-30 w-flow border-b border-gray-200 bg-white/75 backdrop-blur-lg transtion-all'>
       <MaxWidthWrapper>
@@ -32,7 +33,7 @@ const Navbar = async () => {
             <Image src='/logo.png' width={120} height={80} alt='Krystal Clean' />
           </Link>
 
-          <MobileNav isAuth={!!user}/>
+          <MobileNav role={role} isAuth={!!user}/>
 
           <div className='hidden items-center space-x-4 sm:flex'>
           <NavbarMenu />

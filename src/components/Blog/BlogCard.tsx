@@ -15,8 +15,11 @@ const BlogCard = async ({ post }: BlogCardProps) => {
     },
   });
   return (
-    <Link href={`/blog/${post.slug}`} className='w-full p-4 mb-8 hover:shadow-md shadow-sm rounded-md'>
-      <div className='block mb-6 overflow-hidden rounded-md lg:min-h-[500px]'>
+    <Link
+      href={`/blog/${post.slug}`}
+      className='w-full p-4 mb-8 hover:shadow-md shadow-sm rounded-md'
+    >
+      <div className='block mb-6 overflow-hidden rounded-md'>
         <Image
           className='w-full h-[300px]'
           src={post.img}
@@ -41,9 +44,7 @@ const BlogCard = async ({ post }: BlogCardProps) => {
         className='h-[85px] mb-4 text-base md:text-lg text-coolGray-400 font-medium'
       />
 
-      <div
-        className='inline-flex items-center text-base md:text-lg text-blue-500 hover:text-blue-600 font-semibold'
-      >
+      <div className='inline-flex items-center text-base md:text-lg text-blue-500 hover:text-blue-600 font-semibold'>
         <span className='mr-3'>Read Post</span>
         <svg
           width={8}

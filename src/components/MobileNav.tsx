@@ -12,9 +12,10 @@ import {
 } from '@kinde-oss/kinde-auth-nextjs/components';
 interface MobileNavProps {
   isAuth: boolean;
+  role: string;
 }
 
-const MobileNav = ({ isAuth }: MobileNavProps) => {
+const MobileNav = ({ isAuth, role }: MobileNavProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const isSubscribed = false;
   const toggleOpen = () => setIsOpen((prev) => !prev);
@@ -75,12 +76,33 @@ const MobileNav = ({ isAuth }: MobileNavProps) => {
                     <Link
                       onClick={() => closeOnCurrent('/dashboard')}
                       className='flex items-center w-full font-semibold '
-                      href='/dashboard'
+                      href={role === 'ADMIN' ? '/dashboard' : '/client'}
                     >
-                      Dashboard
+                      {role === 'ADMIN' ? 'Dashboard' : 'Profile'}
                     </Link>
                   </li>
-
+                  {role === 'ADMIN' && (
+                    <>
+                      <li>
+                        <Link
+                          onClick={() => closeOnCurrent('/dashboard')}
+                          className='flex items-center w-full font-semibold '
+                          href='/blog'
+                        >
+                          Blog Writer
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          onClick={() => closeOnCurrent('/dashboard')}
+                          className='flex items-center w-full font-semibold '
+                          href='/client'
+                        >
+                          Profile
+                        </Link>
+                      </li>
+                    </>
+                  )}
                   <li className='my-3 h-px w-full bg-gray-300'></li>
 
                   <li>
