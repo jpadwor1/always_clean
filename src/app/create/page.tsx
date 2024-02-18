@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import styles from './CreatePage.module.css';
-import { useEffect, useState,useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import 'react-quill/dist/quill.bubble.css';
 import { useRouter } from 'next/navigation';
 import {
@@ -20,7 +20,7 @@ import { toast } from '@/components/ui/use-toast';
 import dynamic from 'next/dynamic';
 import debounce from 'lodash/debounce';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-const CreatePage = () => {
+const Page = () => {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -31,8 +31,6 @@ const CreatePage = () => {
   const [catSlug, setCatSlug] = useState('maintence');
   const createPost = trpc.createPost.useMutation();
 
-  
-  
   useEffect(() => {
     const storage = getStorage(app);
     const upload = () => {
@@ -161,17 +159,13 @@ const CreatePage = () => {
           )}
         </div>
         <div className='flex gap-2 h-[50vh] px-6 relative'>
-          {!document ? (
-            <textarea id='editor-fallback' />
-          ) : (
-            <ReactQuill
-              className='w-full'
-              theme='bubble'
-              value={value}
-              onChange={setValue}
-              placeholder='Tell your story...'
-            />
-          )}
+          <ReactQuill
+            className='w-full'
+            theme='bubble'
+            value={value}
+            onChange={setValue}
+            placeholder='Tell your story...'
+          />
         </div>
         <Button className='w-1/4 self-end mt-4' onClick={handleSubmit}>
           Publish
@@ -181,4 +175,4 @@ const CreatePage = () => {
   );
 };
 
-export default CreatePage;
+export default Page;
