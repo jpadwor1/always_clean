@@ -29,6 +29,11 @@ const Page = () => {
   const [value, setValue] = useState('');
   const [title, setTitle] = useState('');
   const [catSlug, setCatSlug] = useState('maintence');
+  const [postSEO, setPostSEO] = useState({
+    metaDescription: '',
+    excerpt: '',
+    slug: '',
+  }); 
   const createPost = trpc.createPost.useMutation();
 
   useEffect(() => {
@@ -78,29 +83,32 @@ const Page = () => {
       .replace(/^-+|-+$/g, '');
 
   const handleSubmit = async () => {
+    
     const postData = {
       title,
       desc: value,
       img: media,
       slug: slugify(title),
       catSlug: catSlug || 'style',
+      postSEO,
     };
+
     console.log(postData);
 
-    createPost.mutate(postData, {
-      onSuccess: () => {
-        toast({
-          title: 'Post Created',
-          description: 'Your post has been created successfully',
-        });
-      },
-      onError: (error) => {
-        toast({
-          title: 'Error',
-          description: error.message,
-        });
-      },
-    });
+    // createPost.mutate(postData, {
+    //   onSuccess: () => {
+    //     toast({
+    //       title: 'Post Created',
+    //       description: 'Your post has been created successfully',
+    //     });
+    //   },
+    //   onError: (error) => {
+    //     toast({
+    //       title: 'Error',
+    //       description: error.message,
+    //     });
+    //   },
+    // });
   };
 
   return (
@@ -111,6 +119,22 @@ const Page = () => {
           placeholder='Title'
           className='p-[50px] text-2xl border-none outline-none bg-transparent text-gray-900'
           onChange={(e) => setTitle(e.target.value)}
+        />
+        <textarea
+          placeholder='Meta Description'
+          className='ml-10 text-lg border-none outline-none bg-transparent text-gray-900'
+          onChange={(e) => setPostSEO(()=>({...postSEO, metaDescription: e.target.value}))}
+        />
+        <input
+          type='text'
+          placeholder='Slug'
+          className='p-0 ml-10 my-4 text-lg border-none outline-none bg-transparent text-gray-900'
+          onChange={(e) => setPostSEO(()=>({...postSEO, slug: e.target.value}))}
+        />
+        <textarea
+          placeholder='Excerpt'
+          className='ml-10 my-6 text-lg border-none outline-none bg-transparent text-gray-900'
+          onChange={(e) => setPostSEO(()=>({...postSEO, excerpt: e.target.value}))}
         />
         <div className='flex flex-row items-center justify-between mb-4 relative'>
           <select

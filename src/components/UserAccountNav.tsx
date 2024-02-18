@@ -34,7 +34,7 @@ const UserAccountNav = async ({
               <div className='relative aspect-square h-full w-full'>
                 <Image
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
                   src={imageUrl}
                   alt='profile picture'
                   referrerPolicy='no-referrer'
@@ -64,19 +64,18 @@ const UserAccountNav = async ({
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href={role === 'USER' ? '/client' : '/client'}>Profile</Link>
+          <Link href='/client'>Profile</Link>
         </DropdownMenuItem>
-
-        <DropdownMenuItem asChild>
-          {email ? (
+        {email && (
+          <DropdownMenuItem asChild>
             <Link href='/client/billing'>Manage billing</Link>
-          ) : (
-            <Link href='/pricing'>
-              Upgrade <Gem className='ml-1 h-4 w-4 text-green-400' />
-            </Link>
-          )}
-        </DropdownMenuItem>
-
+          </DropdownMenuItem>
+        )}
+        {role === 'ADMIN' && (
+          <DropdownMenuItem asChild>
+            <Link href='/create'>Create New Post</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
 
         <DropdownMenuItem className='cursor-pointer' asChild>

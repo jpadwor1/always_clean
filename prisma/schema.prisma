@@ -137,15 +137,17 @@ model File {
 }
 
 model Post {
-  id        String   @id @default(cuid()) @map("_id")
-  createdAt DateTime @default(now())
-  slug      String   @unique
-  title     String
-  desc      String   @db.LongText
-  img       String?
-  views     Int      @default(0)
-  userId    String
-  user      User     @relation(fields: [userId], references: [email])
+  id              String   @id @default(cuid()) @map("_id")
+  createdAt       DateTime @default(now())
+  slug            String   @unique
+  title           String
+  desc            String   @db.LongText
+  img             String?
+  metaDescription String?  @db.VarChar(1000)
+  excerpt         String?  @db.VarChar(1000)
+  views           Int      @default(0)
+  userId          String
+  user            User     @relation(fields: [userId], references: [email])
 
   @@index([userId])
 }

@@ -1080,6 +1080,11 @@ export const appRouter = router({
     img: z.string(),
     slug: z.string(),
     catSlug: z.string(),
+    postSEO: z.object({
+      metaDescription: z.string(),
+      excerpt: z.string(),
+      slug: z.string(),
+    })
   })).mutation(async ({ ctx, input }) => {
     const { userId, user } = ctx;
 
@@ -1092,8 +1097,10 @@ export const appRouter = router({
         title: input.title,
         desc: input.desc,
         img: input.img,
-        slug: input.slug,
+        slug: input.postSEO.slug.length > 0 ? input.postSEO.slug : input.slug,
         userId: userId,
+        metaDescription: input.postSEO.metaDescription,
+        excerpt: input.postSEO.excerpt,   
       },
     })
 
