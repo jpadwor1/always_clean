@@ -147,7 +147,7 @@ model Post {
   excerpt         String?  @db.VarChar(1000)
   views           Int      @default(0)
   userId          String
-  user            User     @relation(fields: [userId], references: [email])
+  user            User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }

@@ -93,22 +93,21 @@ const Page = () => {
       postSEO,
     };
 
-    console.log(postData);
 
-    // createPost.mutate(postData, {
-    //   onSuccess: () => {
-    //     toast({
-    //       title: 'Post Created',
-    //       description: 'Your post has been created successfully',
-    //     });
-    //   },
-    //   onError: (error) => {
-    //     toast({
-    //       title: 'Error',
-    //       description: error.message,
-    //     });
-    //   },
-    // });
+    createPost.mutate(postData, {
+      onSuccess: () => {
+        toast({
+          title: 'Post Created',
+          description: 'Your post has been created successfully',
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: 'Error',
+          description: error.message,
+        });
+      },
+    });
   };
 
   return (
