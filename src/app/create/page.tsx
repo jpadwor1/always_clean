@@ -12,12 +12,13 @@ import {
   getDownloadURL,
 } from 'firebase/storage';
 import { app } from '@/config/firebase';
-import ReactQuill from 'react-quill';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trpc } from '../_trpc/client';
 import { toast } from '@/components/ui/use-toast';
+import dynamic from 'next/dynamic';
+
 
 const CreatePage = () => {
   const router = useRouter();
@@ -29,6 +30,8 @@ const CreatePage = () => {
   const [title, setTitle] = useState('');
   const [catSlug, setCatSlug] = useState('maintence');
  const createPost = trpc.createPost.useMutation();
+
+ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
   useEffect(() => {
     const storage = getStorage(app);

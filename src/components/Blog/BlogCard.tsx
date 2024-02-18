@@ -1,42 +1,48 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { Post } from '@prisma/client';
+import { db } from '@/db';
+import { format } from 'date-fns';
 
-const BlogCard = () => {
+interface BlogCardProps {
+  post: Post;
+}
+const BlogCard = async ({ post }: BlogCardProps) => {
+  const author = await db.user.findFirst({
+    where: {
+      id: post.userId,
+    },
+  });
   return (
-    <div className='w-full md:w-1/2 px-4 mb-8'>
-      <a className='block mb-6 overflow-hidden rounded-md' href='#'>
+    <Link href={`/blog/${post.slug}`} className='w-full p-4 mb-8 hover:shadow-md shadow-sm rounded-md'>
+      <div className='block mb-6 overflow-hidden rounded-md  min-h-[500px]'>
         <Image
-          className='w-full'
-          src='/blog/effect.jpg'
+          className='w-full object-fit'
+          src={post.img}
           alt=''
           height={400}
-          width={600}
+          width={400}
         />
-      </a>
+      </div>
       <div className='mb-4'>
-        <a
-          className='inline-block py-1 px-3 text-xs leading-5 text-blue-500 hover:text-blue-600 font-medium uppercase bg-blue-100 hover:bg-blue-200 rounded-full shadow-sm'
-          href='#'
-        >
+        <div className='inline-block py-1 px-3 text-xs leading-5 text-blue-500 hover:text-blue-600 font-medium uppercase bg-blue-100 hover:bg-blue-200 rounded-full shadow-sm'>
           Technology
-        </a>
+        </div>
       </div>
       <p className='mb-2 text-coolGray-500 font-medium'>
-        John Doe • 19 Jan 2022
+        {author.name} • {format(new Date(post.createdAt), 'MMM do, yyyy')}
       </p>
-      <a
-        className='inline-block mb-4 text-2xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline'
-        href='#'
-      >
-        A small business is only as good as its tools and it is totally true.
-      </a>
-      <p className='mb-4 text-base md:text-lg text-coolGray-400 font-medium'>
-        We&apos;ve all experienced the chaos of multiple spreadsheets, tracking
-        and insight tools, and scrambling for the right data at the right time.
-      </p>
-      <a
+      <div className='inline-block mb-4 text-2xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline'>
+        {post.title}
+      </div>
+      <div
+        dangerouslySetInnerHTML={{ __html: `${post.desc.slice(0, 120)}...` }}
+        className='mb-4 text-base md:text-lg text-coolGray-400 font-medium'
+      />
+
+      <div
         className='inline-flex items-center text-base md:text-lg text-blue-500 hover:text-blue-600 font-semibold'
-        href='#'
       >
         <span className='mr-3'>Read Post</span>
         <svg
@@ -51,8 +57,8 @@ const BlogCard = () => {
             fill='currentColor'
           />
         </svg>
-      </a>
-    </div>
+      </div>
+    </Link>
   );
 };
 

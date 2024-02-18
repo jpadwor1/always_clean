@@ -2,12 +2,25 @@ import React from 'react';
 import Image from 'next/image';
 import BlogCard from '@/components/Blog/BlogCard';
 import Link from 'next/link';
+import { db } from '@/db';
+import { Post } from '@prisma/client';
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { Button, buttonVariants } from '@/components/ui/button';
 
-const Page = () => {
-    
+const Page = async () => {
+  const posts = await db.post.findMany();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  const dbUser = await db.user.findFirst({
+    where: {
+      id: user?.id,
+    },
+  });
+
   return (
     <section
-      className='py-24 bg-white'
+      className='py-12 bg-white'
       style={{
         backgroundImage: 'url("/pattern-white.svg")',
         backgroundRepeat: 'no-repeat',
@@ -17,35 +30,27 @@ const Page = () => {
       <div className='container px-4 mx-auto'>
         <div className='md:max-w-5xl mx-auto mb-8 md:mb-16 text-center'>
           <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium uppercase rounded-full shadow-sm'>
-            Blog
+            Explore Our Blogs
           </span>
           <h3 className='mb-4 text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter'>
-            Our mission is to make knowledge and news accessible for everyone.
+            Dive into a World of Pool Care Excellence
           </h3>
           <p className='mb-10 text-lg md:text-xl text-coolGray-500 font-medium'>
-            With our integrated CRM, project management, collaboration and
-            invoicing capabilities, you can manage your business in one secure
-            platform.
+            Your ultimate guide to pool maintenance, innovative technologies,
+            and tips for keeping your pool sparkling all year round.
           </p>
-          <div className='relative mx-auto md:w-80'>
-            <Image
-              className='absolute top-1/2 left-4 transform -translate-y-1/2'
-              src='/blog/search.svg'
-              alt=''
-              height={30}
-              width={30}
-            />
-            <input
-              className='w-full py-3 pl-12 pr-4 text-coolGray-900 leading-tight placeholder-coolGray-500 border border-coolGray-200 rounded-lg shadow-xsm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50'
-              type='text'
-              placeholder='Search'
-            />
-          </div>
         </div>
-        
-        <div className='flex flex-wrap -mx-4 mb-12 md:mb-20'>
-        <BlogCard />
-          
+        {dbUser && dbUser?.role === 'ADMIN' && (
+          <div className='w-full flex items-center justify-center mb-4'>
+            <Link href='/create' className={buttonVariants({})}>
+              Create New Post
+            </Link>
+          </div>
+        )}
+        <div className='grid grid-cols-2 mx-4 mb-12 md:mb-20 gap-2'>
+          {posts.map((post: Post) => (
+            <BlogCard key={post.id} post={post} />
+          ))}
         </div>
         <Link
           className='flex items-center justify-center py-2 px-4 mx-auto text-sm leading-5 text-blue-50 font-medium bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 md:max-w-max rounded-md'

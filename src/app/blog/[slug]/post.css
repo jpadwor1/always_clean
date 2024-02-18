@@ -1,0 +1,23 @@
+.post-content h1 {
+  font-size: 40px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.post-content h2 {
+  font-size: 30px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.post-content a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.post-content li {
+  margin-bottom: 4px;
+  list-style: circle;
+}

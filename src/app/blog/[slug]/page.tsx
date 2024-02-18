@@ -1,22 +1,43 @@
 'use client';
 
+import { trpc } from '@/app/_trpc/client';
+import MaxWidthWrapper from '@/components/MaxWidthWrapper';
+import { Post, User } from '@prisma/client';
+import { format } from 'date-fns';
+import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import './post.css';
 
 interface PageProps {
   params: {
-    blogId: string;
+    slug: string;
   };
 }
 
 const Page = ({ params }: PageProps) => {
-  const { blogId } = params;
-
+  const { slug } = params;
+  const { data } = trpc.getPost.useQuery({ slug: slug });
+  
   const copyURL = () => {
     const url = window.location.href;
     navigator.clipboard.writeText(url);
   };
+
+  if (!data) {
+    return (
+      <MaxWidthWrapper className='mt-40 h-[500px] flex items-center justify-center'>
+        <div className='flex flex-row items-center justify-center'>
+          <Loader2 className='w-12 h-12 animate-spin text-blue-600' />
+          <p className='text-xl text-gray-500 font-medium ml-2'>Loading...</p>
+        </div>
+      </MaxWidthWrapper>
+    );
+  }
+  const post: Post = data.post;
+  const author: User = data.author;
+  console.log(post);
   return (
     <section
       className='py-16 md:py-24 bg-white'
@@ -28,142 +49,31 @@ const Page = ({ params }: PageProps) => {
       <div className='container px-4 mx-auto'>
         <div className='md:max-w-2xl mx-auto mb-12 text-center'>
           <div className='flex items-center justify-center'>
-            <p className='inline-block text-green-500 font-medium'>John Doe</p>
+            <p className='inline-block text-green-500 font-medium'>{author.name}</p>
             <span className='mx-1 text-green-500'>•</span>
             <p className='inline-block text-green-500 font-medium'>
-              10 Feb 2023
+              {format(new Date(post.createdAt), 'MMM do, yyyy')}
             </p>
           </div>
           <h2 className='mb-4 text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter'>
-            Crystal Clear Oasis: Mastering Pool Maintenance
+            {post.title}
           </h2>
-          <p className='mb-6 text-lg md:text-xl font-medium text-coolGray-500'>
-            A Guide to Running Your Pump and Cleaning Equipment for a Sparkling
-            Pool All Year Round
-          </p>
           <div className='inline-block py-1 px-3 text-xs leading-5 text-green-500 font-medium uppercase bg-green-100 rounded-full shadow-sm'>
             DIY Pool Cleaning
           </div>
         </div>
         <div className='mb-10 mx-auto max-w-max overflow-hidden rounded-lg'>
           <Image
-            src='/blog/content-photo1.jpg'
+            src={post.img}
             alt=''
             height={400}
             width={600}
           />
         </div>
         <div className='md:max-w-3xl mx-auto'>
-          <p className='mb-8 pb-10 text-lg md:text-xl font-medium text-coolGray-500 border-b border-coolGray-100'>
-            Pool maintenance is an essential task for homeowners in Pinal
-            County, AZ, where the arid climate and high temperatures can
-            significantly impact pool water quality and equipment efficiency. In
-            this blog post, we&aposll delve into the critical aspects of pool
-            cleaning, focusing on running the pump and managing cleaning
-            equipment, to ensure your swimming pool remains a refreshing oasis
-            in the desert heat.
-          </p>
-          <h3 className='mb-4 text-2xl md:text-3xl font-semibold text-coolGray-800'>
-            The Heart of Pool Maintenance: The Pump
-          </h3>
-          <p className='mb-4 text-base md:text-lg text-coolGray-500'>
-            The pump serves as the heart of your pool&apos;s circulation system,
-            moving water through the filter to remove debris and distribute
-            chemicals evenly. In Pinal County&apos;s warm climate, it&apos;s
-            vital to run your pool pump for about 8-12 hours daily during the
-            summer months. This extended running time is crucial to combat the
-            rapid algae growth and evaporation rates caused by the intense sun
-            and heat.
-          </p>
+         <div className='post-content' dangerouslySetInnerHTML={{__html: post.desc}}/>
 
-          <p className='mb-6 text-base md:text-lg text-coolGray-500'>
-            For energy efficiency, consider installing a variable speed pump.
-            These pumps can be adjusted to run at lower speeds for regular
-            circulation and higher speeds for tasks requiring more power, such
-            as vacuuming the pool. This adaptability not only saves energy but
-            also reduces wear on the pump, extending its lifespan.
-          </p>
-          <div className='mb-4 max-w-max overflow-hidden rounded-md'>
-            <Image src='/blog/pool-pump.jpg' alt='' height={400} width={600} />
-          </div>
-          <p className='mb-8 text-base md:text-lg text-coolGray-400 font-medium'>
-            <span>
-              A good quality pump can make or break your pool cleaning
-              experience.
-            </span>
-          </p>
-          <h3 className='mb-4 text-2xl md:text-3xl font-semibold text-coolGray-800'>
-            Keeping It Clean: Pool Cleaning Equipment
-          </h3>
-          <p className='mb-14 text-base md:text-lg text-coolGray-500'>
-            Regular use of pool cleaning equipment is necessary to keep your
-            pool water clear and sanitary. Here are the essential tools for pool
-            maintenance in Pinal County:
-          </p>
-
-          <ol className='list-decimal list-inside md:px-5 mb-14 text-base md:text-lg text-coolGray-500'>
-            <li className='mb-2'>
-              <span className='font-medium'>
-                Skimmer Nets and Pool Brushes:
-              </span>{' '}
-              Daily skimming of leaves, insects, and other debris is crucial in
-              Pinal County, where the desert winds can fill your pool with
-              unwanted materials. A pool brush should be used weekly to scrub
-              the walls and floor, preventing algae buildup.
-            </li>
-            <li className='mb-2'>
-              <span className='font-medium'>Automatic Pool Cleaners:</span> An
-              automatic pool cleaner can be a significant time-saver,
-              efficiently removing debris from the pool floor and walls. There
-              are various types, including suction-side, pressure-side, and
-              robotic cleaners. Robotic cleaners, in particular, are highly
-              efficient, though they come with a higher upfront cost.
-            </li>
-            <li className='mb-2'>
-              <span className='font-medium'>Pool Vacuum:</span> For a thorough
-              cleaning, a manual pool vacuum is essential. It allows you to
-              target specific areas that need attention, especially after dust
-              storms common in the area.
-            </li>
-          </ol>
-
-          <h3 className='mb-4 text-2xl md:text-3xl font-semibold text-coolGray-800'>
-            Maintenance Schedule Tips
-          </h3>
-          <p className='mb-14 text-base md:text-lg text-coolGray-500'>
-            Creating a maintenance schedule tailored to Pinal County&apos;s
-            unique environment can help you stay on top of pool care.
-            Here&apos;s a simple weekly plan:
-          </p>
-
-          <ol className='list-decimal list-inside md:px-5 mb-14 text-base md:text-lg text-coolGray-500'>
-            <li className='mb-2'>
-              <span className='font-medium'>Daily:</span> Run the pump for 8-12
-              hours, skim surface debris, and check the water level.
-            </li>
-            <li className='mb-2'>
-              <span className='font-medium'>Weekly:</span> Test water chemistry
-              and adjust as necessary, brush pool walls and floor, vacuum the
-              pool, and check the filter pressure.
-            </li>
-            <li className='mb-2'>
-              <span className='font-medium'>Monthly:</span> Clean the pool
-              filter, check the pump and other equipment for signs of wear or
-              damage, and lubricate o-rings and seals as needed.
-            </li>
-          </ol>
-          <p className='mb-10 pb-10 text-base md:text-lg text-coolGray-500 border-b border-coolGray-100'>
-            Maintaining a pool in Pinal County, AZ, requires diligence,
-            especially during the hot summer months. By ensuring your pump runs
-            efficiently and utilizing the right cleaning equipment, you can keep
-            your pool sparkling clean and inviting. Remember, regular
-            maintenance not only keeps your pool ready for use but also prolongs
-            the life of your pool equipment, saving you money in the long run.
-            Whether you&apos;re taking a morning swim or hosting a weekend pool
-            party, a well-maintained pool is the centerpiece of outdoor living
-            in the desert.
-          </p>
-          <div className='flex items-center justify-center'>
+          <div className='flex items-center justify-center mt-10'>
             <Link
               className='inline-flex mr-4 items-center justify-center py-2 px-4 text-coolGray-300 hover:text-coolGray-400 bg-white hover:bg-coolGray-100 border border-coolGray-200 hover:border-coolGray-300 rounded-md shadow-md transition duration-200'
               href='#'

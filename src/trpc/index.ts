@@ -1098,7 +1098,31 @@ export const appRouter = router({
     })
 
     return { success: true };
-  })
+  }),
+  getPost: publicProcedure.input(z.object({slug: z.string()})).query(async (opts) => {
+    const post = await db.post.findFirst({
+      where: {
+        slug: opts.input.slug,
+      },
+    });
+
+    const author = await db.user.findFirst({
+      where: {
+        id: post?.userId,
+      },
+    });
+
+    return { post, author };
+  }),
+  getUser: publicProcedure.input(z.object({id: z.string()})).query(async (opts) => {
+    const user = await db.user.findFirst({
+      where: {
+        id: opts.input.id,
+      },
+    });
+
+    return user;
+  }),
   
 });
 
