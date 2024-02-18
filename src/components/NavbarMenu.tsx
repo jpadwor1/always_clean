@@ -68,7 +68,9 @@ export default function NavbarMenu() {
                       height={80}
                       alt='Krystal Clean'
                     />
-                    <div className='mb-2 text-lg font-medium'>Krystal Clean</div>
+                    <div className='mb-2 text-lg font-medium'>
+                      Krystal Clean
+                    </div>
                     <p className='text-sm leading-tight text-muted-foreground'>
                       Expert Pool Cleaning for a Sparkling, Hassle-Free Summer.
                       Honest. Reliable. Affordable.
@@ -84,8 +86,8 @@ export default function NavbarMenu() {
                 A Step-by-Step Guide to Our Professional Pool Cleaning Process.
                 Efficiency and Transparency.
               </ListItem>
-              <ListItem href='#' title='Testimonials'>
-                Hear From Our Satisfied Customers. Quality Service Guaranteed.
+              <ListItem href='/blog' title='Our Blog'>
+                Expert Pool Care Tips and Customer Success Stories.
               </ListItem>
             </ul>
           </NavigationMenuContent>
