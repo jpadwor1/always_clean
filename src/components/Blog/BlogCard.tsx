@@ -16,12 +16,12 @@ const BlogCard = async ({ post }: BlogCardProps) => {
   });
   return (
     <Link href={`/blog/${post.slug}`} className='w-full p-4 mb-8 hover:shadow-md shadow-sm rounded-md'>
-      <div className='block mb-6 overflow-hidden rounded-md  min-h-[500px]'>
+      <div className='block mb-6 overflow-hidden rounded-md lg:min-h-[500px]'>
         <Image
-          className='w-full object-fit'
+          className='w-full h-[300px]'
           src={post.img}
           alt=''
-          height={400}
+          height={200}
           width={400}
         />
       </div>
@@ -33,12 +33,12 @@ const BlogCard = async ({ post }: BlogCardProps) => {
       <p className='mb-2 text-coolGray-500 font-medium'>
         {author.name} • {format(new Date(post.createdAt), 'MMM do, yyyy')}
       </p>
-      <div className='inline-block mb-4 text-2xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline'>
+      <div className='h-[80px] inline-block mb-4 text-2xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline'>
         {post.title}
       </div>
       <div
-        dangerouslySetInnerHTML={{ __html: `${post.desc.slice(0, 120)}...` }}
-        className='mb-4 text-base md:text-lg text-coolGray-400 font-medium'
+        dangerouslySetInnerHTML={{ __html: `${post.desc.slice(0, 110)}...` }}
+        className='h-[85px] mb-4 text-base md:text-lg text-coolGray-400 font-medium'
       />
 
       <div
