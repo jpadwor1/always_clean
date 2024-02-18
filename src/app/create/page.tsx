@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import styles from './CreatePage.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState,useCallback } from 'react';
 import 'react-quill/dist/quill.bubble.css';
 import { useRouter } from 'next/navigation';
 import {
@@ -18,8 +18,8 @@ import { Button } from '@/components/ui/button';
 import { trpc } from '../_trpc/client';
 import { toast } from '@/components/ui/use-toast';
 import dynamic from 'next/dynamic';
-
-
+import debounce from 'lodash/debounce';
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const CreatePage = () => {
   const router = useRouter();
 
@@ -29,10 +29,10 @@ const CreatePage = () => {
   const [value, setValue] = useState('');
   const [title, setTitle] = useState('');
   const [catSlug, setCatSlug] = useState('maintence');
- const createPost = trpc.createPost.useMutation();
+  const createPost = trpc.createPost.useMutation();
 
- const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-
+  
+  
   useEffect(() => {
     const storage = getStorage(app);
     const upload = () => {
@@ -81,29 +81,29 @@ const CreatePage = () => {
 
   const handleSubmit = async () => {
     const postData = {
-        title,
-        desc: value,
-        img: media,
-        slug: slugify(title),
-        catSlug: catSlug || 'style', 
-        };
+      title,
+      desc: value,
+      img: media,
+      slug: slugify(title),
+      catSlug: catSlug || 'style',
+    };
     console.log(postData);
 
     createPost.mutate(postData, {
-        onSuccess: () => {
-            toast({
-                title: 'Post Created',
-                description: 'Your post has been created successfully'
-            })
-        },
-        onError: (error) => {
-            toast({
-                title: 'Error',
-                description: error.message
-            })
-        }
-    })
-    };
+      onSuccess: () => {
+        toast({
+          title: 'Post Created',
+          description: 'Your post has been created successfully',
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: 'Error',
+          description: error.message,
+        });
+      },
+    });
+  };
 
   return (
     <MaxWidthWrapper>
@@ -114,19 +114,24 @@ const CreatePage = () => {
           className='p-[50px] text-2xl border-none outline-none bg-transparent text-gray-900'
           onChange={(e) => setTitle(e.target.value)}
         />
-        <div className="flex flex-row items-center justify-between mb-4 relative">
-        <select
-          className='px-4 py-6 mx-10 max-w-fit rounded-md'
-          onChange={(e) => setCatSlug(e.target.value)}
-        >
-          <option value='maintenance'>Pool Maintenance Tips</option>
-          <option value='equipment'>Pool Equipment</option>
-          <option value='safety'>Pool Safety</option>
-          <option value='design'>Pool Design Ideas</option>
-          <option value='care'>Seasonal Pool Care</option>
-          <option value='troubleshooting'>Troubleshooting Common Pool Problems</option>
-        </select>
-        <button className='bg-blue-600 rounded-full px-2 py-2' onClick={() => setOpen(!open)}>
+        <div className='flex flex-row items-center justify-between mb-4 relative'>
+          <select
+            className='px-4 py-6 mx-10 max-w-fit rounded-md'
+            onChange={(e) => setCatSlug(e.target.value)}
+          >
+            <option value='maintenance'>Pool Maintenance Tips</option>
+            <option value='equipment'>Pool Equipment</option>
+            <option value='safety'>Pool Safety</option>
+            <option value='design'>Pool Design Ideas</option>
+            <option value='care'>Seasonal Pool Care</option>
+            <option value='troubleshooting'>
+              Troubleshooting Common Pool Problems
+            </option>
+          </select>
+          <button
+            className='bg-blue-600 rounded-full px-2 py-2'
+            onClick={() => setOpen(!open)}
+          >
             <Plus className='h-6 w-6 text-blue-300' />
           </button>
           {open && (
@@ -154,16 +159,19 @@ const CreatePage = () => {
               </button>
             </div>
           )}
-          </div>
+        </div>
         <div className='flex gap-2 h-[50vh] px-6 relative'>
-          
-          <ReactQuill
-            className='w-full'
-            theme='bubble'
-            value={value}
-            onChange={setValue}
-            placeholder='Tell your story...'
-          />
+          {!document ? (
+            <textarea id='editor-fallback' />
+          ) : (
+            <ReactQuill
+              className='w-full'
+              theme='bubble'
+              value={value}
+              onChange={setValue}
+              placeholder='Tell your story...'
+            />
+          )}
         </div>
         <Button className='w-1/4 self-end mt-4' onClick={handleSubmit}>
           Publish
