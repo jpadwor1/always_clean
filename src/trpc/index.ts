@@ -553,7 +553,6 @@ export const appRouter = router({
         dynamic_template_data: {
           full_name: dbCustomer.name,
           service_date: format(new Date(input.dateCompleted), 'EEEE, d MMMM'),
-
         },
       };
 
@@ -970,7 +969,7 @@ export const appRouter = router({
           },
           data: {
             dueDate: dueDate.toString(),
-            lastInvoiceSent: new Date()
+            lastInvoiceSent: new Date(),
           },
         });
         //Confirmation email to owner
@@ -1011,7 +1010,6 @@ export const appRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      
       const sendEmail = async (to: string) => {
         const msg = {
           to: to,
@@ -1074,63 +1072,75 @@ export const appRouter = router({
       return { success: true };
     }),
 
-  createPost: privateProcedure.input(z.object({
-    title: z.string(),
-    desc: z.string(),
-    img: z.string(),
-    slug: z.string(),
-    catSlug: z.string(),
-    postSEO: z.object({
-      metaDescription: z.string(),
-      excerpt: z.string(),
-      slug: z.string(),
-    })
-  })).mutation(async ({ ctx, input }) => {
-    const { userId, user } = ctx;
+  createPost: privateProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        desc: z.string(),
+        img: z.string(),
+        slug: z.string(),
+        catSlug: z.string(),
+        postSEO: z.object({
+          metaDescription: z.string(),
+          excerpt: z.string(),
+          slug: z.string(),
+          publishDate: z.string(),
+        }),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
 
-    if (!userId || !user) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
-    }
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
 
-    await db.post.create({
-      data: {
-        title: input.title,
-        desc: input.desc,
-        img: input.img,
-        slug: input.postSEO.slug.length > 0 ? input.postSEO.slug : input.slug,
-        userId: userId,
-        metaDescription: input.postSEO.metaDescription,
-        excerpt: input.postSEO.excerpt,   
-      },
-    })
+      await db.post.create({
+        data: {
+          title: input.title,
+          desc: input.desc,
+          img: input.img,
+          slug: input.postSEO.slug.length > 0 ? input.postSEO.slug : input.slug,
+          userId: userId,
+          metaDescription: input.postSEO.metaDescription,
+          excerpt: input.postSEO.excerpt,
+          category: input.catSlug,
+          publishDate: input.postSEO.publishDate
+            ? input.postSEO.publishDate
+            : '',
+        },
+      });
 
-    return { success: true };
-  }),
-  getPost: publicProcedure.input(z.object({slug: z.string()})).query(async (opts) => {
-    const post = await db.post.findFirst({
-      where: {
-        slug: opts.input.slug,
-      },
-    });
+      return { success: true };
+    }),
+  getPost: publicProcedure
+    .input(z.object({ slug: z.string() }))
+    .query(async (opts) => {
+      const post = await db.post.findFirst({
+        where: {
+          slug: opts.input.slug,
+        },
+      });
 
-    const author = await db.user.findFirst({
-      where: {
-        id: post?.userId,
-      },
-    });
+      const author = await db.user.findFirst({
+        where: {
+          id: post?.userId,
+        },
+      });
 
-    return { post, author };
-  }),
-  getUser: publicProcedure.input(z.object({id: z.string()})).query(async (opts) => {
-    const user = await db.user.findFirst({
-      where: {
-        id: opts.input.id,
-      },
-    });
+      return { post, author };
+    }),
+  getUser: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async (opts) => {
+      const user = await db.user.findFirst({
+        where: {
+          id: opts.input.id,
+        },
+      });
 
-    return user;
-  }),
-  
+      return user;
+    }),
 });
 
 export type AppRouter = typeof appRouter;

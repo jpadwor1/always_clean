@@ -30,13 +30,13 @@ const BlogCard = async ({ post }: BlogCardProps) => {
       </div>
       <div className='mb-4'>
         <div className='inline-block py-1 px-3 text-xs leading-5 text-blue-500 hover:text-blue-600 font-medium uppercase bg-blue-100 hover:bg-blue-200 rounded-full shadow-sm'>
-          Technology
+          {post.category}
         </div>
       </div>
       <p className='mb-2 text-coolGray-500 font-medium'>
-        {author.name} • {format(new Date(post.createdAt), 'MMM do, yyyy')}
+        {author.name} • {format(new Date(post.publishDate && post.publishDate.length > 0 ? post.publishDate : post.createdAt), 'MMM do, yyyy')}
       </p>
-      <div className='h-[80px] inline-block mb-4 text-2xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline'>
+      <div className='h-[80px] inline-block mb-4 text-xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline'>
         {post.title}
       </div>
       <div

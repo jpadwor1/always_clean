@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import styles from './CreatePage.module.css';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-quill/dist/quill.bubble.css';
 import { useRouter } from 'next/navigation';
 import {
@@ -18,7 +18,8 @@ import { Button } from '@/components/ui/button';
 import { trpc } from '../_trpc/client';
 import { toast } from '@/components/ui/use-toast';
 import dynamic from 'next/dynamic';
-import debounce from 'lodash/debounce';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const Page = () => {
   const router = useRouter();
@@ -33,7 +34,8 @@ const Page = () => {
     metaDescription: '',
     excerpt: '',
     slug: '',
-  }); 
+    publishDate: '',
+  });
   const createPost = trpc.createPost.useMutation();
 
   useEffect(() => {
@@ -83,7 +85,6 @@ const Page = () => {
       .replace(/^-+|-+$/g, '');
 
   const handleSubmit = async () => {
-    
     const postData = {
       title,
       desc: value,
@@ -93,13 +94,13 @@ const Page = () => {
       postSEO,
     };
 
-
     createPost.mutate(postData, {
       onSuccess: () => {
         toast({
           title: 'Post Created',
           description: 'Your post has been created successfully',
         });
+        router.push('/blog');
       },
       onError: (error) => {
         toast({
@@ -122,29 +123,49 @@ const Page = () => {
         <textarea
           placeholder='Meta Description'
           className='ml-10 text-lg border-none outline-none bg-transparent text-gray-900'
-          onChange={(e) => setPostSEO(()=>({...postSEO, metaDescription: e.target.value}))}
+          onChange={(e) =>
+            setPostSEO(() => ({ ...postSEO, metaDescription: e.target.value }))
+          }
         />
         <input
           type='text'
           placeholder='Slug'
           className='p-0 ml-10 my-4 text-lg border-none outline-none bg-transparent text-gray-900'
-          onChange={(e) => setPostSEO(()=>({...postSEO, slug: e.target.value}))}
+          onChange={(e) =>
+            setPostSEO(() => ({ ...postSEO, slug: e.target.value }))
+          }
         />
         <textarea
           placeholder='Excerpt'
           className='ml-10 my-6 text-lg border-none outline-none bg-transparent text-gray-900'
-          onChange={(e) => setPostSEO(()=>({...postSEO, excerpt: e.target.value}))}
+          onChange={(e) =>
+            setPostSEO(() => ({ ...postSEO, excerpt: e.target.value }))
+          }
         />
+        <div className='flex flex-row items-center space-x-2'>
+          <Label htmlFor='date' className='ml-10 text-lg'>
+            Publish Date
+          </Label>
+          <Input
+            name='date'
+            type='date'
+            className='w-1/4 my-4 bg-transparent'
+            onChange={(e) =>
+              setPostSEO(() => ({ ...postSEO, publishDate: e.target.value }))
+            }
+          />
+        </div>
+
         <div className='flex flex-row items-center justify-between mb-4 relative'>
           <select
             className='px-4 py-6 mx-10 max-w-fit rounded-md'
             onChange={(e) => setCatSlug(e.target.value)}
           >
-            <option value='maintenance'>Pool Maintenance Tips</option>
+            <option value='cleaning'>Pool Cleaning Tips</option>
             <option value='equipment'>Pool Equipment</option>
             <option value='safety'>Pool Safety</option>
             <option value='design'>Pool Design Ideas</option>
-            <option value='care'>Seasonal Pool Care</option>
+            <option value='seasonal care'>Seasonal Pool Care</option>
             <option value='troubleshooting'>
               Troubleshooting Common Pool Problems
             </option>

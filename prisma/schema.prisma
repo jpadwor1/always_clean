@@ -139,12 +139,14 @@ model File {
 model Post {
   id              String   @id @default(cuid()) @map("_id")
   createdAt       DateTime @default(now())
+  publishDate     String?
   slug            String   @unique
   title           String
   desc            String   @db.LongText
   img             String?
   metaDescription String?  @db.VarChar(1000)
   excerpt         String?  @db.VarChar(1000)
+  category        String   @default("cleaning")
   views           Int      @default(0)
   userId          String
   user            User     @relation(fields: [userId], references: [id])
