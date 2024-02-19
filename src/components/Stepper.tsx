@@ -134,7 +134,7 @@ export default function StepperForm() {
     formState: { errors, isValid },
   } = form;
 
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
+  const [date, setDate] = React.useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = React.useState('');
   const addressInputRef = React.useRef<HTMLInputElement>(null);
   const onAddressInputMount = mergeRefs(
@@ -511,11 +511,16 @@ export default function StepperForm() {
                           selected={date}
                           onSelect={setDate}
                           className='rounded-md'
+                          disabled={[
+                            day => day.getDay() === 1, // Disables Monday
+                            day => day.getDay() === 2, // Disables Tuesday
+                            day => day.getDay() === 3, // Disables Wednesday
+                          ]}
                         />
                       </div>
                       <div className='flex flex-col items-center mt-2'>
                         <h3 className='text-lg font-semibold'>
-                          {date
+                          {date 
                             ? format(date, 'EEEE, d MMMM')
                             : 'No date selected'}
                         </h3>
