@@ -35,8 +35,13 @@ function HomeInside() {
               <div className='flex flex-wrap'>
                 <div className='w-full md:w-auto py-1 md:py-0 md:mr-4'>
                   <Link href='/booking'>
-                  <Button className='shadow-lg hover:shadow-xl'>
+                  <Button variant={'secondary'} className='shadow-lg hover:shadow-xl'>
                     Book Here
+                  </Button>
+                  </Link>
+                  <Link href='tel:760-912-7396'>
+                  <Button className='shadow-lg hover:shadow-xl ml-2'>
+                   Call Now
                   </Button>
                   </Link>
                 </div>
