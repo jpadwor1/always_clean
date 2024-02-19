@@ -13,13 +13,14 @@ import {
 } from 'firebase/storage';
 import { app } from '@/config/firebase';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
-import { Plus } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trpc } from '../_trpc/client';
 import { toast } from '@/components/ui/use-toast';
 import dynamic from 'next/dynamic';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Progress } from '@/components/ui/progress';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 const Page = () => {
   const router = useRouter();
@@ -29,6 +30,7 @@ const Page = () => {
   const [media, setMedia] = useState('');
   const [value, setValue] = useState('');
   const [title, setTitle] = useState('');
+  const [progress, setProgress] = useState(0);
   const [catSlug, setCatSlug] = useState('maintence');
   const [postSEO, setPostSEO] = useState({
     metaDescription: '',
@@ -52,15 +54,7 @@ const Page = () => {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('Upload is ' + progress + '% done');
-          switch (snapshot.state) {
-            case 'paused':
-              console.log('Upload is paused');
-              break;
-            case 'running':
-              console.log('Upload is running');
-              break;
-          }
+          setProgress(progress);
         },
         (error) => {},
         () => {
@@ -178,6 +172,12 @@ const Page = () => {
           </button>
           {open && (
             <div className='flex absolute z-40 bg-transparent gap-2 w-fit right-12'>
+              {progress === 100 ? (
+                <>
+                  <Check className='h-6 w-6 text-green-400 self-center' />
+                  <p className='text-green-400 self-center'>Upload Complete</p>
+                </>
+              ) : null}
               <input
                 type='file'
                 id='image'

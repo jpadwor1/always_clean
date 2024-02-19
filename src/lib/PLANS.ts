@@ -51,7 +51,7 @@ export const PLANS = [
       'Additional Feature: Monthly equipment performance check',
     ],
     bookingLink: '/booking',
-    learnMoreLink: '/services',
+    learnMoreLink: '/services/regular-cleaning',
     priceIds: {
       test: '',
       production: '',

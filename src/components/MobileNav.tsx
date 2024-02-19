@@ -87,7 +87,7 @@ const MobileNav = ({ isAuth, role }: MobileNavProps) => {
                         <Link
                           onClick={() => closeOnCurrent('/dashboard')}
                           className='flex items-center w-full font-semibold '
-                          href='/blog'
+                          href='/create'
                         >
                           Blog Writer
                         </Link>
