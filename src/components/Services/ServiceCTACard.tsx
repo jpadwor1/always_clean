@@ -31,9 +31,16 @@ const ServiceCTACard = () => {
                 </div>
               </div>
               <div className='w-full lg:w-[20%] px-4'>
-                <div className='flex flex-wrap items-center lg:justify-end'>
-                  <Button size='lg'>
+                <div className='flex md:flex-wrap flex-row items-center lg:justify-end justify-between'>
+                  <Button className='bg-blue-400' size='lg'>
                     <Link href='/booking'>Book Now</Link>
+                  </Button>
+                  
+                  <Button className='md:flex hidden md:mt-4 px-4' size='lg'>
+                    <Link href='tel:760-912-7396'>760-912-7396</Link>
+                  </Button>
+                  <Button className='flex md:hidden md:mt-4 px-4' size='lg'>
+                    <Link href='tel:760-912-7396'>Call Now</Link>
                   </Button>
                 </div>
               </div>
