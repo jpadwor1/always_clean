@@ -1,10 +1,30 @@
 export const PLANS = [
   {
-    name: 'Play Pools',
+    name: 'Winter Special',
     type: 'Regular Pool Cleaning',
     price: 99,
     priceFrequency: 'per month',
-    description: 'Ideal for residential pools',
+    description: 'Save $312 annually by signing a 1 year service agreement',
+    features: [
+      'Test and chemically balance water (tailored for residential needs)',
+      'Clean skimmer and pump basket',
+      'Brush tile band and siding',
+      'Vacuum as necessary',
+      'Weekly debris removal',
+    ],
+    bookingLink: '/booking',
+    learnMoreLink: '/services/regular-cleaning',
+    priceIds: {
+      test: 'price_1OelNvDAvxyq4Y7vw5eO9Y86',
+      production: 'price_1OenuvDAvxyq4Y7voul8c3Nw',
+    },
+  },
+  {
+    name: 'Play Pools',
+    type: 'Regular Pool Cleaning',
+    price: 125,
+    priceFrequency: 'per month',
+    description: 'Ideal for residential pools, chemicals included',
     features: [
       'Test and chemically balance water (tailored for residential needs)',
       'Clean skimmer and pump basket',
@@ -37,26 +57,26 @@ export const PLANS = [
       production: '',
     },
   },
-  {
-    name: 'Commercial and Community Pools',
-    price: 'Call',
-    priceSuffix: 'for quote',
-    description: 'Custom services for high-traffic pools',
-    features: [
-      'All features in lower level plans',
-      'Custom scheduling options',
-      'Tailored services for high-traffic pools',
-      'High-capacity skimmer and filter cleaning',
-      'Full deck and surrounding area cleaning',
-      'And more...',
-    ],
-    callToAction: 'Call (760) 912-7396',
-    learnMoreLink: '/services',
-    priceIds: {
-      test: '',
-      production: '',
-    },
-  },
+  // {
+  //   name: 'Commercial and Community Pools',
+  //   price: 'Call',
+  //   priceSuffix: 'for quote',
+  //   description: 'Custom services for high-traffic pools',
+  //   features: [
+  //     'All features in lower level plans',
+  //     'Custom scheduling options',
+  //     'Tailored services for high-traffic pools',
+  //     'High-capacity skimmer and filter cleaning',
+  //     'Full deck and surrounding area cleaning',
+  //     'And more...',
+  //   ],
+  //   callToAction: 'Call (760) 912-7396',
+  //   learnMoreLink: '/services',
+  //   priceIds: {
+  //     test: '',
+  //     production: '',
+  //   },
+  // },
 ];
 
 export const customerData = [

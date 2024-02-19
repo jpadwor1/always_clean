@@ -57,7 +57,7 @@ const PricingModule = ({ linkVisibility }: PricingModuleProps) => {
                       {plan.description}
                     </p>
 
-                    {plan.name === 'Play Pools' ? (
+                    {plan.name === 'Play Pools' || plan.name === 'Winter Special' ? (
                       <>
                         <Link href='/booking'>
                           <Button className='mb-4 w-full sm:text-md text-md shadow-md hover:shadow-lg '>
@@ -97,7 +97,7 @@ const PricingModule = ({ linkVisibility }: PricingModuleProps) => {
                       <>
                         <Link href='/booking'>
                           <Button className='mb-4 w-full sm:text-md text-md shadow-md hover:shadow-lg '>
-                            {plan.callToAction}
+                            Book Now
                           </Button>
                         </Link>
                         {linkVisibility && (
