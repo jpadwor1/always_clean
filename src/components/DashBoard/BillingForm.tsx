@@ -4,7 +4,6 @@ import { getCustomerInvoices, getUserSubscriptionPlan } from '@/lib/stripe';
 import { useToast } from '../ui/use-toast';
 import { trpc } from '@/app/_trpc/client';
 import Link from 'next/link';
-import MaxWidthWrapper from '../MaxWidthWrapper';
 import {
   Card,
   CardDescription,
@@ -45,6 +44,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+
 interface BillingFormProps {
   subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>;
   userId: boolean;
@@ -129,7 +129,7 @@ const BillingForm = ({
   }
 
   return (
-    <Card>
+    <Card className=''>
       {role === 'ADMIN' ? (
         <div className='p-4'>
           <Form {...form}>
@@ -193,9 +193,9 @@ const BillingForm = ({
             <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead className=''>Invoice Sent</TableHead>
+                <TableHead className='md:flex hidden'>Invoice Sent</TableHead>
                 <TableHead className=''>Due Date</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead className='md:flex hidden'>Status</TableHead>
                 <TableHead>Amount Due</TableHead>
                 <TableHead className='text-right'>Pay Invoice</TableHead>
               </TableRow>
@@ -204,7 +204,7 @@ const BillingForm = ({
               {invoices.map(
                 (invoice: Awaited<ReturnType<typeof getCustomerInvoices>>) => (
                   <TableRow key={invoice.id}>
-                    <TableCell>
+                    <TableCell className='md:flex hidden'>
                       {format(new Date(invoice.created * 1000), 'MM/dd/yyyy')}
                     </TableCell>
                     <TableCell
@@ -223,7 +223,7 @@ const BillingForm = ({
                         new Date(invoice.due_date * 1000) < new Date()
                           ? 'text-red-600'
                           : 'text-gray-900',
-                        'font-medium'
+                        'font-medium md:flex hidden'
                       )}
                     >
                       {new Date(invoice.due_date * 1000) < new Date() &&
@@ -246,7 +246,7 @@ const BillingForm = ({
                           invoice.paid ? 'bg-green-700' : 'bg-blue-600'
                         )}
                       >
-                        {invoice.paid ? 'Paid' : 'Make Payment'}
+                        {invoice.paid ? 'Paid' : 'Pay'}
                       </Link>
                     </TableCell>
                   </TableRow>
@@ -255,7 +255,12 @@ const BillingForm = ({
             </TableBody>
             <TableFooter>
               <TableRow>
-                <TableCell colSpan={3}>Total</TableCell>
+                <TableCell className='md:grid hidden' colSpan={3}>
+                  Total
+                </TableCell>
+                <TableCell className='md:hidden grid' colSpan={1}>
+                  Total
+                </TableCell>
                 <TableCell className=''>{invoiceTotal()}</TableCell>
               </TableRow>
             </TableFooter>

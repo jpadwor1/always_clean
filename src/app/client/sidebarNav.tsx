@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import {
   Collapsible,
   CollapsibleContent,
@@ -15,6 +15,15 @@ import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChevronsUpDown } from 'lucide-react';
 import { format } from 'date-fns';
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items: {
@@ -76,19 +85,45 @@ export function SidebarNav({
             pathname === item.href
               ? 'bg-primary text-white hover:bg-primary hover:text-white'
               : 'hover:bg-transparent hover:underline',
-            'justify-start'
+            'justify-start px-2'
           )}
         >
           {item.title}
         </Link>
       ))}
-
-      <Collapsible className='p-4'>
+<Sheet>
+        <SheetTrigger asChild>
+          <Button className='sm:hidden' variant='ghost'>Service History</Button>
+        </SheetTrigger>
+        <SheetContent className=' flex flex-col items-center'>
+          <SheetHeader>
+            <SheetTitle>Service Dates</SheetTitle>
+            <SheetDescription className='overflow-y-scroll'></SheetDescription>
+          </SheetHeader>
+          <div className='flex flex-col items-center h-full w-full overflow-y-scroll'>
+            {serviceHistoryData.map((service) => (
+              <SheetClose asChild key={service.id}>
+                <Link
+                  key={service.id}
+                  className={cn(
+                    buttonVariants({ variant: 'outline' }),
+                    'text-sm cursor-pointer my-1'
+                  )}
+                  href={`/client/service-history/${service.id}`}
+                >
+                  {format(service.dateCompleted, 'MMMM d, yyyy')}
+                </Link>
+              </SheetClose>
+            ))}
+          </div>
+        </SheetContent>
+      </Sheet>
+      <Collapsible className=''>
         <CollapsibleTrigger
           disabled={serviceHistoryData.length === 0}
           className={cn(
             buttonVariants({ variant: 'ghost' }),
-            'hover:bg-primary hover:text-white'
+            'hover:bg-primary hover:text-white hidden md:flex'
           )}
         >
           Service History
@@ -96,7 +131,7 @@ export function SidebarNav({
           <span className='sr-only'>Toggle</span>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <ScrollArea className='p-4  max-h-fit md:h-60'>
+          <ScrollArea type='auto' className='p-2 max-h-fit md:h-60'>
             {serviceHistoryData.map((service) => (
               <React.Fragment key={service.id}>
                 <Link

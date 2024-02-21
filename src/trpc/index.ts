@@ -1225,6 +1225,40 @@ export const appRouter = router({
 
       return { success: true };
     }),
+    updateCustomerServiceAgreement: privateProcedure
+    .input(
+      z.object({
+        serviceAgreementURL: z.string(),
+        customerId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      const dbCustomer = await db.customer.findFirst({
+        where: {
+          id: input.customerId,
+        },
+      });
+
+      if (dbCustomer) {
+        await db.customer.update({
+          where: {
+            id: dbCustomer.id,
+          },
+          data: {
+            serviceAgreementURL: input.serviceAgreementURL,
+            serviceAgreementDate: new Date(),
+          },
+        });
+      }
+
+      return { success: true };
+    }),
+  
 });
 
 export type AppRouter = typeof appRouter;

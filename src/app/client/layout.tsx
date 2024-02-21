@@ -5,6 +5,7 @@ import { SidebarNav } from './sidebarNav';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { db } from '@/db';
 import { ServiceEvent } from '@prisma/client';
+
 export const metadata: Metadata = {
   title: 'Forms',
   description: 'Advanced form example using react-hook-form and Zod.',
@@ -62,7 +63,7 @@ export default async function SettingsLayout({
 
   return (
     <>
-      <div className='space-y-6 p-10 pb-16 block '>
+      <div className='space-y-6 p-6 pb-16 block '>
         <div className='space-y-0.5'>
           <h2 className='text-2xl font-bold tracking-tight'>Settings</h2>
           <p className='text-muted-foreground'>

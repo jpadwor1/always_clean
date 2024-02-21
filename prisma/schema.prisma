@@ -60,6 +60,8 @@ model Customer {
   dueDate                String?
   lastInvoiceSent        DateTime?
   discount               String?
+  serviceAgreementDate   DateTime?
+  serviceAgreementURL    String?         @db.LongText
   CalendarEvent          CalendarEvent[]
 }
 

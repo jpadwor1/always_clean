@@ -123,7 +123,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
   const [openModel, setOpenModal] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const mutation = trpc.updateUserProfileSettings.useMutation();
-
+  const updateServiceAgreement =
+    trpc.updateCustomerServiceAgreement.useMutation();
+  let sigPad: SignatureCanvas | null = null;
   function onSubmit(data: ProfileFormValues) {
     mutation.mutate(data, {
       onSuccess: () => {
@@ -158,6 +160,35 @@ export function ProfileForm({ user }: ProfileFormProps) {
     loadGooglePlacesScript(() => initGooglePlaces(form));
   }, [form]);
 
+  const submitSignature = () => {
+    const serviceAgreementURL = sigPad?.toDataURL('image/png');
+    console.log(serviceAgreementURL);
+    const data = {
+      serviceAgreementURL: serviceAgreementURL as string,
+      customerId: user.id as string,
+    };
+    updateServiceAgreement.mutate(data, {
+      onSuccess: () => {
+        toast({
+          title: 'Updated Successfully',
+          description: <p>Your service agreement has been signed</p>,
+        });
+        setOpenModal(false);
+      },
+      onError: (error) => {
+        toast({
+          variant: 'destructive',
+          title: 'Oops, something went wrong!',
+          description: (
+            <p>
+              <span className='font-medium'>{error.message}</span>
+            </p>
+          ),
+        });
+        setOpenModal(false);
+      },
+    });
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
@@ -223,7 +254,8 @@ export function ProfileForm({ user }: ProfileFormProps) {
             </FormItem>
           )}
         />
-        <div className='flex flex-col space-y-3 text-left'>
+        {user.serviceAgreementURL.length < 0 ? (
+          <div className='flex flex-col space-y-3 text-left'>
           <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
             <FormControl>
               <Button
@@ -259,11 +291,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
                 </Link>
               </FormDescription>
               <FormDescription>
-                <p>
-                  By signing, you acknowledge that you have read, understood,
-                  and agreed to the terms and conditions outlined in the Service
-                  Agreement.
-                </p>
+                By signing, you acknowledge that you have read, understood, and
+                agreed to the terms and conditions outlined in the Service
+                Agreement.
               </FormDescription>
             </div>
           </FormItem>
@@ -273,19 +303,42 @@ export function ProfileForm({ user }: ProfileFormProps) {
                 <SignatureCanvas
                   penColor='black'
                   canvasProps={{ className: 'w-full h-full' }}
+                  ref={(ref) => {
+                    sigPad = ref;
+                  }}
                 />
-                <div className='text-right mt-2'>
-                  <button
-                    className='px-2 py-1 border-2 m-2'
-                    onClick={() => setOpenModal(false)}
-                  >
-                    Cancel
-                  </button>
+                <div className='flex flex-row items-center justify-between'>
+                  <div className='text-left'>
+                    <button
+                      type='button'
+                      className='px-2 rounded-md py-1 border-2 m-2'
+                      onClick={() => sigPad?.clear()}
+                    >
+                      Clear
+                    </button>
+                    <button
+                      className='px-2 rounded-md py-1 border-2 m-2'
+                      onClick={() => setOpenModal(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div className='text-right'>
+                    <button
+                      className='px-2 py-1 rounded-md m-2 bg-green-600 text-white hover:bg-green-300'
+                      type='button'
+                      onClick={() => submitSignature()}
+                    >
+                      Submit
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           )}
         </div>
+        ): null}
+        
 
         <Button type='submit'>Update profile</Button>
       </form>
