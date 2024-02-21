@@ -1,12 +1,10 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-
-import { cn } from '@/lib/utils';
+import SignatureCanvas from 'react-signature-canvas';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -20,7 +18,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { trpc } from '../_trpc/client';
-
+import Link from 'next/link';
 const profileFormSchema = z.object({
   fullName: z
     .string()
@@ -122,7 +120,8 @@ export function ProfileForm({ user }: ProfileFormProps) {
     defaultValues,
     mode: 'onChange',
   });
-
+  const [openModel, setOpenModal] = useState(false);
+  const [downloaded, setDownloaded] = useState(false);
   const mutation = trpc.updateUserProfileSettings.useMutation();
 
   function onSubmit(data: ProfileFormValues) {
@@ -224,6 +223,69 @@ export function ProfileForm({ user }: ProfileFormProps) {
             </FormItem>
           )}
         />
+        <div className='flex flex-col space-y-3 text-left'>
+          <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
+            <FormControl>
+              <Button
+                className='block bg-green-600 self-center hover:bg-green-300'
+                type='button'
+                onClick={() => setOpenModal(true)}
+                disabled={!downloaded}
+              >
+                Sign
+              </Button>
+            </FormControl>
+            <div className='space-y-1 leading-none'>
+              <FormLabel>
+                Please download the service agreement and read through the
+                document.
+              </FormLabel>
+              <FormDescription>
+                <Link
+                  onClick={() => setDownloaded(!downloaded)}
+                  className='text-blue-600'
+                  href='/examples/forms'
+                >
+                  Download Service Agreement
+                </Link>{' '}
+                or view online at{' '}
+                <Link
+                  onClick={() => setDownloaded(!downloaded)}
+                  href='/service-agreement'
+                  target='_blank'
+                  className='text-blue-600'
+                >
+                  Service Agreement Page
+                </Link>
+              </FormDescription>
+              <FormDescription>
+                <p>
+                  By signing, you acknowledge that you have read, understood,
+                  and agreed to the terms and conditions outlined in the Service
+                  Agreement.
+                </p>
+              </FormDescription>
+            </div>
+          </FormItem>
+          {openModel && (
+            <div className='h-full flex justify-center items-center bg-blue-gray-100'>
+              <div className='w-[90%] h-full border padding-2 bg-white'>
+                <SignatureCanvas
+                  penColor='black'
+                  canvasProps={{ className: 'w-full h-full' }}
+                />
+                <div className='text-right mt-2'>
+                  <button
+                    className='px-2 py-1 border-2 m-2'
+                    onClick={() => setOpenModal(false)}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
         <Button type='submit'>Update profile</Button>
       </form>
