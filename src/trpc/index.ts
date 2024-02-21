@@ -1225,7 +1225,7 @@ export const appRouter = router({
 
       return { success: true };
     }),
-    updateCustomerServiceAgreement: privateProcedure
+  updateCustomerServiceAgreement: privateProcedure
     .input(
       z.object({
         serviceAgreementURL: z.string(),
@@ -1258,7 +1258,6 @@ export const appRouter = router({
 
       return { success: true };
     }),
-  
 });
 
 export type AppRouter = typeof appRouter;

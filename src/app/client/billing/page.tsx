@@ -10,7 +10,7 @@ const Page = async () => {
   const subscriptionPlan = await getUserSubscriptionPlan();
   const invoices = await getCustomerInvoices(userId);
 
-  const customer = await db.customer.findUnique({
+  const customer = await db.customer.findFirst({
     where: {
       id: userId,
     },
