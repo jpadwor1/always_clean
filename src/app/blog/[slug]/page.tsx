@@ -10,6 +10,7 @@ import Link from 'next/link';
 import React from 'react';
 import './post.css';
 import ServiceCTACard from '@/components/Services/ServiceCTACard';
+import Head from 'next/head';
 
 interface PageProps {
   params: {
@@ -41,7 +42,17 @@ const Page = ({ params }: PageProps) => {
 
   return (
     <>
-      <section
+     <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.excerpt} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:image" content={post.img} />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Krystal Clean Pools" />
+        <meta name="keywords" content="pool cleaning, pinal county," />
+      </Head>
+      <article
         className='py-8 md:py-12 bg-white relative'
         style={{
           backgroundImage: 'url("/pattern-white.svg")',
@@ -109,7 +120,7 @@ const Page = ({ params }: PageProps) => {
         <ServiceCTACard />
 
         </MaxWidthWrapper>
-      </section>
+      </article>
     </>
   );
 };

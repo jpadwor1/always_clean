@@ -1,5 +1,6 @@
 'use client';
 
+import CalculateAlkalinity from '@/components/Calculator/CalculateAlkalinity';
 import FreeChlorine from '@/components/Calculator/FreeChlorine';
 import PHCalculator from '@/components/Calculator/pHCalculator';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
@@ -25,6 +26,7 @@ const Page = () => {
       <div className="grid grid-cols-3 gap-4">
         <FreeChlorine poolVolume={poolVolume} />
       <PHCalculator poolVolume={poolVolume} />
+      <CalculateAlkalinity poolVolume={poolVolume} />
         </div>
       
     </MaxWidthWrapper>

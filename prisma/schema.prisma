@@ -150,6 +150,7 @@ model Post {
   views           Int      @default(0)
   userId          String
   user            User     @relation(fields: [userId], references: [id])
+  keywords        String?  @db.VarChar(1000)
 
   @@index([userId])
 }
