@@ -10,6 +10,7 @@ import { absoluteUrl } from '@/lib/utils';
 import { addDays, format } from 'date-fns';
 import sgMail from '@sendgrid/mail';
 import { PLANS } from '@/lib/PLANS';
+import { addUser } from '@/lib/actions';
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -22,7 +23,7 @@ export const appRouter = router({
     // check if the user is in the database
     const dbUser = await db.user.findFirst({
       where: {
-        id: user.id,
+        email: user.email,
       },
     });
 
@@ -42,17 +43,34 @@ export const appRouter = router({
         },
       });
 
-      await db.customer.create({
+      const dbCustomer = await db.customer.findFirst({
+        where: {
+          email: user.email,
+        },
+      });
+
+      if (!dbCustomer) {
+        await db.customer.create({
+          data: {
+            id: user.id,
+            email: user.email,
+            name:
+              user.given_name && user.family_name
+                ? user.given_name + ' ' + user.family_name
+                : '',
+            address: '',
+            phone: '',
+            photoURL: user.picture,
+          },
+        });
+      }
+
+      await db.customer.update({
+        where: {
+          email: user.email,
+        },
         data: {
           id: user.id,
-          email: user.email,
-          name:
-            user.given_name && user.family_name
-              ? user.given_name + ' ' + user.family_name
-              : '',
-          address: '',
-          phone: '',
-          photoURL: user.picture,
         },
       });
 
@@ -122,7 +140,7 @@ export const appRouter = router({
       if (dbUser) {
         const customer = await db.customer.update({
           where: {
-            email: dbUser.email,
+            id: dbUser.id,
           },
           data: {
             id: dbUser.id,
@@ -151,20 +169,47 @@ export const appRouter = router({
           message: 'Customer already exists',
         });
       }
-
-      const customer = await db.customer.create({
-        data: {
-          id: randomUUID(),
+      try {
+        const response = await addUser({
           name: input.name,
-          address: input.address,
           email: input.email,
-          phone: input.phone,
-          nextServiceDate: input.nextServiceDate,
-          customerType: input.customerType,
-        },
-      });
+        });
+        const newUserId = response.id;
+        const customer = await db.customer.create({
+          data: {
+            id: newUserId,
+            name: input.name,
+            address: input.address,
+            email: input.email,
+            phone: input.phone,
+            nextServiceDate: input.nextServiceDate,
+            customerType: input.customerType,
+            discount: '',
+          },
+        });
+      } catch (error) {
+        console.error('Error in adding user:', error);
+      }
 
-      return customer;
+      try {
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+
+        const msg = {
+          to: input.email,
+          from: 'support@krystalcleanpools.com',
+          subject: '',
+          html: ' ',
+          text: ' ',
+          template_id: 'd-f146e5e791104cf99f546d4492360299',
+        };
+
+        await sgMail.send(msg);
+      } catch (error) {
+        console.error('Error sending email:', error);
+
+        throw new Error('Failed to send email');
+      }
+      return { success: true };
     }),
   updateCustomer: privateProcedure
     .input(
@@ -241,11 +286,18 @@ export const appRouter = router({
         throw new TRPCError({ code: 'UNAUTHORIZED' });
       }
 
-      await db.customer.delete({
+      const customer = await db.customer.delete({
         where: {
           id: input.id,
         },
       });
+
+      await db.user.delete({
+        where: {
+          email: customer.email,
+        },
+      });
+
       return { success: true };
     }),
   updateUserProfileSettings: privateProcedure
@@ -1141,11 +1193,11 @@ export const appRouter = router({
 
       return user;
     }),
-    updateCustomerDiscount: privateProcedure
+  updateCustomerDiscount: privateProcedure
     .input(
       z.object({
-        discount:z.string().optional(),
-        customerId: z.string()
+        discount: z.string().optional(),
+        customerId: z.string(),
       })
     )
     .mutation(async ({ ctx, input }) => {

@@ -78,7 +78,7 @@ export default function TaskPage({ userId }: TaskProps) {
     customerType: 'LEAD' as CustomerType,
     nextServiceDate: date,
     formattedLastServiceDate: date,
-    id: ''
+    id: '',
   });
   const [open, setOpen] = React.useState<boolean>(false);
   const [customerValue, setCustomerValue] = React.useState<string>('');
@@ -132,7 +132,7 @@ export default function TaskPage({ userId }: TaskProps) {
         customerType: 'LEAD' as CustomerType,
         nextServiceDate: date,
         formattedLastServiceDate: date,
-        id: ''
+        id: '',
       });
 
       customerData?.push({
@@ -150,7 +150,6 @@ export default function TaskPage({ userId }: TaskProps) {
         variant: 'destructive',
       });
 
-
       setNewCustomerData({
         name: '',
         address: '',
@@ -159,7 +158,7 @@ export default function TaskPage({ userId }: TaskProps) {
         customerType: 'LEAD' as CustomerType,
         nextServiceDate: date,
         formattedLastServiceDate: date,
-        id: ''
+        id: '',
       });
     },
   });
@@ -208,7 +207,7 @@ export default function TaskPage({ userId }: TaskProps) {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Welcome back!</h2>
             <p className='text-muted-foreground'>
-              Here&apos;s a list of your tasks for this month!
+              Here&apos;s a list of your customers!
             </p>
           </div>
           <div>
@@ -409,7 +408,7 @@ export default function TaskPage({ userId }: TaskProps) {
               ...customer,
               nextServiceDate: customer.formattedNextServiceDate.toISOString(),
               lastServiceDate: customer.formattedLastServiceDate.toISOString(),
-              id: customer.id
+              id: customer.id,
             })) || []
           }
           columns={columns}

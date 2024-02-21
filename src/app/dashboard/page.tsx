@@ -21,7 +21,6 @@ const Page = async () => {
     redirect('/auth-callback?origin=client');
   }
 
-
   return <Dashboard />;
 
 };
