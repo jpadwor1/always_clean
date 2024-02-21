@@ -170,7 +170,7 @@ const Page = () => {
           <h2 className='text-2xl font-semibold'>PRIVACY POLICY</h2>
           <p>Last updated January 31, 2024</p>
           <p>
-            This privacy notice for Krystal Clean Pool Service LLC.
+            This privacy notice for John&apos;s Krystal Clean Pool Service
             (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), describes how
             and why we might collect, store, use, and/or share
             (&quot;process&quot;) your information when you use our services

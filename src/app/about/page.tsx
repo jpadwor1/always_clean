@@ -262,7 +262,7 @@ const Page = () => {
               />
             </div>
           </div>
-          <h2 className='text-center text-4xl lg:text-5xl mb-9 font-bold font-heading'>
+          {/* <h2 className='text-center text-4xl lg:text-5xl mb-9 font-bold font-heading'>
             Our Credentials
           </h2>
           <div className='bg-gray-50 rounded-3xl mb-32 flex flex-wrap py-8'>
@@ -302,7 +302,7 @@ const Page = () => {
                 alt=''
               />
             </div>
-          </div>
+          </div> */}
           <h2 className='text-4xl font-bold font-heading text-center mb-4'>
             Meet the team
           </h2>
@@ -312,7 +312,7 @@ const Page = () => {
           <div className='mb-16 flex justify-center'>
             <a
               className='w-full sm:w-auto text-center h-14 inline-flex items-center justify-center py-3 px-5 rounded-full bg-orange-500 border border-orange-600 shadow text-sm font-semibold text-white hover:bg-orange-600 focus:ring focus:ring-orange-200 transition duration-200'
-              href='/careers'
+              href='#'
             >
               Careers
             </a>
