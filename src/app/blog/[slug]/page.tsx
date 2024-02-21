@@ -2,15 +2,15 @@
 
 import { trpc } from '@/app/_trpc/client';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
-import { Post, User } from '@prisma/client';
 import { format } from 'date-fns';
-import { ArrowBigLeft, ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import './post.css';
 import ServiceCTACard from '@/components/Services/ServiceCTACard';
 import Head from 'next/head';
+import { Post, User } from '@prisma/client';
 
 interface PageProps {
   params: {
@@ -20,7 +20,7 @@ interface PageProps {
 
 const Page = ({ params }: PageProps) => {
   const { slug } = params;
-  const { data } = trpc.getPost.useQuery({ slug: slug });
+  const { data } = trpc.getPost.useQuery({ slug });
 
   const copyURL = () => {
     const url = window.location.href;
@@ -42,15 +42,21 @@ const Page = ({ params }: PageProps) => {
 
   return (
     <>
-     <Head>
+      <Head>
         <title>{post.title}</title>
-        <meta name="description" content={post.excerpt} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        <meta property="og:image" content={post.img} />
-        <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="Krystal Clean Pools" />
-        <meta name="keywords" content="pool cleaning, pinal county," />
+        <meta name='description' content={post.excerpt} />
+        <meta property='og:title' content={post.title} />
+        <meta property='og:description' content={post.excerpt} />
+        <meta property='og:image' content={post.img} />
+        <meta property='og:type' content='article' />
+        <meta property='og:site_name' content='Krystal Clean Pools' />
+        <meta
+          name='keywords'
+          content={
+            'pool cleaning, pinal county, pool cleaning near me, ' +
+            post.keywords
+          }
+        />
       </Head>
       <article
         className='py-8 md:py-12 bg-white relative'
@@ -117,8 +123,7 @@ const Page = ({ params }: PageProps) => {
           </div>
         </div>
         <MaxWidthWrapper className='mt-10'>
-        <ServiceCTACard />
-
+          <ServiceCTACard />
         </MaxWidthWrapper>
       </article>
     </>

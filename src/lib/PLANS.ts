@@ -2,9 +2,9 @@ export const PLANS = [
   {
     name: 'Winter Special',
     type: 'Regular Pool Cleaning',
-    price: 99,
+    price: 125,
     priceFrequency: 'per month',
-    description: 'Save $312 annually by signing a 1 year service agreement',
+    description: 'Save $240 annually by signing a 1 year service agreement',
     features: [
       'Test and chemically balance water (tailored for residential needs)',
       'Clean skimmer and pump basket',
@@ -16,13 +16,13 @@ export const PLANS = [
     learnMoreLink: '/services/regular-cleaning',
     priceIds: {
       test: 'price_1OelNvDAvxyq4Y7vw5eO9Y86',
-      production: 'price_1OenuvDAvxyq4Y7voul8c3Nw',
+      production: 'price_1OmKZuDAvxyq4Y7vB88OkIfZ',
     },
   },
   {
     name: 'Play Pools',
     type: 'Regular Pool Cleaning',
-    price: 125,
+    price: 145,
     priceFrequency: 'per month',
     description: 'Ideal for residential pools, chemicals included',
     features: [
@@ -41,7 +41,7 @@ export const PLANS = [
   },
   {
     name: 'Diving or Extra Large',
-    price: 150,
+    price: 175,
     priceFrequency: 'per month',
     description: 'Designed for larger pools',
     features: [
