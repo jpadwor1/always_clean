@@ -162,7 +162,6 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
   const submitSignature = () => {
     const serviceAgreementURL = sigPad?.toDataURL('image/png');
-    console.log(serviceAgreementURL);
     const data = {
       serviceAgreementURL: serviceAgreementURL as string,
       customerId: user.id as string,
@@ -254,91 +253,90 @@ export function ProfileForm({ user }: ProfileFormProps) {
             </FormItem>
           )}
         />
-        {user.serviceAgreementURL.length < 0 ? (
+        {user.serviceAgreementURL && user.serviceAgreementURL.length <= 0 ? (
           <div className='flex flex-col space-y-3 text-left'>
-          <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
-            <FormControl>
-              <Button
-                className='block bg-green-600 self-center hover:bg-green-300'
-                type='button'
-                onClick={() => setOpenModal(true)}
-                disabled={!downloaded}
-              >
-                Sign
-              </Button>
-            </FormControl>
-            <div className='space-y-1 leading-none'>
-              <FormLabel>
-                Please download the service agreement and read through the
-                document.
-              </FormLabel>
-              <FormDescription>
-                <Link
-                  onClick={() => setDownloaded(!downloaded)}
-                  className='text-blue-600'
-                  href='/examples/forms'
+            <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
+              <FormControl>
+                <Button
+                  className='block bg-green-600 self-center hover:bg-green-300'
+                  type='button'
+                  onClick={() => setOpenModal(true)}
+                  disabled={!downloaded}
                 >
-                  Download Service Agreement
-                </Link>{' '}
-                or view online at{' '}
-                <Link
-                  onClick={() => setDownloaded(!downloaded)}
-                  href='/service-agreement'
-                  target='_blank'
-                  className='text-blue-600'
-                >
-                  Service Agreement Page
-                </Link>
-              </FormDescription>
-              <FormDescription>
-                By signing, you acknowledge that you have read, understood, and
-                agreed to the terms and conditions outlined in the Service
-                Agreement.
-              </FormDescription>
-            </div>
-          </FormItem>
-          {openModel && (
-            <div className='h-full flex justify-center items-center bg-blue-gray-100'>
-              <div className='w-[90%] h-full border padding-2 bg-white'>
-                <SignatureCanvas
-                  penColor='black'
-                  canvasProps={{ className: 'w-full h-full' }}
-                  ref={(ref) => {
-                    sigPad = ref;
-                  }}
-                />
-                <div className='flex flex-row items-center justify-between'>
-                  <div className='text-left'>
-                    <button
-                      type='button'
-                      className='px-2 rounded-md py-1 border-2 m-2'
-                      onClick={() => sigPad?.clear()}
-                    >
-                      Clear
-                    </button>
-                    <button
-                      className='px-2 rounded-md py-1 border-2 m-2'
-                      onClick={() => setOpenModal(false)}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                  <div className='text-right'>
-                    <button
-                      className='px-2 py-1 rounded-md m-2 bg-green-600 text-white hover:bg-green-300'
-                      type='button'
-                      onClick={() => submitSignature()}
-                    >
-                      Submit
-                    </button>
+                  Sign
+                </Button>
+              </FormControl>
+              <div className='space-y-1 leading-none'>
+                <FormLabel>
+                  Please download the service agreement and read through the
+                  document.
+                </FormLabel>
+                <FormDescription>
+                  <Link
+                    onClick={() => setDownloaded(!downloaded)}
+                    className='text-blue-600'
+                    href='/examples/forms'
+                  >
+                    Download Service Agreement
+                  </Link>{' '}
+                  or view online at{' '}
+                  <Link
+                    onClick={() => setDownloaded(!downloaded)}
+                    href='/service-agreement'
+                    target='_blank'
+                    className='text-blue-600'
+                  >
+                    Service Agreement Page
+                  </Link>
+                </FormDescription>
+                <FormDescription>
+                  By signing, you acknowledge that you have read, understood,
+                  and agreed to the terms and conditions outlined in the Service
+                  Agreement.
+                </FormDescription>
+              </div>
+            </FormItem>
+            {openModel && (
+              <div className='h-full flex justify-center items-center bg-blue-gray-100'>
+                <div className='w-[90%] h-full border padding-2 bg-white'>
+                  <SignatureCanvas
+                    penColor='black'
+                    canvasProps={{ className: 'w-full h-full' }}
+                    ref={(ref) => {
+                      sigPad = ref;
+                    }}
+                  />
+                  <div className='flex flex-row items-center justify-between'>
+                    <div className='text-left'>
+                      <button
+                        type='button'
+                        className='px-2 rounded-md py-1 border-2 m-2'
+                        onClick={() => sigPad?.clear()}
+                      >
+                        Clear
+                      </button>
+                      <button
+                        className='px-2 rounded-md py-1 border-2 m-2'
+                        onClick={() => setOpenModal(false)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                    <div className='text-right'>
+                      <button
+                        className='px-2 py-1 rounded-md m-2 bg-green-600 text-white hover:bg-green-300'
+                        type='button'
+                        onClick={() => submitSignature()}
+                      >
+                        Submit
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-        ): null}
-        
+            )}
+          </div>
+        ) : null}
 
         <Button type='submit'>Update profile</Button>
       </form>

@@ -9,7 +9,7 @@ import { getUserSubscriptionPlan, stripe } from '@/lib/stripe';
 import { absoluteUrl } from '@/lib/utils';
 import { addDays, format } from 'date-fns';
 import sgMail from '@sendgrid/mail';
-import { PLANS } from '@/lib/PLANS';
+import { PLANS, STRIPE_PLANS } from '@/lib/PLANS';
 import { addUser } from '@/lib/actions';
 
 export const appRouter = router({
@@ -1007,7 +1007,7 @@ export const appRouter = router({
         // Create an Invoice Item with the Price, and Customer
         const invoiceItem = await stripe.invoiceItems.create({
           customer: customerStripeId,
-          price: PLANS.find((plan) => plan.type === input.serviceName)?.priceIds
+          price: STRIPE_PLANS.find((plan) => plan.type === input.serviceName)?.priceIds
             .production,
           invoice: invoice.id,
         });

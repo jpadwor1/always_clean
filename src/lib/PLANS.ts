@@ -83,7 +83,7 @@ export const STRIPE_PLANS = [
   {
     name: '99 Special',
     type: 'Regular Pool Cleaning',
-    price: 125,
+    price: 99,
     priceFrequency: 'per month',
     description: 'Save $240 annually by signing a 1 year service agreement',
     features: [
@@ -97,7 +97,7 @@ export const STRIPE_PLANS = [
     learnMoreLink: '/services/regular-cleaning',
     priceIds: {
       test: 'price_1OelNvDAvxyq4Y7vw5eO9Y86',
-      production: 'price_1OmKZuDAvxyq4Y7vB88OkIfZ',
+      production: 'price_1OenuvDAvxyq4Y7voul8c3Nw',
     },
   },
   {
