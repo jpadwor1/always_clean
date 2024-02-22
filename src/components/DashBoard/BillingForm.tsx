@@ -44,6 +44,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { STRIPE_PLANS } from '@/lib/PLANS';
 
 interface BillingFormProps {
   subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>;
@@ -57,6 +58,10 @@ const FormSchema = z.object({
   discount: z.string().optional(),
 });
 
+const AgreementSchema = z.object({
+  agreementCode: z.string(),
+});
+
 const BillingForm = ({
   invoices,
   subscriptionPlan,
@@ -68,6 +73,12 @@ const BillingForm = ({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+
+  const agreementForm = useForm<z.infer<typeof AgreementSchema>>({
+    resolver: zodResolver(AgreementSchema),
+  });
+
+
   const { mutate: createStripeSession, isLoading } =
     trpc.createStripeSession.useMutation({
       onSuccess: ({ url }) => {
@@ -82,7 +93,7 @@ const BillingForm = ({
       },
     });
   const updateCustomerDiscount = trpc.updateCustomerDiscount.useMutation();
-
+ const updateServiceAgreementCode = trpc.updateCustomerServiceAgreementCode.useMutation();
   function formatCurrency(amountInCents: number, currencyCode = 'USD') {
     const amount = amountInCents / 100;
     return new Intl.NumberFormat('en-US', {
@@ -128,9 +139,39 @@ const BillingForm = ({
     });
   }
 
+  function updateServiceAgreement(formData: z.infer<typeof AgreementSchema>) {
+    const newFormData = {
+      customerId: customer.id,
+      agreementCode: formData.agreementCode,
+    };
+    updateServiceAgreementCode.mutate(newFormData, {
+      onSuccess: () => {
+        toast({
+          title: 'Agreement Applied',
+          description: 'The agreement has been applied to the customer account.',
+        });
+      },
+      onError: (error: any) => {
+        toast({
+          title: 'Error',
+          description: error.message,
+          variant: 'destructive',
+        });
+      },
+    });
+  }
+
+  const agreementPlans = STRIPE_PLANS.map((plan) => {
+    return {
+      name: plan.name,
+      price: plan.price,
+    };
+  })
+
   return (
     <Card className=''>
       {role === 'ADMIN' ? (
+        <>
         <div className='p-4'>
           <Form {...form}>
             <form
@@ -170,6 +211,49 @@ const BillingForm = ({
             </form>
           </Form>
         </div>
+        <div className='p-4'>
+        <Form {...agreementForm}>
+            <form
+              onSubmit={agreementForm.handleSubmit(updateServiceAgreement)}
+              className='w-2/3 space-y-6 flex items-center space-x-4'
+            >
+              <FormField
+                control={agreementForm.control}
+                name='agreementCode'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className='text-lg'>Customer Agreement</FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={customer.agreementCode}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder='Select an agreement type to apply to this customer' />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {agreementPlans.map((plan) => (
+                          <SelectItem key={plan.name} value={plan.name}>
+                            {plan.name} ({plan.price}/mo)
+                          </SelectItem>
+                        ))}
+                        
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Select a discount to apply to this customer&apos;s
+                      account. This will affect all future invoices.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type='submit'>Submit</Button>
+            </form>
+          </Form>
+        </div>
+        </>
       ) : (
         <div className='p-4'>
           <h2 className='text-xl font-medium'>Current Discounts</h2>

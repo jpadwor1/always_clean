@@ -1007,8 +1007,9 @@ export const appRouter = router({
         // Create an Invoice Item with the Price, and Customer
         const invoiceItem = await stripe.invoiceItems.create({
           customer: customerStripeId,
-          price: STRIPE_PLANS.find((plan) => plan.type === input.serviceName)?.priceIds
-            .production,
+          price: STRIPE_PLANS.find(
+            (plan) => plan.name === customer.agreementCode
+          )?.priceIds.production,
           invoice: invoice.id,
         });
 
@@ -1252,6 +1253,38 @@ export const appRouter = router({
           data: {
             serviceAgreementURL: input.serviceAgreementURL,
             serviceAgreementDate: new Date(),
+          },
+        });
+      }
+
+      return { success: true };
+    }),
+    updateCustomerServiceAgreementCode: privateProcedure
+    .input(
+      z.object({
+        agreementCode: z.string(),
+        customerId: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
+
+      const dbCustomer = await db.customer.findFirst({
+        where: {
+          id: input.customerId,
+        },
+      });
+
+      if (dbCustomer) {
+        await db.customer.update({
+          where: {
+            id: dbCustomer.id,
+          },
+          data: {
+            agreementCode: input.agreementCode,
           },
         });
       }
