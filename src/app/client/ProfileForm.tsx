@@ -253,7 +253,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
             </FormItem>
           )}
         />
-        {user.serviceAgreementURL && user.serviceAgreementURL.length <= 0 ? (
+        {user.serviceAgreementURL === null ? (
           <div className='flex flex-col space-y-3 text-left'>
             <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
               <FormControl>
