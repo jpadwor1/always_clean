@@ -273,15 +273,16 @@ export function ProfileForm({ user }: ProfileFormProps) {
                 </FormLabel>
                 <FormDescription>
                   <Link
-                    onClick={() => setDownloaded(!downloaded)}
+                    onClick={() => setDownloaded(true)}
                     className='text-blue-600'
-                    href='/examples/forms'
+                    href='/files/ServiceAgreement.pdf'
+                    target='_blank'
                   >
                     Download Service Agreement
                   </Link>{' '}
                   or view online at{' '}
                   <Link
-                    onClick={() => setDownloaded(!downloaded)}
+                    onClick={() => setDownloaded(true)}
                     href='/service-agreement'
                     target='_blank'
                     className='text-blue-600'
