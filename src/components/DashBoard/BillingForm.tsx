@@ -298,10 +298,13 @@ const BillingForm = ({
           >
             Send Invoice
           </Button>
-          <p className='ml-4'>
+          {customer.lastInvoiceSent != null && (
+            <p className='ml-4'>
             Last invoice sent:{' '}
             {format(customer.lastInvoiceSent, 'MMM do, yyyy')}
           </p>
+          )}
+          
         </>
       ) : (
         <div className='p-4'>

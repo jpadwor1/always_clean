@@ -9,7 +9,7 @@ import ServiceCTACard from '@/components/Services/ServiceCTACard';
 const Page = () => {
   return (
     <MaxWidthWrapper className='md:px-10'>
-       <section
+      <section
         className='py-24 bg-white overflow-hidden'
         style={{
           backgroundImage: 'url("/pattern-white.svg")',
@@ -57,7 +57,7 @@ const Page = () => {
                 <Image
                   height={400}
                   width={400}
-                  src='/stock2.png'
+                  src='/poolPortrait.webp'
                   alt='Pool cleaner vacuuming pool'
                 />
               </div>
@@ -123,7 +123,7 @@ const Page = () => {
 
       <ServiceCTACard />
 
-     <RegularCleaningFeatureCards badgeTitle="Features"/>
+      <RegularCleaningFeatureCards badgeTitle='Features' />
 
       <section
         className='py-12 bg-white overflow-hidden'
@@ -181,7 +181,9 @@ const Page = () => {
                   </li>
                 </ul>
                 <div className='flex flex-col justify-center items-center'>
-                  <h2 className='text-gray-900 font-bold text-2xl leading-9 tracking-wide mb-3'>Start Your Weekly Pool Service Today</h2>
+                  <h2 className='text-gray-900 font-bold text-2xl leading-9 tracking-wide mb-3'>
+                    Start Your Weekly Pool Service Today
+                  </h2>
                   <Button size='lg'>
                     <Link href='/booking'>Book Now</Link>
                   </Button>
