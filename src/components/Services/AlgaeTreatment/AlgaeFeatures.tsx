@@ -41,7 +41,7 @@ const AlgaeFeatures = () => {
             width={100}
           />
           <Image
-            src='/pool.webp'
+            src='/green-to-clean-pool.jpg'
             alt=''
             height={500}
             width={500}
