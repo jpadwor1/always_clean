@@ -927,25 +927,7 @@ export const appRouter = router({
     .input(
       z.object({
         customerId: z.string(),
-        serviceEventId: z.string(),
-        serviceName: z.string(),
-        notes: z.string().optional(),
-        serviceChemicals: z.array(
-          z.object({
-            chemical: z.object({
-              id: z.string(),
-              name: z.string(),
-              price: z.number(),
-              units: z.string(),
-            }),
-            quantity: z.number(),
-            id: z.string(),
-            serviceEventId: z.string(),
-            chemicalId: z.string(),
-          })
-        ),
-        tasksPerformed: z.string(),
-        dateCompleted: z.string(),
+        
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -1050,7 +1032,7 @@ export const appRouter = router({
           }
         };
 
-        await sendEmail('johnpadworski@gmail.com');
+        await sendEmail('support@krystalcleanpools.com');
       } catch (err) {
         console.error(err);
         throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
@@ -1259,7 +1241,7 @@ export const appRouter = router({
 
       return { success: true };
     }),
-    updateCustomerServiceAgreementCode: privateProcedure
+  updateCustomerServiceAgreementCode: privateProcedure
     .input(
       z.object({
         agreementCode: z.string(),

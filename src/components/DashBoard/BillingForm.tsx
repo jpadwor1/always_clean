@@ -45,6 +45,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { STRIPE_PLANS } from '@/lib/PLANS';
+import { useRouter } from 'next/navigation';
 
 interface BillingFormProps {
   subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>;
@@ -73,11 +74,13 @@ const BillingForm = ({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
-
+  const router = useRouter();
+  const handleRefresh = () => {
+    router.refresh();
+  };
   const agreementForm = useForm<z.infer<typeof AgreementSchema>>({
     resolver: zodResolver(AgreementSchema),
   });
-
 
   const { mutate: createStripeSession, isLoading } =
     trpc.createStripeSession.useMutation({
@@ -93,7 +96,8 @@ const BillingForm = ({
       },
     });
   const updateCustomerDiscount = trpc.updateCustomerDiscount.useMutation();
- const updateServiceAgreementCode = trpc.updateCustomerServiceAgreementCode.useMutation();
+  const updateServiceAgreementCode =
+    trpc.updateCustomerServiceAgreementCode.useMutation();
   function formatCurrency(amountInCents: number, currencyCode = 'USD') {
     const amount = amountInCents / 100;
     return new Intl.NumberFormat('en-US', {
@@ -148,7 +152,8 @@ const BillingForm = ({
       onSuccess: () => {
         toast({
           title: 'Agreement Applied',
-          description: 'The agreement has been applied to the customer account.',
+          description:
+            'The agreement has been applied to the customer account.',
         });
       },
       onError: (error: any) => {
@@ -160,99 +165,143 @@ const BillingForm = ({
       },
     });
   }
+  const createInvoice = trpc.getCreateInvoice.useMutation();
 
   const agreementPlans = STRIPE_PLANS.map((plan) => {
     return {
       name: plan.name,
       price: plan.price,
     };
-  })
+  });
+  const handleInvoice = () => {
+    const invoiceData = {
+      customerId: customer.id,
+    };
 
+    createInvoice.mutate(invoiceData, {
+      onSuccess: () => {
+        toast({
+          title: 'Invoice Sent',
+          description: (
+            <>
+              <p>Invoice Sent</p>
+            </>
+          ),
+        });
+        handleRefresh();
+      },
+      onError: (error: any) => {
+        toast({
+          title: 'Oops Something went wrong',
+          description: (
+            <>
+              <p>try again later</p>
+              <p>{error.message}</p>
+            </>
+          ),
+        });
+        handleRefresh();
+      },
+    });
+  };
   return (
     <Card className=''>
       {role === 'ADMIN' ? (
         <>
-        <div className='p-4'>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className='w-2/3 space-y-6 flex items-center space-x-4'
-            >
-              <FormField
-                control={form.control}
-                name='discount'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='text-lg'>Customer Discount</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={customer.discount}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder='Select a discount to apply to this customer' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value='Winter Special'>
-                          Winter Special (125/mo)
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Select a discount to apply to this customer&apos;s
-                      account. This will affect all future invoices.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type='submit'>Submit</Button>
-            </form>
-          </Form>
-        </div>
-        <div className='p-4'>
-        <Form {...agreementForm}>
-            <form
-              onSubmit={agreementForm.handleSubmit(updateServiceAgreement)}
-              className='w-2/3 space-y-6 flex items-center space-x-4'
-            >
-              <FormField
-                control={agreementForm.control}
-                name='agreementCode'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='text-lg'>Customer Agreement</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={customer.agreementCode}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder='Select an agreement type to apply to this customer' />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {agreementPlans.map((plan) => (
-                          <SelectItem key={plan.name} value={plan.name}>
-                            {plan.name} ({plan.price}/mo)
+          <div className='p-4'>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className='w-2/3 space-y-6 flex items-center space-x-4'
+              >
+                <FormField
+                  control={form.control}
+                  name='discount'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-lg'>
+                        Customer Discount
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={customer.discount}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select a discount to apply to this customer' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value='Winter Special'>
+                            Winter Special (125/mo)
                           </SelectItem>
-                        ))}
-                        
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>
-                      Select a discount to apply to this customer&apos;s
-                      account. This will affect all future invoices.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type='submit'>Submit</Button>
-            </form>
-          </Form>
-        </div>
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Select a discount to apply to this customer&apos;s
+                        account. This will affect all future invoices.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type='submit'>Submit</Button>
+              </form>
+            </Form>
+          </div>
+          <div className='p-4'>
+            <Form {...agreementForm}>
+              <form
+                onSubmit={agreementForm.handleSubmit(updateServiceAgreement)}
+                className='w-2/3 space-y-6 flex items-center space-x-4'
+              >
+                <FormField
+                  control={agreementForm.control}
+                  name='agreementCode'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className='text-lg'>
+                        Customer Agreement
+                      </FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={customer.agreementCode}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder='Select an agreement type to apply to this customer' />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {agreementPlans.map((plan) => (
+                            <SelectItem key={plan.name} value={plan.name}>
+                              {plan.name} ({plan.price}/mo)
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormDescription>
+                        Select a discount to apply to this customer&apos;s
+                        account. This will affect all future invoices.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type='submit'>Submit</Button>
+              </form>
+            </Form>
+          </div>
+          <Button
+            onClick={handleInvoice}
+            className='bg-gray-600 ml-4 hover:bg-black'
+          >
+            Send Invoice
+          </Button>
+          <p className='ml-4'>
+            Last invoice sent:{' '}
+            {format(customer.lastInvoiceSent, 'MMM do, yyyy')}
+          </p>
         </>
       ) : (
         <div className='p-4'>
