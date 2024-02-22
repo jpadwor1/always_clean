@@ -298,8 +298,8 @@ export function ProfileForm({ user }: ProfileFormProps) {
               </div>
             </FormItem>
             {openModel && (
-              <div className='h-full flex justify-center items-center bg-blue-gray-100'>
-                <div className='w-[90%] h-full border padding-2 bg-white'>
+              <div className='md:h-full h-[150px] flex justify-center items-center bg-blue-gray-100'>
+                <div className='w-[90%] h-full border padding-2 bg-white flex flex-col'>
                   <SignatureCanvas
                     penColor='black'
                     canvasProps={{ className: 'w-full h-full' }}
@@ -339,7 +339,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
           </div>
         ) : null}
 
-        <Button type='submit'>Update profile</Button>
+        <Button className='' type='submit'>Update profile</Button>
       </form>
     </Form>
   );
