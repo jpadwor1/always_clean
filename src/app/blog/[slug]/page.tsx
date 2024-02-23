@@ -70,6 +70,7 @@ const Page = ({ params }: PageProps) => {
             <ArrowLeft className='text-gray-600 h-8 w-8' />
           </Link>
         </div>
+        
         <div className='container px-4 mx-auto'>
           <div className='md:max-w-2xl mx-auto mb-12 text-center'>
             <div className='flex items-center justify-center'>
