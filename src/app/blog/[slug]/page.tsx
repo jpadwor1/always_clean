@@ -12,6 +12,7 @@ import ServiceCTACard from '@/components/Services/ServiceCTACard';
 import Head from 'next/head';
 import { Post, User } from '@prisma/client';
 
+
 interface PageProps {
   params: {
     slug: string;
