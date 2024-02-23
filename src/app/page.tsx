@@ -7,6 +7,8 @@ import Footer from '@/components/Footer';
 import Link from 'next/link';
 import GoogleCaptchaWrapper from '@/app/google-captcha-wrapper';
 import FeaturedPosts from '@/components/Blog/FeaturedPosts';
+import ServiceCTACard from '@/components/Services/ServiceCTACard';
+import CommunityCTA from '@/components/Services/CommunityCTA';
 
 export default function Home() {
   return (
@@ -98,9 +100,15 @@ function HomeInside() {
 
       {/* Featured Posts */}
       <FeaturedPosts />
+
+      {/* CTASection */}
+      <CommunityCTA buttonType='call' />
       
       {/* Contact Section */}
       <ContactSection />
+
+      {/* CTA Section */}
+      <ServiceCTACard />
     </MaxWidthWrapper>
   );
 }

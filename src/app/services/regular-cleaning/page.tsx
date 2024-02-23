@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import RegularCleaningFeatureCards from '@/components/Services/RegularPoolCleaning/RegularCleaningFeatureCards';
 import ServiceCTACard from '@/components/Services/ServiceCTACard';
+import CommunityCTA from '@/components/Services/CommunityCTA';
 const Page = () => {
   return (
     <MaxWidthWrapper className='md:px-10'>
@@ -125,7 +126,7 @@ const Page = () => {
 
       <RegularCleaningFeatureCards badgeTitle='Features' />
 
-      <section
+      {/* <section
         className='py-12 bg-white overflow-hidden'
         style={{
           backgroundImage: 'url("/pattern-white.svg")',
@@ -192,7 +193,8 @@ const Page = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+      <CommunityCTA buttonType='book' />
     </MaxWidthWrapper>
   );
 };
