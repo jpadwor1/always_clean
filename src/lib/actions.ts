@@ -129,3 +129,9 @@ export const addUser = async ({
     throw error; 
   }
 };
+
+type CookiePreferences = {
+  functional: boolean;
+  performance: boolean;
+};
+

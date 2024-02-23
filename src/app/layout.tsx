@@ -11,6 +11,7 @@ import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { FacebookPixelEvents } from '@/components/FacebookPixelEvents';
+import CookieConsentBanner from '@/components/CookieConsent';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -38,6 +39,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <CookieConsentBanner />
         </body>
       </Providers>
       <GoogleAnalytics gaId='G-CXG6005YVL' />
