@@ -33,8 +33,11 @@ const BlogCard = async ({ post }: BlogCardProps) => {
           {post.category}
         </div>
       </div>
+
+      <div className='h-[80px] inline-block mb-0 text-xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline'>
+        {post.title}
+      </div>
       <p className='mb-2 text-coolGray-500 font-medium'>
-        {author.name} •{' '}
         {format(
           new Date(
             post.publishDate && post.publishDate.length > 0
@@ -44,9 +47,6 @@ const BlogCard = async ({ post }: BlogCardProps) => {
           'MMM do, yyyy'
         )}
       </p>
-      <div className='h-[80px] inline-block mb-4 text-xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline'>
-        {post.title}
-      </div>
       <div className='h-[85px] mb-4 text-base md:text-lg text-coolGray-400 font-medium line-clamp-3'>
         {post.excerpt}
       </div>

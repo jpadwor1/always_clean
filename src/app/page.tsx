@@ -5,7 +5,8 @@ import PricingModule from '@/components/PricingModule';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import GoogleCaptchaWrapper from "@/app/google-captcha-wrapper";
+import GoogleCaptchaWrapper from '@/app/google-captcha-wrapper';
+import FeaturedPosts from '@/components/Blog/FeaturedPosts';
 
 export default function Home() {
   return (
@@ -35,14 +36,29 @@ function HomeInside() {
               <div className='flex flex-wrap'>
                 <div className='w-full md:w-auto py-1 md:py-0 md:mr-4'>
                   <Link href='/booking'>
-                  <Button variant={'secondary'} className='shadow-lg hover:shadow-xl'>
-                    Book Here
-                  </Button>
+                    <Button
+                      variant={'secondary'}
+                      className='shadow-lg hover:shadow-xl'
+                    >
+                      Book Here
+                    </Button>
                   </Link>
-                  <Link href='tel:760-912-7396'>
-                  <Button className='shadow-lg hover:shadow-xl ml-2'>
-                   Call Now
-                  </Button>
+
+                  <Link
+                    className='md:hidden inline-flex'
+                    href='tel:760-912-7396'
+                  >
+                    <Button className='shadow-lg hover:shadow-xl ml-2'>
+                      Call Now
+                    </Button>
+                  </Link>
+                  <Link
+                    className='md:inline-flex hidden'
+                    href='tel:760-912-7396'
+                  >
+                    <Button className='shadow-lg hover:shadow-xl ml-2'>
+                      760-912-7396
+                    </Button>
                   </Link>
                 </div>
                 <div className='w-full md:w-auto py-1 md:py-0' />
@@ -80,10 +96,11 @@ function HomeInside() {
       {/* Pricing Section */}
       <PricingModule linkVisibility={true} />
 
+      {/* Featured Posts */}
+      <FeaturedPosts />
+      
       {/* Contact Section */}
       <ContactSection />
-
-      
     </MaxWidthWrapper>
   );
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import BlogCard from '@/components/Blog/BlogCard';
 import Link from 'next/link';
 import { db } from '@/db';
