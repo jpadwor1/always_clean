@@ -19,6 +19,11 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { trpc } from '../_trpc/client';
 import Link from 'next/link';
+import { Avatar } from '@radix-ui/react-avatar';
+import AvatarUploadDropzone from '@/components/Profile/AvatarUploadDropzone';
+import { User } from '@prisma/client';
+import { useRouter } from 'next/navigation';
+
 const profileFormSchema = z.object({
   fullName: z
     .string()
@@ -40,7 +45,7 @@ const profileFormSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileFormSchema>;
 
 interface ProfileFormProps {
-  user: any;
+  user: User;
 }
 
 declare global {
@@ -109,6 +114,7 @@ const mergeRefs = (...refs: React.Ref<any>[]) => {
 };
 
 export function ProfileForm({ user }: ProfileFormProps) {
+  const router = useRouter();
   const defaultValues: Partial<ProfileFormValues> = {
     fullName: user.name,
     email: user.email,
@@ -125,6 +131,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
   const mutation = trpc.updateUserProfileSettings.useMutation();
   const updateServiceAgreement =
     trpc.updateCustomerServiceAgreement.useMutation();
+  const updateProfilePicture = trpc.updateCustomerAvatar.useMutation();
   let sigPad: SignatureCanvas | null = null;
   function onSubmit(data: ProfileFormValues) {
     mutation.mutate(data, {
@@ -188,159 +195,193 @@ export function ProfileForm({ user }: ProfileFormProps) {
       },
     });
   };
+
+  const onFileUpload = (downloadURL: string, fileName: string) => {
+    const data = {
+      photoURL: downloadURL,
+      customerId: user.id as string,
+    };
+    updateProfilePicture.mutate(data, {
+      onSuccess: () => {
+        toast({
+          title: 'Updated Successfully',
+          description: <p>Your profile picture has been updated</p>,
+        });
+        router.refresh();
+      },
+      onError: (error: any) => {
+        toast({
+          variant: 'destructive',
+          title: 'Oops, something went wrong!',
+          description: (
+            <p>
+              <span className='font-medium'>{error.message}</span>
+            </p>
+          ),
+        });
+      },
+    });
+  };
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        <FormField
-          control={form.control}
-          name='fullName'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Full Name</FormLabel>
-              <FormControl>
-                <Input placeholder={user.name} {...field} />
-              </FormControl>
-              <FormDescription>This should be your full name.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='phone'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone Number</FormLabel>
-              <FormControl>
-                <Input placeholder={user.phone} {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='email'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder={user.email} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='address'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address</FormLabel>
-              <FormControl>
-                <Input
-                  ref={onAddressInputMount}
-                  id='address'
-                  defaultValue={field.value}
-                  onChange={field.onChange} // Bind the onChange event
-                  onBlur={field.onBlur} // Bind the onBlur event
-                  placeholder={user.address}
-                />
-              </FormControl>
-              <FormDescription>
-                You should only enter the service address.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {user.serviceAgreementURL === null ? (
-          <div className='flex flex-col space-y-3 text-left'>
-            <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
-              <FormControl>
-                <Button
-                  className='block bg-green-600 self-center hover:bg-green-300'
-                  type='button'
-                  onClick={() => setOpenModal(true)}
-                  disabled={!downloaded}
-                >
-                  Sign
-                </Button>
-              </FormControl>
-              <div className='space-y-1 leading-none'>
-                <FormLabel>
-                  Please download the service agreement and read through the
-                  document.
-                </FormLabel>
+    <>
+      <AvatarUploadDropzone user={user} onFileUpload={onFileUpload} />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+          <FormField
+            control={form.control}
+            name='fullName'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full Name</FormLabel>
+                <FormControl>
+                  <Input placeholder={user.name} {...field} />
+                </FormControl>
                 <FormDescription>
-                  <Link
-                    onClick={() => setDownloaded(true)}
-                    className='text-blue-600'
-                    href='/files/ServiceAgreement.pdf'
-                    target='_blank'
-                  >
-                    Download Service Agreement
-                  </Link>{' '}
-                  or view online at{' '}
-                  <Link
-                    onClick={() => setDownloaded(true)}
-                    href='/service-agreement'
-                    target='_blank'
-                    className='text-blue-600'
-                  >
-                    Service Agreement Page
-                  </Link>
+                  This should be your full name.
                 </FormDescription>
-                <FormDescription>
-                  By signing, you acknowledge that you have read, understood,
-                  and agreed to the terms and conditions outlined in the Service
-                  Agreement.
-                </FormDescription>
-              </div>
-            </FormItem>
-            {openModel && (
-              <div className='md:h-full h-[150px] flex justify-center items-center bg-blue-gray-100'>
-                <div className='w-[90%] h-full border padding-2 bg-white flex flex-col'>
-                  <SignatureCanvas
-                    penColor='black'
-                    canvasProps={{ className: 'w-full h-full' }}
-                    ref={(ref) => {
-                      sigPad = ref;
-                    }}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='phone'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <FormControl>
+                  <Input placeholder={user.phone} {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder={user.email} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='address'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Address</FormLabel>
+                <FormControl>
+                  <Input
+                    ref={onAddressInputMount}
+                    id='address'
+                    defaultValue={field.value}
+                    onChange={field.onChange} // Bind the onChange event
+                    onBlur={field.onBlur} // Bind the onBlur event
+                    placeholder={user.address}
                   />
-                  <div className='flex flex-row items-center justify-between'>
-                    <div className='text-left'>
-                      <button
-                        type='button'
-                        className='px-2 rounded-md py-1 border-2 m-2'
-                        onClick={() => sigPad?.clear()}
-                      >
-                        Clear
-                      </button>
-                      <button
-                        className='px-2 rounded-md py-1 border-2 m-2'
-                        onClick={() => setOpenModal(false)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                    <div className='text-right'>
-                      <button
-                        className='px-2 py-1 rounded-md m-2 bg-green-600 text-white hover:bg-green-300'
-                        type='button'
-                        onClick={() => submitSignature()}
-                      >
-                        Submit
-                      </button>
+                </FormControl>
+                <FormDescription>
+                  You should only enter the service address.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {user.serviceAgreementURL === null ? (
+            <div className='flex flex-col space-y-3 text-left'>
+              <FormItem className='flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'>
+                <FormControl>
+                  <Button
+                    className='block bg-green-600 self-center hover:bg-green-300'
+                    type='button'
+                    onClick={() => setOpenModal(true)}
+                    disabled={!downloaded}
+                  >
+                    Sign
+                  </Button>
+                </FormControl>
+                <div className='space-y-1 leading-none'>
+                  <FormLabel>
+                    Please download the service agreement and read through the
+                    document.
+                  </FormLabel>
+                  <FormDescription>
+                    <Link
+                      onClick={() => setDownloaded(true)}
+                      className='text-blue-600'
+                      href='/files/ServiceAgreement.pdf'
+                      target='_blank'
+                    >
+                      Download Service Agreement
+                    </Link>{' '}
+                    or view online at{' '}
+                    <Link
+                      onClick={() => setDownloaded(true)}
+                      href='/service-agreement'
+                      target='_blank'
+                      className='text-blue-600'
+                    >
+                      Service Agreement Page
+                    </Link>
+                  </FormDescription>
+                  <FormDescription>
+                    By signing, you acknowledge that you have read, understood,
+                    and agreed to the terms and conditions outlined in the
+                    Service Agreement.
+                  </FormDescription>
+                </div>
+              </FormItem>
+              {openModel && (
+                <div className='md:h-full h-[150px] flex justify-center items-center bg-blue-gray-100'>
+                  <div className='w-[90%] h-full border padding-2 bg-white flex flex-col'>
+                    <SignatureCanvas
+                      penColor='black'
+                      canvasProps={{ className: 'w-full h-full' }}
+                      ref={(ref) => {
+                        sigPad = ref;
+                      }}
+                    />
+                    <div className='flex flex-row items-center justify-between'>
+                      <div className='text-left'>
+                        <button
+                          type='button'
+                          className='px-2 rounded-md py-1 border-2 m-2'
+                          onClick={() => sigPad?.clear()}
+                        >
+                          Clear
+                        </button>
+                        <button
+                          className='px-2 rounded-md py-1 border-2 m-2'
+                          onClick={() => setOpenModal(false)}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                      <div className='text-right'>
+                        <button
+                          className='px-2 py-1 rounded-md m-2 bg-green-600 text-white hover:bg-green-300'
+                          type='button'
+                          onClick={() => submitSignature()}
+                        >
+                          Submit
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        ) : null}
+              )}
+            </div>
+          ) : null}
 
-        <Button className='' type='submit'>Update profile</Button>
-      </form>
-    </Form>
+          <Button className='' type='submit'>
+            Update profile
+          </Button>
+        </form>
+      </Form>
+    </>
   );
 }

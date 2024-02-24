@@ -273,6 +273,32 @@ export const appRouter = router({
 
       return { success: true };
     }),
+  updateCustomerAvatar: privateProcedure.input(z.object({ customerId: z.string(), photoURL: z.string() })).mutation(async ({ ctx, input }) => {
+    const { userId, user } = ctx;
+
+    if (!userId || !user) {
+      throw new TRPCError({ code: 'UNAUTHORIZED' });
+    }
+
+    const dbCustomer = await db.customer.findFirst({
+      where: {
+        id: input.customerId,
+      },
+    });
+
+    if (dbCustomer) {
+      await db.customer.update({
+        where: {
+          id: input.customerId,
+        },
+        data: {
+          photoURL: input.photoURL,
+        },
+      });
+    }
+
+    return { success: true };
+  }),
   deleteCustomer: privateProcedure
     .input(
       z.object({
