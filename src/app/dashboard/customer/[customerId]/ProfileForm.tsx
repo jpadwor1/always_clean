@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -18,6 +17,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { trpc } from '@/app/_trpc/client';
+import AvatarUploadDropzone from '@/components/Profile/AvatarUploadDropzone';
+import { useRouter } from 'next/navigation';
 
 const profileFormSchema = z.object({
   fullName: z
@@ -109,6 +110,7 @@ const mergeRefs = (...refs: React.Ref<any>[]) => {
 };
 
 export function ProfileForm({ user }: ProfileFormProps) {
+  const router = useRouter();
   const defaultValues: Partial<ProfileFormValues> = {
     fullName: user.name,
     email: user.email,
@@ -122,27 +124,31 @@ export function ProfileForm({ user }: ProfileFormProps) {
   });
 
   const mutation = trpc.updateCustomer.useMutation();
+  const updateProfilePicture = trpc.updateCustomerAvatar.useMutation();
 
   function onSubmit(data: ProfileFormValues) {
-    mutation.mutate({...data, id: user.id}, {
-      onSuccess: () => {
-        toast({
-          title: 'Updated Successfully',
-          description: <p>Your profile settings have been updated</p>,
-        });
-      },
-      onError: (error) => {
-        toast({
-          variant: 'destructive',
-          title: 'Oops, something went wrong!',
-          description: (
-            <p>
-              <span className='font-medium'>{error.message}</span>
-            </p>
-          ),
-        });
-      },
-    });
+    mutation.mutate(
+      { ...data, id: user.id },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Updated Successfully',
+            description: <p>Your profile settings have been updated</p>,
+          });
+        },
+        onError: (error) => {
+          toast({
+            variant: 'destructive',
+            title: 'Oops, something went wrong!',
+            description: (
+              <p>
+                <span className='font-medium'>{error.message}</span>
+              </p>
+            ),
+          });
+        },
+      }
+    );
   }
 
   const addressInputRef = useRef<HTMLInputElement>(null);
@@ -156,75 +162,105 @@ export function ProfileForm({ user }: ProfileFormProps) {
   useEffect(() => {
     loadGooglePlacesScript(() => initGooglePlaces(form));
   }, [form]);
-
+  const onFileUpload = (downloadURL: string, fileName: string) => {
+    const data = {
+      photoURL: downloadURL,
+      customerId: user.id as string,
+    };
+    updateProfilePicture.mutate(data, {
+      onSuccess: () => {
+        toast({
+          title: 'Updated Successfully',
+          description: <p>Your profile picture has been updated</p>,
+        });
+        router.refresh();
+      },
+      onError: (error: any) => {
+        toast({
+          variant: 'destructive',
+          title: 'Oops, something went wrong!',
+          description: (
+            <p>
+              <span className='font-medium'>{error.message}</span>
+            </p>
+          ),
+        });
+      },
+    });
+  };
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-        <FormField
-          control={form.control}
-          name='fullName'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Full Name</FormLabel>
-              <FormControl>
-                <Input placeholder={user.name} {...field} />
-              </FormControl>
-              <FormDescription>This should be your full name.</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='phone'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Phone Number</FormLabel>
-              <FormControl>
-                <Input placeholder={user.phone} {...field} />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='email'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input placeholder={user.email} {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='address'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address</FormLabel>
-              <FormControl>
-                <Input
-                  ref={onAddressInputMount}
-                  id='address'
-                  defaultValue={field.value}
-                  onChange={field.onChange} // Bind the onChange event
-                  onBlur={field.onBlur} // Bind the onBlur event
-                  placeholder={user.address}
-                />
-              </FormControl>
-              <FormDescription>
-                You should only enter the service address.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <>
+      <AvatarUploadDropzone onFileUpload={onFileUpload} user={user} />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+          <FormField
+            control={form.control}
+            name='fullName'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Full Name</FormLabel>
+                <FormControl>
+                  <Input placeholder={user.name} {...field} />
+                </FormControl>
+                <FormDescription>
+                  This should be your full name.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='phone'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Phone Number</FormLabel>
+                <FormControl>
+                  <Input placeholder={user.phone} {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='email'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder={user.email} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='address'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Address</FormLabel>
+                <FormControl>
+                  <Input
+                    ref={onAddressInputMount}
+                    id='address'
+                    defaultValue={field.value}
+                    onChange={field.onChange} // Bind the onChange event
+                    onBlur={field.onBlur} // Bind the onBlur event
+                    placeholder={user.address}
+                  />
+                </FormControl>
+                <FormDescription>
+                  You should only enter the service address.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button type='submit'>Update profile</Button>
-      </form>
-    </Form>
+          <Button type='submit'>Update profile</Button>
+        </form>
+      </Form>
+    </>
   );
 }

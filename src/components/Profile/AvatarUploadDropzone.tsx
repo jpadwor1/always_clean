@@ -86,23 +86,28 @@ const AvatarUploadDropzone: React.FC<FileDropzoneProps> = ({
 
   return (
     <>
-      <h1>Add a photo</h1>
+      <div>
+        <h1 className='text-gray-900 font-medium mb-0'>Add a photo</h1>
+        <p className='text-gray-500 text-sm font-medium tracking pt-0'>
+          Upload a photo below by clicking or dragging an image into the circle.
+        </p>
+      </div>
+
       <Dropzone multiple={false} maxFiles={1} onDrop={handleUpload}>
         {({ getRootProps, getInputProps, acceptedFiles }) => (
           <>
             {user.photoURL ? (
               <div {...getRootProps()} onClick={(e) => e.stopPropagation()}>
-                
                 <label className='hover:cursor-pointer relative flex items-center justify-center w-[150px] h-[150px] rounded-full overflow-hidden'>
                   <div className='hover:cursor-pointer hover:backdrop-blur-xs opacity-0 hover:opacity-100 absolute flex flex-col items-center justify-center w-full h-full'>
                     <Camera className='h-6 w-6 text-white mb-2 ' />
                     <p className='text-white'>Add New Photo</p>
                     <input
-                  {...getInputProps()}
-                  type='file'
-                  id='dropzone-file'
-                  className='hidden'
-                />
+                      {...getInputProps()}
+                      type='file'
+                      id='dropzone-file'
+                      className='hidden'
+                    />
                   </div>
                   <Image
                     width={200}
