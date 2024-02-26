@@ -11,7 +11,13 @@ import './post.css';
 import ServiceCTACard from '@/components/Services/ServiceCTACard';
 import Head from 'next/head';
 import { Post, User } from '@prisma/client';
-
+import {
+  FacebookShareButton,
+  TwitterShareButton,
+  FacebookIcon,
+  TwitterIcon,
+  XIcon,
+} from 'react-share';
 
 interface PageProps {
   params: {
@@ -40,7 +46,7 @@ const Page = ({ params }: PageProps) => {
   }
   const post: Post = data.post;
   const author: User = data.author;
-
+  console.log(window.location.href);
   return (
     <>
       <Head>
@@ -71,10 +77,9 @@ const Page = ({ params }: PageProps) => {
             <ArrowLeft className='text-gray-600 h-8 w-8' />
           </Link>
         </div>
-        
+
         <div className='container px-4 mx-auto'>
           <div className='md:max-w-2xl mx-auto mb-12 text-center'>
-            
             <h2 className='mb-4 mt-10 text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter'>
               {post.title}
             </h2>
@@ -113,6 +118,16 @@ const Page = ({ params }: PageProps) => {
                   Copy Link to Share
                 </span>
               </Link>
+              <FacebookShareButton url={window.location.href}>
+                <FacebookIcon
+                  className='hover:opacity-90'
+                  size={32}
+                  round={true}
+                />
+              </FacebookShareButton>
+              <TwitterShareButton className='m-2' url={window.location.href}>
+                <XIcon className='hover:opacity-90' size={32} round={true} />
+              </TwitterShareButton>
             </div>
           </div>
         </div>

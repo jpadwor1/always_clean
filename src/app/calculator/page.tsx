@@ -13,7 +13,7 @@ const Page = () => {
   return (
     <>
       <div className='w-full h-[300px] relative'>
-      <Image
+        <Image
           src='/bg-hero-water.png'
           alt='water'
           width={400}
@@ -21,8 +21,15 @@ const Page = () => {
           className='w-full h-full z-0 relative'
         />
         <div className='absolute top-10 left-[25%]'>
-          <h1 className='text-5xl text-white font-medium tracking-wide'>Pool Chemical Calculator</h1>
-          <p>Feel free to use this to get a better idea of how</p>
+          <h1 className='text-5xl text-white font-medium tracking-wide'>
+            Pool Chemical Calculator
+          </h1>
+          <p>
+            Feel free to use this to get a better idea of how to balance your
+            pools chemistry. Remember these are just estimates we are not liable
+            for any damage and/or safety issues due to improper chemical
+            balancing.
+          </p>
         </div>
       </div>
       <MaxWidthWrapper className='mt-10 flex flex-col items-center justify-center'>

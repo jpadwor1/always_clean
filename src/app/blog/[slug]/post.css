@@ -21,3 +21,9 @@
   margin-bottom: 4px;
   list-style: circle;
 }
+
+@media (width <= 868px) {
+  .post-content li {
+    margin-left: 10px;
+  }
+}
