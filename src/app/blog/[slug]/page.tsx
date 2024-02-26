@@ -46,7 +46,6 @@ const Page = ({ params }: PageProps) => {
   }
   const post: Post = data.post;
   const author: User = data.author;
-  console.log(window.location.href);
   return (
     <>
       <Head>
@@ -88,7 +87,7 @@ const Page = ({ params }: PageProps) => {
             </div>
           </div>
           <div className='mb-10 mx-auto max-w-max overflow-hidden rounded-lg'>
-            <Image src={post.img} alt='' height={400} width={600} />
+            <Image src={post.img} alt='' height={400} width={400} />
           </div>
           <div className='md:max-w-3xl mx-auto'>
             <div
