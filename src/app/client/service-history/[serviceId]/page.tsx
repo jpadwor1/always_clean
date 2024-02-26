@@ -40,7 +40,7 @@ const Page = async ({ params }: PageProps) => {
     return <div>Service event not found</div>;
   }
 
-  const technician: User = await db.user.findFirst({
+  const technician: User = await db.customer.findFirst({
     where: {
       id: serviceEvent.technicianId,
     },
@@ -54,7 +54,6 @@ const Page = async ({ params }: PageProps) => {
     technicianName: technician.name,
     technicianPhotoUrl: technician.photoURL,
   };
-
   return <ServiceHistory serviceEvent={transformedServiceEvent} />;
 };
 

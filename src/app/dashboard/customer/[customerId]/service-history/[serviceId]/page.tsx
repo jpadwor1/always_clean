@@ -29,7 +29,7 @@ const Page = async ({ params }: PageProps) => {
     },
   });
 
-  const technician: User = await db.user.findFirst({
+  const technician: User = await db.customer.findFirst({
     where: {
       id: serviceEvent.technicianId,
     },

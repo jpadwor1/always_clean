@@ -72,7 +72,7 @@ interface ServiceHistoryProps {
     }[];
     tasksPerformed: string;
     technicianName: string;
-    technicianPhotoURL: string;
+    technicianPhotoUrl: string;
   };
 }
 
@@ -124,7 +124,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
   const tasksPerformed = serviceEvent?.tasksPerformed.split(',');
   const technician = {
     name: serviceEvent.technicianName,
-    photoURL: serviceEvent.technicianPhotoURL,
+    photoURL: serviceEvent.technicianPhotoUrl,
   };
   const router = useRouter();
   const handleRefresh = () => {
@@ -238,7 +238,6 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
       }
     );
   };
-
   return (
     <div className='flex flex-col bg-white shadow-md p-6 rounded-md min-h-[calc(100vh-30rem)]'>
       <div className='flex flex-col justify-center items-center text-center space-y-4'>
