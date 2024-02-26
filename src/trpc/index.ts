@@ -432,9 +432,7 @@ export const appRouter = router({
         to: string,
         subject: string
       ) => {
-        sgMail.setApiKey(
-          process.env.SENDGRID_API_KEY ? process.env.SENDGRID_API_KEY : ''
-        );
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
         const msg = {
           to: to,
@@ -622,27 +620,27 @@ export const appRouter = router({
           }
         });
       }
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+      const msg = {
+        to: dbCustomer.email,
+        from: 'support@krystalcleanpools.com',
+        subject: ' ',
+        html: ' ',
+        text: ' ',
+        template_id: 'd-1db21318d80c47078998977e3f5a8b05',
+        dynamic_template_data: {
+          full_name: dbCustomer.name,
+          service_date: format(new Date(input.dateCompleted), 'EEEE, d MMMM'),
+        },
+      };
 
-      // const msg = {
-      //   to: dbCustomer.email,
-      //   from: 'support@krystalcleanpools.com',
-      //   subject: ' ',
-      //   html: ' ',
-      //   text: ' ',
-      //   template_id: 'd-1db21318d80c47078998977e3f5a8b05',
-      //   dynamic_template_data: {
-      //     full_name: dbCustomer.name,
-      //     service_date: format(new Date(input.dateCompleted), 'EEEE, d MMMM'),
-      //   },
-      // };
+      try {
+        await sgMail.send(msg);
+      } catch (error) {
+        console.error('Error sending email:', error);
 
-      // try {
-      //   await sgMail.send(msg);
-      // } catch (error) {
-      //   console.error('Error sending email:', error);
-
-      //   throw new Error('Failed to send email');
-      // }
+        throw new Error('Failed to send email');
+      }
 
       return dbServiceEvent;
     }),
