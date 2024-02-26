@@ -35,6 +35,10 @@
   border-color: #1a8917;
 }
 
+.addButton img:hover {
+  cursor: pointer;
+}
+
 .add {
   display: flex;
   gap: 20px;
