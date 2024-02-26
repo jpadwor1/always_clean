@@ -620,26 +620,57 @@ export const appRouter = router({
           }
         });
       }
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
-      const msg = {
-        to: dbCustomer.email,
-        from: 'support@krystalcleanpools.com',
-        subject: ' ',
-        html: ' ',
-        text: ' ',
-        template_id: 'd-1db21318d80c47078998977e3f5a8b05',
-        dynamic_template_data: {
-          full_name: dbCustomer.name,
-          service_date: format(new Date(input.dateCompleted), 'EEEE, d MMMM'),
-        },
-      };
 
-      try {
-        await sgMail.send(msg);
-      } catch (error) {
-        console.error('Error sending email:', error);
+      if (dbCustomer.communicationEmails) {
+        const serviceNotificationSentDate = new Date(
+          dbCustomer.serviceNotificationSent
+        ).getTime(); // Convert to timestamp
+        const currentDate = new Date().getTime();
 
-        throw new Error('Failed to send email');
+        const differenceInMilliseconds =
+          currentDate - serviceNotificationSentDate;
+
+        // Convert milliseconds to days
+        const differenceInDays =
+          differenceInMilliseconds / (24 * 60 * 60 * 1000);
+
+        if (differenceInDays > 1) {
+          sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+          const msg = {
+            to: dbCustomer.email,
+            from: 'support@krystalcleanpools.com',
+            subject: ' ',
+            html: ' ',
+            text: ' ',
+            template_id: 'd-1db21318d80c47078998977e3f5a8b05',
+            dynamic_template_data: {
+              full_name: dbCustomer.name,
+              service_date: format(
+                new Date(input.dateCompleted),
+                'EEEE, d MMMM'
+              ),
+            },
+          };
+
+          try {
+            await sgMail.send(msg);
+          } catch (error) {
+            console.error('Error sending email:', error);
+
+            throw new Error('Failed to send email');
+          } finally {
+            await db.customer.update({
+              where: {
+                id: input.customerId,
+              },
+              data: {
+                serviceNotificationSent: new Date(),
+              },
+            });
+          }
+        } else {
+          console.log('The service notification was sent less than 1 day ago.');
+        }
       }
 
       return dbServiceEvent;
