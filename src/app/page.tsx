@@ -3,7 +3,6 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import PricingModule from '@/components/PricingModule';
 import ContactSection from '@/components/ContactSection';
-import Footer from '@/components/Footer';
 import Link from 'next/link';
 import GoogleCaptchaWrapper from '@/app/google-captcha-wrapper';
 import FeaturedPosts from '@/components/Blog/FeaturedPosts';

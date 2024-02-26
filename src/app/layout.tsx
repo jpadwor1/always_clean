@@ -1,7 +1,5 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
-import 'react-loading-skeleton/dist/skeleton.css';
-import 'simplebar-react/dist/simplebar.min.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
