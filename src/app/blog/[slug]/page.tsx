@@ -74,16 +74,8 @@ const Page = ({ params }: PageProps) => {
         
         <div className='container px-4 mx-auto'>
           <div className='md:max-w-2xl mx-auto mb-12 text-center'>
-            <div className='flex items-center justify-center'>
-              <p className='inline-block text-green-500 font-medium'>
-                {author.name}
-              </p>
-              <span className='mx-1 text-green-500'>•</span>
-              <p className='inline-block text-green-500 font-medium'>
-                {format(new Date(post.createdAt), 'MMM do, yyyy')}
-              </p>
-            </div>
-            <h2 className='mb-4 text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter'>
+            
+            <h2 className='mb-4 mt-10 text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter'>
               {post.title}
             </h2>
             <div className='inline-block py-1 px-3 text-xs leading-5 text-green-500 font-medium uppercase bg-green-100 rounded-full shadow-sm'>
