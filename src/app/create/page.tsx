@@ -22,9 +22,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+
 const Page = () => {
   const router = useRouter();
-
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState<File>();
   const [media, setMedia] = useState('');
@@ -37,6 +37,7 @@ const Page = () => {
     excerpt: '',
     slug: '',
     publishDate: '',
+    keywords: '',
   });
   const createPost = trpc.createPost.useMutation();
 
@@ -111,7 +112,7 @@ const Page = () => {
         <input
           type='text'
           placeholder='Title'
-          className='p-[50px] text-2xl border-none outline-none bg-transparent text-gray-900'
+          className='ml-5 p-4 mt-6 text-2xl border-none outline-none bg-transparent text-gray-900'
           onChange={(e) => setTitle(e.target.value)}
         />
         <textarea
@@ -129,6 +130,17 @@ const Page = () => {
             setPostSEO(() => ({ ...postSEO, slug: e.target.value }))
           }
         />
+        <div className='flex flex-row items-center space-x-2'>
+          
+          <input
+          type='text'
+          placeholder='Keywords'
+          className='p-0 ml-10 my-4 text-lg border-none outline-none bg-transparent text-gray-900 w-full'
+          onChange={(e) =>
+            setPostSEO(() => ({ ...postSEO, keywords: e.target.value }))
+          }
+        />
+        </div>
         <textarea
           placeholder='Excerpt'
           className='ml-10 my-6 text-lg border-none outline-none bg-transparent text-gray-900'
@@ -136,6 +148,7 @@ const Page = () => {
             setPostSEO(() => ({ ...postSEO, excerpt: e.target.value }))
           }
         />
+        
         <div className='flex flex-row items-center space-x-2'>
           <Label htmlFor='date' className='ml-10 text-lg'>
             Publish Date

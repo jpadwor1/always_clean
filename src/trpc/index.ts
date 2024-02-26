@@ -273,32 +273,34 @@ export const appRouter = router({
 
       return { success: true };
     }),
-  updateCustomerAvatar: privateProcedure.input(z.object({ customerId: z.string(), photoURL: z.string() })).mutation(async ({ ctx, input }) => {
-    const { userId, user } = ctx;
+  updateCustomerAvatar: privateProcedure
+    .input(z.object({ customerId: z.string(), photoURL: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
 
-    if (!userId || !user) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
-    }
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
 
-    const dbCustomer = await db.customer.findFirst({
-      where: {
-        id: input.customerId,
-      },
-    });
-
-    if (dbCustomer) {
-      await db.customer.update({
+      const dbCustomer = await db.customer.findFirst({
         where: {
           id: input.customerId,
         },
-        data: {
-          photoURL: input.photoURL,
-        },
       });
-    }
 
-    return { success: true };
-  }),
+      if (dbCustomer) {
+        await db.customer.update({
+          where: {
+            id: input.customerId,
+          },
+          data: {
+            photoURL: input.photoURL,
+          },
+        });
+      }
+
+      return { success: true };
+    }),
   deleteCustomer: privateProcedure
     .input(
       z.object({
@@ -621,26 +623,26 @@ export const appRouter = router({
         });
       }
 
-      const msg = {
-        to: dbCustomer.email,
-        from: 'support@krystalcleanpools.com',
-        subject: ' ',
-        html: ' ',
-        text: ' ',
-        template_id: 'd-1db21318d80c47078998977e3f5a8b05',
-        dynamic_template_data: {
-          full_name: dbCustomer.name,
-          service_date: format(new Date(input.dateCompleted), 'EEEE, d MMMM'),
-        },
-      };
+      // const msg = {
+      //   to: dbCustomer.email,
+      //   from: 'support@krystalcleanpools.com',
+      //   subject: ' ',
+      //   html: ' ',
+      //   text: ' ',
+      //   template_id: 'd-1db21318d80c47078998977e3f5a8b05',
+      //   dynamic_template_data: {
+      //     full_name: dbCustomer.name,
+      //     service_date: format(new Date(input.dateCompleted), 'EEEE, d MMMM'),
+      //   },
+      // };
 
-      try {
-        await sgMail.send(msg);
-      } catch (error) {
-        console.error('Error sending email:', error);
+      // try {
+      //   await sgMail.send(msg);
+      // } catch (error) {
+      //   console.error('Error sending email:', error);
 
-        throw new Error('Failed to send email');
-      }
+      //   throw new Error('Failed to send email');
+      // }
 
       return dbServiceEvent;
     }),
@@ -953,7 +955,6 @@ export const appRouter = router({
     .input(
       z.object({
         customerId: z.string(),
-        
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -1146,6 +1147,7 @@ export const appRouter = router({
           excerpt: z.string(),
           slug: z.string(),
           publishDate: z.string(),
+          keywords: z.string(),
         }),
       })
     )
@@ -1169,6 +1171,7 @@ export const appRouter = router({
           publishDate: input.postSEO.publishDate
             ? input.postSEO.publishDate
             : '',
+          keywords: input.postSEO.keywords,
         },
       });
 
