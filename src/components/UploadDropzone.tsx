@@ -100,7 +100,7 @@ const UploadDropzone: React.FC<FileDropzoneProps> = ({ onFileUpload }) => {
                   <span className='font-semibold'>Click to Upload </span>
                   or drag and drop
                 </p>
-                <p className='text-xs text-zinc-500'>
+                <p className='text-xs text-zinc-500 text-center'>
                 (Only *.jpeg and *.png images will be accepted)
                 </p>
               </div>
