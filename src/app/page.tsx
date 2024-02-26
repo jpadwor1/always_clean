@@ -72,6 +72,7 @@ function HomeInside() {
                   height={500}
                   className='absolute z-10 -left-14 -top-12 w-28 md:w-auto'
                   src='/circle3-yellow.svg'
+                  priority={true}
                   alt=''
                 />
                 <Image
@@ -79,6 +80,7 @@ function HomeInside() {
                   height={500}
                   className='absolute z-10 -right-7 -bottom-8 w-28 md:w-auto'
                   src='/dots3-blue.svg'
+                  priority={true}
                   alt=''
                 />
                 <Image
@@ -87,6 +89,7 @@ function HomeInside() {
                   className='relative rounded-7xl'
                   src='/pool.webp'
                   alt=''
+                  priority={true}
                 />
               </div>
             </div>
@@ -102,7 +105,7 @@ function HomeInside() {
 
       {/* CTASection */}
       <CommunityCTA buttonType='call' />
-      
+
       {/* Contact Section */}
       <ContactSection />
 
