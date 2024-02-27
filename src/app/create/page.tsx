@@ -20,7 +20,6 @@ import { toast } from '@/components/ui/use-toast';
 import dynamic from 'next/dynamic';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
 const Page = () => {
@@ -131,15 +130,14 @@ const Page = () => {
           }
         />
         <div className='flex flex-row items-center space-x-2'>
-          
           <input
-          type='text'
-          placeholder='Keywords'
-          className='p-0 ml-10 my-4 text-lg border-none outline-none bg-transparent text-gray-900 w-full'
-          onChange={(e) =>
-            setPostSEO(() => ({ ...postSEO, keywords: e.target.value }))
-          }
-        />
+            type='text'
+            placeholder='Keywords'
+            className='p-0 ml-10 my-4 text-lg border-none outline-none bg-transparent text-gray-900 w-full'
+            onChange={(e) =>
+              setPostSEO(() => ({ ...postSEO, keywords: e.target.value }))
+            }
+          />
         </div>
         <textarea
           placeholder='Excerpt'
@@ -148,7 +146,7 @@ const Page = () => {
             setPostSEO(() => ({ ...postSEO, excerpt: e.target.value }))
           }
         />
-        
+
         <div className='flex flex-row items-center space-x-2'>
           <Label htmlFor='date' className='ml-10 text-lg'>
             Publish Date

@@ -16,7 +16,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CustomerType, cn } from '@/lib/utils';
+import { CustomerType } from '@/lib/utils';
 import { trpc } from '@/app/_trpc/client';
 import { toast } from '@/components/ui/use-toast';
 import {
@@ -31,7 +31,7 @@ import UploadDropzone from '@/components/UploadDropzone';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Chemical, User } from '@prisma/client';
+import { Chemical } from '@prisma/client';
 
 type Option = {
   label: string;
@@ -210,8 +210,6 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
       name: data.service,
     };
 
-  
-
     try {
       await Promise.all(
         fileData.map(async (file) => {
@@ -266,7 +264,7 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
       });
     }
   }
-  
+
   return (
     <div className='flex flex-col mb-8 rounded-md w-full text-center gap-2 items-center'>
       <h2 className='text-2xl font-bold'>Complete Service Details</h2>

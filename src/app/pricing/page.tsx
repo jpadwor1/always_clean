@@ -1,4 +1,4 @@
-import ContactSection from '@/components/ContactSection'
+import ContactInfo from '@/components/ContactInfo'
 import MaxWidthWrapper from '@/components/MaxWidthWrapper'
 import PricingModule from '@/components/PricingModule'
 import ServiceCTACard from '@/components/Services/ServiceCTACard'
@@ -9,7 +9,7 @@ const Page = () => {
     <MaxWidthWrapper>
         <PricingModule linkVisibility={true} />
         <ServiceCTACard />
-        <ContactSection  />
+        <ContactInfo  />
     </MaxWidthWrapper>
   )
 }

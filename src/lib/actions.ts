@@ -130,8 +130,5 @@ export const addUser = async ({
   }
 };
 
-type CookiePreferences = {
-  functional: boolean;
-  performance: boolean;
-};
+
 

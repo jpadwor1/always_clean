@@ -19,7 +19,6 @@ import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { trpc } from '../_trpc/client';
 import Link from 'next/link';
-import { Avatar } from '@radix-ui/react-avatar';
 import AvatarUploadDropzone from '@/components/Profile/AvatarUploadDropzone';
 import { User } from '@prisma/client';
 import { useRouter } from 'next/navigation';

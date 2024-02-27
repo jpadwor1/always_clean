@@ -13,7 +13,6 @@ import MobileNav from './MobileNav';
 import UserAccountNav from './UserAccountNav';
 import NavbarMenu from './NavbarMenu';
 import { db } from '@/db';
-import { redirect } from 'next/navigation';
 const Navbar = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
@@ -30,13 +29,19 @@ const Navbar = async () => {
       <MaxWidthWrapper>
         <div className='flex h-20 items-center justify-between border-b border-zinc-200'>
           <Link href='/' className='flex z-40 font-semibold'>
-            <Image src='/logo.png' width={120} height={80} alt='Krystal Clean' />
+            <Image
+              src='/logo.png'
+              width={120}
+              height={120}
+              alt='Krystal Clean'
+              priority={true}
+            />
           </Link>
 
-          <MobileNav role={role} isAuth={!!user}/>
+          <MobileNav role={role} isAuth={!!user} />
 
           <div className='hidden items-center space-x-4 sm:flex'>
-          <NavbarMenu />
+            <NavbarMenu />
 
             {!user ? (
               <>
@@ -56,7 +61,9 @@ const Navbar = async () => {
                   href={dbCustomer?.role === 'ADMIN' ? '/dashboard' : '/client'}
                   className={buttonVariants({ variant: 'ghost', size: 'sm' })}
                 >
-                  {dbCustomer?.role === 'ADMIN' ? 'Dashboard' : 'Service History'}
+                  {dbCustomer?.role === 'ADMIN'
+                    ? 'Dashboard'
+                    : 'Service History'}
                 </Link>
 
                 <UserAccountNav

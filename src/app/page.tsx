@@ -2,12 +2,12 @@ import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import PricingModule from '@/components/PricingModule';
-import ContactSection from '@/components/ContactSection';
 import Link from 'next/link';
 import GoogleCaptchaWrapper from '@/app/google-captcha-wrapper';
 import FeaturedPosts from '@/components/Blog/FeaturedPosts';
 import ServiceCTACard from '@/components/Services/ServiceCTACard';
 import CommunityCTA from '@/components/Services/CommunityCTA';
+import ContactInfo from '@/components/ContactInfo';
 
 export default function Home() {
   return (
@@ -107,7 +107,7 @@ function HomeInside() {
       <CommunityCTA buttonType='call' />
 
       {/* Contact Section */}
-      <ContactSection />
+      <ContactInfo />
 
       {/* CTA Section */}
       <ServiceCTACard />

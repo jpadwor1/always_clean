@@ -5,7 +5,6 @@ import { Button } from './ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import axios from 'axios';
 import {
   Form,
   FormControl,
@@ -16,7 +15,6 @@ import {
 } from '@/components/ui/form';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
-import { set } from 'date-fns';
 import { Loader2, CheckCircle } from 'lucide-react';
 import { toast } from './ui/use-toast';
 import Link from 'next/link';
@@ -37,21 +35,18 @@ const FormSchema = z.object({
 
 const ContactSection = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const [notification, setNotification] = React.useState('');
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [formSubmitted, setFormSubmitted] = React.useState<boolean>(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
-  const {
-    formState: { errors, isValid },
-  } = form;
 
   const sendContactFormConfirmationEmail =
     trpc.sendContactFormEmail.useMutation();
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsLoading(true);
+
     if (!executeRecaptcha) {
       toast({
         title: 'Oops, something went wrong.',
@@ -64,32 +59,29 @@ const ContactSection = () => {
     executeRecaptcha('enquiryFormSubmit').then((gReCaptchaToken) => {
       async function goAsync() {
         try {
-          const response = await axios({
-            method: 'post',
-            url: '/api/contactFormSubmit',
-            data: {
-              email: data.email,
-              message: data.message,
-              gRecaptchaToken: gReCaptchaToken,
-            },
+          const response = await fetch('/api/contactFormSubmit', {
+            method: 'POST',
             headers: {
               Accept: 'application/json, text/plain, */*',
               'Content-Type': 'application/json',
             },
+            body: JSON.stringify({
+              email: data.email,
+              message: data.message,
+              gRecaptchaToken: gReCaptchaToken,
+            }),
           });
 
-          const { email, message } = response.data;
-
-          if (response?.data?.success === true) {
+          const responseData = await response.json();
+          const { email, message } = responseData.data;
+          if (responseData?.success === true) {
             sendContactFormConfirmationEmail.mutate(
               { email, message },
               {
                 onSuccess: () => {
-                  setNotification('Success!');
                   setFormSubmitted(true);
                 },
                 onError: () => {
-                  setNotification('Error!');
                   toast({
                     title: 'Oops, something went wrong.',
                     description: 'Please try again later.',
@@ -240,7 +232,7 @@ const ContactSection = () => {
                     </h3>
                     <a
                       className='inline-block mr-8 text-blue-600 hover:text-blue-600'
-                      href='#'
+                      href='https://www.facebook.com/profile.php?id=61556652453501'
                     >
                       <svg
                         width={10}

@@ -2,7 +2,6 @@
 
 import { trpc } from '@/app/_trpc/client';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
-import { format } from 'date-fns';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,7 +14,6 @@ import {
   FacebookShareButton,
   TwitterShareButton,
   FacebookIcon,
-  TwitterIcon,
   XIcon,
 } from 'react-share';
 
