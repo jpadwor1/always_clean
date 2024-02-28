@@ -39,13 +39,7 @@ const Page = async () => {
             and tips for keeping your pool sparkling all year round.
           </p>
         </div>
-        {dbUser && dbUser?.role === 'ADMIN' && (
-          <div className='w-full flex items-center justify-center mb-4'>
-            <Link href='/create' className={buttonVariants({})}>
-              Create New Post
-            </Link>
-          </div>
-        )}
+
         <div className='grid grid-cols-1 md:grid-cols-3 mx-4 mb-12 md:mb-20 gap-2'>
           {posts.map((post: Post) => (
             <BlogCard key={post.id} post={post} />
