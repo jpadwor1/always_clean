@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { db } from '@/db';
 import { Post } from '@prisma/client';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import { Button, buttonVariants } from '@/components/ui/button';
 
 const Page = async () => {
   const posts = await db.post.findMany();
