@@ -11,14 +11,6 @@ import ContactInfo from '@/components/ContactInfo';
 
 export default function Home() {
   return (
-    <GoogleCaptchaWrapper>
-      <HomeInside />
-    </GoogleCaptchaWrapper>
-  );
-}
-
-function HomeInside() {
-  return (
     <MaxWidthWrapper>
       {/* hero section */}
       <div className='py-20 md:py-28'>

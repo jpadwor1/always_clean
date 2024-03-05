@@ -13,6 +13,8 @@ import Table from '@/components/dataTable/Table';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import UtilityPage from '../UtilityPage';
 import MyCalendar from '../Calendar/BigCalendar';
+import { Button } from '../ui/button';
+import Link from 'next/link';
 
 const Dashboard = async () => {
   const { getUser } = getKindeServerSession();
@@ -24,7 +26,9 @@ const Dashboard = async () => {
       <div className='flex-col md:flex'>
         <div className='flex-1 sm:space-y-4 space-y-0 sm:pt-6 pt-2 '>
           <div className='sm:flex hidden sm:flex-row items-center justify-between space-y-2'>
-            <h2 className='text-3xl font-bold tracking-tight sm:p-4'>Dashboard</h2>
+            <h2 className='text-3xl font-bold tracking-tight sm:p-4'>
+              Dashboard
+            </h2>
           </div>
           <Tabs defaultValue='customers' className='space-y-4'>
             <TabsList className='sm:p-4'>
@@ -34,6 +38,9 @@ const Dashboard = async () => {
               <TabsTrigger value='utilities'>Utilities</TabsTrigger>
             </TabsList>
             <TabsContent value='overview' className='space-y-4 p-4'>
+              <Button>
+                <Link href='/routebuilder'>Route Optimizer</Link>
+              </Button>
               <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
                 <Card>
                   <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
@@ -165,8 +172,7 @@ const Dashboard = async () => {
             </TabsContent>
 
             <TabsContent value='schedule' className='space-y-4'>
-            <MyCalendar />
-
+              <MyCalendar />
             </TabsContent>
             <TabsContent value='utilities' className='space-y-4'>
               <UtilityPage />
