@@ -1,15 +1,14 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import Navbar from '@/components/Navbar';
 import Providers from '@/components/Providers';
 import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
 import { GoogleAnalytics } from '@next/third-parties/google';
-import { FacebookPixelEvents } from '@/components/FacebookPixelEvents';
-import CookieConsentBanner from '@/components/CookieConsent';
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,6 +17,24 @@ export const metadata: Metadata = {
   description:
     'We are a father and son team, committed to providing top-notch pool services with integrity and unmatched quality. Founded by a proud veteran, we bring military precision and reliability to every job.',
 };
+
+const CookieConsentBanner = dynamic(
+  () => import('@/components/CookieConsent'),
+  {
+    ssr: false,
+  }
+);
+
+const Toaster = dynamic(() => import('@/components/ui/toaster'), {
+  ssr: false,
+});
+
+const FacebookPixelEvents = dynamic(
+  () => import('@/components/FacebookPixelEvents'),
+  {
+    ssr: false,
+  }
+);
 
 export default function RootLayout({
   children,
@@ -40,8 +57,10 @@ export default function RootLayout({
           <CookieConsentBanner />
         </body>
       </Providers>
-      <GoogleAnalytics gaId='G-CXG6005YVL' />
-      <FacebookPixelEvents />
+      <Suspense fallback={null}>
+        <GoogleAnalytics gaId='G-CXG6005YVL' />
+        <FacebookPixelEvents />
+      </Suspense>
     </html>
   );
 }

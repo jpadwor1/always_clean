@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import cookie from 'js-cookie';
 import { usePathname, useSearchParams } from "next/navigation";
 
-export const FacebookPixelEvents: React.FC = () => {
+const FacebookPixelEvents: React.FC = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -26,3 +26,5 @@ export const FacebookPixelEvents: React.FC = () => {
 
   return null;
 };
+
+export default FacebookPixelEvents;

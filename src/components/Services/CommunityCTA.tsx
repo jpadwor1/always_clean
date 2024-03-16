@@ -1,8 +1,6 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { Button, buttonVariants } from '../ui/button';
-import { cn } from '@/lib/utils';
+import { buttonVariants } from '../ui/button';
 import { CheckCircle, Phone } from 'lucide-react';
 
 interface CommunityCTAProps {

@@ -1228,6 +1228,11 @@ export const appRouter = router({
 
       return { post, author };
     }),
+  getPosts: publicProcedure.query(async (opts) => {
+    const posts = await db.post.findMany();
+
+    return { posts };
+  }),
   getUser: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async (opts) => {

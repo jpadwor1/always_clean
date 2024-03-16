@@ -38,7 +38,7 @@ interface BlogLayoutProps {
   };
 }
 
-const BlogLayout = ({ children, params }: BlogLayoutProps) => {
+const BlogLayout = ({ children }: BlogLayoutProps) => {
   return <>{children}</>;
 };
 

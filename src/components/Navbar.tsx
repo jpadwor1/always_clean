@@ -13,6 +13,7 @@ import MobileNav from './MobileNav';
 import UserAccountNav from './UserAccountNav';
 import NavbarMenu from './NavbarMenu';
 import { db } from '@/db';
+
 const Navbar = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();

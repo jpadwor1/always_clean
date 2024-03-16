@@ -1,4 +1,4 @@
-import { CheckSquare, Target, TestTubes, Wrench } from 'lucide-react';
+import { CheckSquare } from 'lucide-react';
 import React from 'react';
 
 interface RegularCleaningFeatureCardProps {
