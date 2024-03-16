@@ -9,7 +9,7 @@ import { getUserSubscriptionPlan, stripe } from '@/lib/stripe';
 import { absoluteUrl } from '@/lib/utils';
 import { addDays, format } from 'date-fns';
 import sgMail from '@sendgrid/mail';
-import { PLANS, STRIPE_PLANS } from '@/lib/PLANS';
+import { STRIPE_PLANS } from '@/lib/PLANS';
 import { addUser } from '@/lib/actions';
 
 export const appRouter = router({
@@ -586,6 +586,7 @@ export const appRouter = router({
                 connect: { name: chemical.name },
               },
               quantity: chemical.quantity,
+              id: randomUUID(),
             })),
           },
           technicianId: userId,
@@ -779,6 +780,7 @@ export const appRouter = router({
 
       await db.chemical.create({
         data: {
+          id: randomUUID(),
           name: input.name,
           units: input.units,
           price: input.price,
@@ -831,6 +833,7 @@ export const appRouter = router({
 
       const createdFile = await db.file.create({
         data: {
+          id: randomUUID(),
           key: input.downloadURL,
           name: input.fileName,
           url: input.downloadURL,
@@ -888,17 +891,18 @@ export const appRouter = router({
 
       const dbCalendarEvent = await db.calendarEvent.create({
         data: {
+          id: randomUUID(),
           title: input.title,
           start: new Date(input.start),
           end: new Date(input.end),
           allDay: input.allDay as boolean,
-          description: input.extendedProps.description,
-          location: input.extendedProps.location,
-          email: input.extendedProps.email,
-          phone: input.extendedProps.phone,
-          customerId: input.extendedProps.customerId,
+          extendedProps_description: input.extendedProps.description,
+          extendedProps_location: input.extendedProps.location,
+          extendedProps_email: input.extendedProps.email,
+          extendedProps_phone: input.extendedProps.phone,
+          extendedProps_customerId: input.extendedProps.customerId,
           editable: input.editable,
-          customerName: input.extendedProps.customerName,
+          extendedProps_customerName: input.extendedProps.customerName,
         },
       });
 
@@ -1020,7 +1024,7 @@ export const appRouter = router({
               id: input.customerId,
             },
             data: {
-              stripeCustomerId: stripeCustomer.id,
+              stripe_customer_id: stripeCustomer.id,
               stripeBalanceDue: true,
             },
           });
@@ -1189,6 +1193,7 @@ export const appRouter = router({
 
       await db.post.create({
         data: {
+          id: randomUUID(),
           title: input.title,
           desc: input.desc,
           img: input.img,

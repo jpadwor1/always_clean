@@ -1,7 +1,6 @@
 import { db } from '@/db';
 import { stripe } from '@/lib/stripe';
 import { headers } from 'next/headers';
-import type Stripe from 'stripe';
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -21,7 +20,7 @@ export async function POST(request: Request) {
 
       await db.customer.update({
         where: {
-          stripeCustomerId: customer.id,
+          stripe_customer_id: customer.id,
         },
         data: {
           stripeBalanceDue: true,

@@ -213,7 +213,7 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
     try {
       await Promise.all(
         fileData.map(async (file) => {
-          await createFile({
+          createFile({
             downloadURL: file.downloadURL,
             fileName: file.fileName,
           });

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card } from '../ui/card';
 import BlogCard from './BlogCard';
 import { db } from '@/db';
 import { Post } from '@prisma/client';
@@ -18,8 +17,8 @@ const FeaturedPosts = async () => {
         Featured Posts
       </h3>
       <p className='text-lg md:text-md text-gray-700 font-medium'>
-        Check out our latest articles on pool cleaning, maintenance, and
-        the best pool cleaning tech.
+        Check out our latest articles on pool cleaning, maintenance, and the
+        best pool cleaning tech.
       </p>
       <div className='grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-6'>
         {posts.map((post: Post) => (

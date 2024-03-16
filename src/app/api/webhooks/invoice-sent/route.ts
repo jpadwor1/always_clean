@@ -22,12 +22,12 @@ export async function POST(request: Request) {
 
       const dbCustomer = await db.customer.findFirst({
         where: {
-          stripeCustomerId: customer.id,
+          stripe_customer_id: customer.id,
         },
       });
 
       dbCustomer.update({
-        where : {
+        where: {
           id: dbCustomer.id,
         },
         data: {

@@ -18,11 +18,11 @@ import {
 } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { CustomerType, Role } from '@prisma/client';
+import { Customer as customer, Role } from '@prisma/client';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import React, { useState } from 'react';
-import { Calendar, View, dayjsLocalizer } from 'react-big-calendar';
+import { Calendar, dayjsLocalizer } from 'react-big-calendar';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import {
@@ -76,7 +76,7 @@ type Customer = {
   email: string;
   phone: string;
   address: string;
-  customerType: CustomerType;
+  customerType: customer;
   nextServiceDate: string;
   lastServiceDate: string;
   role: Role;

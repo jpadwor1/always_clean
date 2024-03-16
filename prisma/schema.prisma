@@ -1,173 +1,141 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
 model User {
-  id    String @id @unique
-  email String @unique
-
-  name            String
-  address         String
-  phone           String
-  lastServiceDate DateTime     @default(now())
-  nextServiceDate DateTime     @default(now())
-  photoURL        String?
-  role            Role         @default(USER)
-  customerType    CustomerType @default(LEAD)
-
-  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?   @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
-
-  Post Post[]
-}
-
-model Customer {
-  id    String @id @unique
-  email String @unique
-
-  services                ServiceEvent[]
-  name                    String
-  address                 String
-  phone                   String
-  lastServiceDate         DateTime        @default(now())
-  nextServiceDate         DateTime        @default(now())
-  role                    Role            @default(USER)
-  customerType            CustomerType    @default(LEAD)
-  isProfileComplete       Boolean         @default(false)
-  specialInstructions     String?         @db.VarChar(300)
-  preferredServiceDay     Day?
-  communicationEmails     Boolean         @default(true)
-  communicationTexts      Boolean         @default(true)
-  serviceNotificationSent DateTime?
-  photoURL                String?
-  stripeCustomerId        String?         @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId    String?         @unique @map(name: "stripe_subscription_id")
-  stripePriceId           String?         @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd  DateTime?       @map(name: "stripe_current_period_end")
-  stripeBalanceDue        Boolean?
-  amountDue               Float?
-  dueDate                 String?
-  lastInvoiceSent         DateTime?
-  discount                String?
-  serviceAgreementDate    DateTime?
-  serviceAgreementURL     String?         @db.LongText
-  agreementCode           String          @default("STANDARD")
-  CalendarEvent           CalendarEvent[]
-}
-
-model ServiceEvent {
-  id String @id @default(cuid())
-
-  customer   Customer? @relation(fields: [customerId], references: [id])
-  customerId String?
-
-  technicianId String?
-
-  name             String
-  notes            String?           @db.VarChar(300)
-  dateCompleted    DateTime          @default(now())
-  tasksPerformed   String?
-  serviceChemicals ServiceChemical[]
-  files            File[]
-
-  @@index([customerId])
+  id                     String       @id @unique
+  email                  String       @unique
+  name                   String
+  address                String
+  phone                  String
+  lastServiceDate        DateTime     @default(now())
+  nextServiceDate        DateTime     @default(now())
+  photoURL               String?
+  role                   Role         @default(USER)
+  customerType           CustomerType @default(LEAD)
+  stripeCustomerId       String?      @unique @map("stripe_customer_id")
+  stripeSubscriptionId   String?      @unique @map("stripe_subscription_id")
+  stripePriceId          String?      @map("stripe_price_id")
+  stripeCurrentPeriodEnd DateTime?    @map("stripe_current_period_end")
 }
 
 model CalendarEvent {
-  id           String    @id @default(cuid())
-  title        String
-  start        DateTime
-  end          DateTime
-  allDay       Boolean
-  editable     String    @default("false")
-  description  String?   @map("extendedProps_description")
-  location     String    @map("extendedProps_location")
-  email        String?   @map("extendedProps_email")
-  phone        String?   @map("extendedProps_phone")
-  customerId   String?   @map("extendedProps_customerId")
-  customerName String?   @map("extendedProps_customerName")
-  customer     Customer? @relation(fields: [customerId], references: [id])
+  id                         String   @id
+  title                      String
+  start                      DateTime
+  end                        DateTime
+  allDay                     Boolean
+  editable                   String   @default("false")
+  extendedProps_description  String?
+  extendedProps_location     String
+  extendedProps_email        String?
+  extendedProps_phone        String?
+  extendedProps_customerId   String?
+  extendedProps_customerName String?
 
-  @@index([customerId])
+  @@index([extendedProps_customerId])
 }
 
 model Chemical {
-  id       String            @id @default(cuid())
-  name     String            @unique
-  price    Float
-  units    String
-  services ServiceChemical[]
+  id              String            @id
+  name            String            @unique
+  price           Float
+  units           String
+  ServiceChemical ServiceChemical[]
 }
 
-model ServiceChemical {
-  id             String       @id @default(cuid())
-  serviceEvent   ServiceEvent @relation(fields: [serviceEventId], references: [id], onDelete: Cascade)
-  serviceEventId String
-  chemical       Chemical     @relation(fields: [chemicalId], references: [id])
-  chemicalId     String
-  quantity       Int // Quantity of chemical used
-
-  @@index([chemicalId])
-  @@index([serviceEventId])
+model Customer {
+  id                        String       @id @unique
+  email                     String       @unique
+  name                      String
+  address                   String
+  phone                     String
+  lastServiceDate           DateTime     @default(now())
+  nextServiceDate           DateTime     @default(now())
+  role                      Role         @default(USER)
+  customerType              CustomerType @default(LEAD)
+  isProfileComplete         Boolean      @default(false)
+  specialInstructions       String?      @db.VarChar(300)
+  preferredServiceDay       Day?
+  communicationEmails       Boolean      @default(true)
+  communicationTexts        Boolean      @default(true)
+  serviceNotificationSent   DateTime?
+  photoURL                  String?
+  stripe_customer_id        String?      @unique
+  stripe_subscription_id    String?      @unique
+  stripe_price_id           String?
+  stripe_current_period_end DateTime?
+  stripeBalanceDue          Boolean?
+  amountDue                 Float?
+  dueDate                   String?
+  lastInvoiceSent           DateTime?
+  discount                  String?
+  serviceAgreementDate      DateTime?
+  serviceAgreementURL       String?
+  agreementCode             String       @default("STANDARD")
 }
 
 model File {
-  id   String @id @default(cuid())
-  name String
-
-  uploadStatus UploadStatus @default(PENDING)
-
-  url String
-  key String
-
-  createdAt DateTime @default(now())
-
-  ServiceEvent   ServiceEvent? @relation(fields: [serviceEventId], references: [id])
+  id             String        @id
+  name           String
+  uploadStatus   UploadStatus  @default(PENDING)
+  url            String
+  key            String
+  createdAt      DateTime      @default(now())
   serviceEventId String?
+  ServiceEvent   ServiceEvent? @relation(fields: [serviceEventId], references: [id])
 
   @@index([serviceEventId])
 }
 
 model Post {
-  id              String   @id @default(cuid()) @map("_id")
+  id              String   @id @map("_id")
   createdAt       DateTime @default(now())
   publishDate     String?
   slug            String   @unique
   title           String
-  desc            String   @db.LongText
+  desc            String
   img             String?
   metaDescription String?  @db.VarChar(1000)
   excerpt         String?  @db.VarChar(1000)
   category        String   @default("cleaning")
   views           Int      @default(0)
   userId          String
-  user            User     @relation(fields: [userId], references: [id])
   keywords        String?  @db.VarChar(1000)
 
   @@index([userId])
 }
 
-enum Role {
-  USER
-  ADMIN
+model ServiceChemical {
+  id             String       @id
+  serviceEventId String
+  chemicalId     String
+  quantity       Int
+  ServiceEvent   ServiceEvent @relation(fields: [serviceEventId], references: [id])
+  chemical       Chemical     @relation(fields: [chemicalId], references: [id])
+
+  @@index([chemicalId])
+  @@index([serviceEventId])
 }
 
-enum UploadStatus {
-  PENDING
-  PROCESSING
-  FAILED
-  SUCCESS
+model ServiceEvent {
+  id               String            @id
+  customerId       String?
+  technicianId     String?
+  name             String
+  notes            String?           @db.VarChar(300)
+  dateCompleted    DateTime          @default(now())
+  tasksPerformed   String?
+  serviceChemicals ServiceChemical[]
+  files             File[]
+
+  @@index([customerId])
 }
 
 enum CustomerType {
@@ -186,4 +154,16 @@ enum Day {
   FRIDAY
   SATURDAY
   SUNDAY
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum UploadStatus {
+  PENDING
+  PROCESSING
+  FAILED
+  SUCCESS
 }

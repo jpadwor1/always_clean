@@ -57,58 +57,56 @@ export async function getUserSubscriptionPlan() {
 
   return {
     ...plan,
-    stripeSubscriptionId: dbUser.stripeSubscriptionId,
-    stripeCurrentPeriodEnd: dbUser.stripeCurrentPeriodEnd,
-    stripeCustomerId: dbUser.stripeCustomerId,
+    stripe_subscription_id: dbUser.stripeSubscriptionId,
+    stripe_current_period_end: dbUser.stripeCurrentPeriodEnd,
+    stripe_customer_id: dbUser.stripeCustomerId,
     isSubscribed,
     isCanceled,
   };
 }
 
+export async function getCustomerInvoices(customerId?: string | null) {
+  let dbCustomer;
 
-export async function getCustomerInvoices(customerId? : string | null) {
- let dbCustomer;
+  try {
+    if (!customerId) {
+      const { getUser } = getKindeServerSession();
+      const user = await getUser();
 
- try {
-  if (!customerId) {
-    const {getUser} = getKindeServerSession();
-    const user = await getUser();
+      if (!user?.id) {
+        return [];
+      }
 
-  if (!user?.id) {
-    return [];
-  }
+      dbCustomer = await db.customer.findUnique({
+        where: {
+          id: user.id,
+        },
+      });
 
-  dbCustomer = await db.customer.findUnique({
-    where: {
-      id: user.id,
-    },
-  })
-
-  return dbCustomer ? dbCustomer : redirect('/auth-callback?origin=/client/billing');
-  }
-  
-  dbCustomer = await db.customer.findUnique({
-    where: {
-      id: customerId,
+      return dbCustomer
+        ? dbCustomer
+        : redirect('/auth-callback?origin=/client/billing');
     }
-  })
 
-  if (!dbCustomer) {
-    return new Error('Customer not found');
-  }
+    dbCustomer = await db.customer.findUnique({
+      where: {
+        id: customerId,
+      },
+    });
 
-  const invoices = await stripe.invoices.list({
-    customer: dbCustomer.stripeCustomerId,
-  });
-  
-  if (!invoices.data || invoices.data.length === 0) {
-    return [];
+    if (!dbCustomer) {
+      return new Error('Customer not found');
+    }
+
+    const invoices = await stripe.invoices.list({
+      customer: dbCustomer.stripeCustomerId,
+    });
+
+    if (!invoices.data || invoices.data.length === 0) {
+      return [];
+    }
+    return invoices.data;
+  } catch (error) {
+    console.error(error);
   }
-  return invoices.data;
- } catch (error) {
-  console.error(error);
- }
-  
 }
-
-
