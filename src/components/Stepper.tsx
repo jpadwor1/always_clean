@@ -422,7 +422,7 @@ export default function StepperForm() {
                             <div className='flex flex-col justify-center items-center w-full'>
                               <FormControl>
                                 <Input
-                                  placeholder='john@alwaysclean.com'
+                                  placeholder='john@krystalcleanpools.com'
                                   {...field}
                                 />
                               </FormControl>
@@ -512,15 +512,15 @@ export default function StepperForm() {
                           onSelect={setDate}
                           className='rounded-md'
                           disabled={[
-                            day => day.getDay() === 1, // Disables Monday
-                            day => day.getDay() === 2, // Disables Tuesday
-                            day => day.getDay() === 3, // Disables Wednesday
+                            (day) => day.getDay() === 1, // Disables Monday
+                            (day) => day.getDay() === 2, // Disables Tuesday
+                            (day) => day.getDay() === 3, // Disables Wednesday
                           ]}
                         />
                       </div>
                       <div className='flex flex-col items-center mt-2'>
                         <h3 className='text-lg font-semibold'>
-                          {date 
+                          {date
                             ? format(date, 'EEEE, d MMMM')
                             : 'No date selected'}
                         </h3>

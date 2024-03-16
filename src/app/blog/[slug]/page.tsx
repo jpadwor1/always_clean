@@ -57,7 +57,7 @@ const Page = ({ params }: PageProps) => {
         <meta
           name='keywords'
           content={
-            'pool cleaning, pinal county, pool cleaning near me, ' +
+            'pool cleaning, pinal county, pool cleaning near me,pool cleaning florence, pool cleaning queen creek' +
             post.keywords
           }
         />
