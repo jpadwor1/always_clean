@@ -1,6 +1,7 @@
 import { PLANS } from '@/config/stripe';
 import { db } from '@/db';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { Customer } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import Stripe from 'stripe';
 
@@ -65,41 +66,20 @@ export async function getUserSubscriptionPlan() {
   };
 }
 
-export async function getCustomerInvoices(customerId?: string | null) {
-  let dbCustomer;
+export async function getClientInvoices(customer: Customer) {
 
   try {
-    if (!customerId) {
-      const { getUser } = getKindeServerSession();
-      const user = await getUser();
-
-      if (!user?.id) {
-        return [];
-      }
-
-      dbCustomer = await db.customer.findUnique({
-        where: {
-          id: user.id,
-        },
-      });
-
-      return dbCustomer
-        ? dbCustomer
-        : redirect('/auth-callback?origin=/client/billing');
+    if (!customer) {
+      console.error('Customer not found');
+      return [];
     }
 
-    dbCustomer = await db.customer.findUnique({
-      where: {
-        id: customerId,
-      },
-    });
-
-    if (!dbCustomer) {
-      return new Error('Customer not found');
+    if (!customer.stripe_customer_id) {
+      console.error('Customer does not have a stripe customer id');
+      return [];
     }
-
     const invoices = await stripe.invoices.list({
-      customer: dbCustomer.stripeCustomerId,
+      customer: customer.stripe_customer_id,
     });
 
     if (!invoices.data || invoices.data.length === 0) {
@@ -108,5 +88,39 @@ export async function getCustomerInvoices(customerId?: string | null) {
     return invoices.data;
   } catch (error) {
     console.error(error);
+    return [];
+  }
+}
+
+export async function getCustomerInvoices(customerId?: string | null) {
+  try {
+    if (!customerId) {  
+        return [];
+    }
+
+    const dbCustomer = await db.customer.findUnique({
+      where: {
+        id: customerId,
+      },
+    });
+
+    if (!dbCustomer) {
+      console.error('Customer not found');
+      return [];
+    }
+    if(dbCustomer.stripe_customer_id !== null ){
+    const invoices = await stripe.invoices.list({
+      customer: dbCustomer.stripe_customer_id,
+    });
+
+    if (!invoices.data || invoices.data.length === 0) {
+      return [];
+    }
+    return invoices.data;
+  }
+  return [];
+  } catch (error) {
+    console.error(error);
+    return [];
   }
 }

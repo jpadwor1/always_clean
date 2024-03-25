@@ -98,6 +98,7 @@ const BillingForm = ({
   const updateCustomerDiscount = trpc.updateCustomerDiscount.useMutation();
   const updateServiceAgreementCode =
     trpc.updateCustomerServiceAgreementCode.useMutation();
+
   function formatCurrency(amountInCents: number, currencyCode = 'USD') {
     const amount = amountInCents / 100;
     return new Intl.NumberFormat('en-US', {
@@ -110,11 +111,9 @@ const BillingForm = ({
     let invoiceTotals = 0;
 
     invoices.forEach(
-      (invoice: Awaited<ReturnType<typeof getCustomerInvoices>>) => {
-        // Assuming 'paid' status means the invoice is not to be counted
+      (invoice) => {
         if (invoice.status !== 'paid') {
-          // Assuming invoice.total is in the smallest currency unit (e.g., cents)
-          invoiceTotals += parseInt(invoice.total, 10); // Use parseInt for whole numbers
+          invoiceTotals += invoice.total; 
         }
       }
     );
@@ -338,56 +337,61 @@ const BillingForm = ({
             </TableHeader>
             <TableBody>
               {invoices.map(
-                (invoice: Awaited<ReturnType<typeof getCustomerInvoices>>) => (
-                  <TableRow key={invoice.id}>
-                    <TableCell className='md:flex hidden'>
-                      {format(new Date(invoice.created * 1000), 'MM/dd/yyyy')}
-                    </TableCell>
-                    <TableCell
-                      className={cn(
-                        new Date(invoice.due_date * 1000) < new Date()
-                          ? 'text-red-600'
-                          : 'text-gray-900',
-                        'font-medium'
-                      )}
-                    >
-                      {format(new Date(invoice.due_date * 1000), 'MM/dd/yyyy')}
-                    </TableCell>
-
-                    <TableCell
-                      className={cn(
-                        new Date(invoice.due_date * 1000) < new Date()
-                          ? 'text-red-600'
-                          : 'text-gray-900',
-                        'font-medium md:flex hidden'
-                      )}
-                    >
-                      {new Date(invoice.due_date * 1000) < new Date() &&
-                      !invoice.paid
-                        ? 'PAST DUE'
-                        : invoice.paid
-                        ? 'PAID'
-                        : 'Payment Due'}
-                    </TableCell>
-
-                    <TableCell>
-                      {formatCurrency(invoice.total, 'USD')}
-                    </TableCell>
-
-                    <TableCell className='text-right'>
-                      <Link
-                        href={invoice.paid ? '#' : invoice.hosted_invoice_url}
+                invoice => {
+                  const dueDate = invoice.due_date ? new Date(invoice.due_date * 1000) : new Date();
+                  return (
+                    <TableRow key={invoice.id}>
+                      <TableCell className='md:flex hidden'>
+                        {format(new Date(invoice.created * 1000), 'MM/dd/yyyy')}
+                      </TableCell>
+                      <TableCell
                         className={cn(
-                          buttonVariants({}),
-                          invoice.paid ? 'bg-green-700' : 'bg-blue-600'
+                          dueDate < new Date()
+                            ? 'text-red-600'
+                            : 'text-gray-900',
+                          'font-medium'
                         )}
                       >
-                        {invoice.paid ? 'Paid' : 'Pay'}
-                      </Link>
-                    </TableCell>
-                  </TableRow>
+                        {format(dueDate, 'MM/dd/yyyy')}
+                      </TableCell>
+  
+                      <TableCell
+                        className={cn(
+                          dueDate < new Date()
+                            ? 'text-red-600'
+                            : 'text-gray-900',
+                          'font-medium md:flex hidden'
+                        )}
+                      >
+                        {dueDate < new Date() &&
+                        !invoice.paid
+                          ? 'PAST DUE'
+                          : invoice.paid
+                          ? 'PAID'
+                          : 'Payment Due'}
+                      </TableCell>
+  
+                      <TableCell>
+                        {formatCurrency(invoice.total, 'USD')}
+                      </TableCell>
+  
+                      <TableCell className='text-right'>
+                        <Link
+                          href={invoice.paid ? '#' : invoice.hosted_invoice_url ? invoice.hosted_invoice_url : '#'}
+                          className={cn(
+                            buttonVariants({}),
+                            invoice.paid ? 'bg-green-700' : 'bg-blue-600'
+                          )}
+                        >
+                          {invoice.paid ? 'Paid' : 'Pay'}
+                        </Link>
+                      </TableCell>
+                    </TableRow>
+                  )
+                }
                 )
-              )}
+                } 
+              
             </TableBody>
             <TableFooter>
               <TableRow>
