@@ -211,7 +211,7 @@ const BillingForm = ({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='w-2/3 space-y-6 flex items-center space-x-4'
+                className='md:w-2/3 w-full space-y-6 flex md:flex-row flex-col items-center space-x-4'
               >
                 <FormField
                   control={form.control}
@@ -226,7 +226,7 @@ const BillingForm = ({
                         defaultValue={customer.discount}
                       >
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className='md:items-center text-left'>
                             <SelectValue placeholder='Select a discount to apply to this customer' />
                           </SelectTrigger>
                         </FormControl>
@@ -252,7 +252,7 @@ const BillingForm = ({
             <Form {...agreementForm}>
               <form
                 onSubmit={agreementForm.handleSubmit(updateServiceAgreement)}
-                className='w-2/3 space-y-6 flex items-center space-x-4'
+                className='md:w-2/3 w-full space-y-6 flex md:flex-row flex-col items-center space-x-4'
               >
                 <FormField
                   control={agreementForm.control}
