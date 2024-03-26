@@ -1,8 +1,5 @@
 import React from 'react';
 import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
-import { Loader2, CheckCircle } from 'lucide-react';
-import Link from 'next/link';
 
 const ContactInfo = () => {
   return (
@@ -47,7 +44,11 @@ const ContactInfo = () => {
                     <h3 className='mb-4 text-2xl md:text-3xl leading-9 text-zinc-900 font-bold'>
                       Email
                     </h3>
-                    <Button size={'sm'} variant={'ghost'} className='max-w-fit bg-gray-200'>
+                    <Button
+                      size={'sm'}
+                      variant={'ghost'}
+                      className='max-w-fit bg-gray-200'
+                    >
                       <a
                         className='md:text-sm text-zinc-600 hover:text-zinc-600 font-medium text-medium text-lg'
                         href='/contact'
