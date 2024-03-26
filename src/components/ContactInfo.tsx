@@ -47,12 +47,14 @@ const ContactInfo = () => {
                     <h3 className='mb-4 text-2xl md:text-3xl leading-9 text-zinc-900 font-bold'>
                       Email
                     </h3>
-                    <a
-                      className='md:text-sm text-zinc-600 hover:text-zinc-600 font-medium text-medium text-lg'
-                      href='mailto:support@krystalcleanpools.com'
-                    >
-                      support@krystalcleanpools.com
-                    </a>
+                    <Button size={'sm'} variant={'ghost'} className='max-w-fit bg-gray-200'>
+                      <a
+                        className='md:text-sm text-zinc-600 hover:text-zinc-600 font-medium text-medium text-lg'
+                        href='/contact'
+                      >
+                        Send Message
+                      </a>
+                    </Button>
                   </div>
                 </div>
                 <div className='w-full md:w-1/4 px-4 mb-8 md:mt-8'>
