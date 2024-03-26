@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import PricingModule from '@/components/PricingModule';
+import PricingModule from '@/components/Home/PricingModule';
 import { Home, Hotel, School } from 'lucide-react';
 import AlgaeFeatureCards from '@/components/Services/AlgaeTreatment/AlgaeFeatureCards';
 import RegularCleaningFeatureCards from '@/components/Services/RegularPoolCleaning/RegularCleaningFeatureCards';
@@ -131,7 +131,7 @@ const Page = () => {
       <PricingModule linkVisibility={false} />
 
       {/* Regular Cleaning Features */}
-      <RegularCleaningFeatureCards badgeTitle='Regular Cleaning'/>
+      <RegularCleaningFeatureCards badgeTitle='Regular Cleaning' />
 
       {/* Algae Treatment Section */}
       <AlgaeFeatureCards />
@@ -141,8 +141,6 @@ const Page = () => {
 
       {/* Contact Section */}
       <ContactSection />
-
-
     </div>
   );
 };

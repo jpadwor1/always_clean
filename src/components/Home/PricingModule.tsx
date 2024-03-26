@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { PLANS } from '@/lib/PLANS';
 
 interface PricingModuleProps {
@@ -57,7 +57,8 @@ const PricingModule = ({ linkVisibility }: PricingModuleProps) => {
                       {plan.description}
                     </p>
 
-                    {plan.name === 'Play Pools' || plan.name === 'Winter Special' ? (
+                    {plan.name === 'Play Pools' ||
+                    plan.name === 'Winter Special' ? (
                       <>
                         <Link href='/booking'>
                           <Button className='mb-4 w-full sm:text-md text-md shadow-md hover:shadow-lg '>

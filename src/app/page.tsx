@@ -1,13 +1,13 @@
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import PricingModule from '@/components/PricingModule';
+import PricingModule from '@/components/Home/PricingModule';
 import Link from 'next/link';
-import GoogleCaptchaWrapper from '@/app/google-captcha-wrapper';
 import FeaturedPosts from '@/components/Blog/FeaturedPosts';
 import ServiceCTACard from '@/components/Services/ServiceCTACard';
 import CommunityCTA from '@/components/Services/CommunityCTA';
 import ContactInfo from '@/components/ContactInfo';
+import TestimonialSection from '@/components/Home/TestimonialSection';
 
 export default function Home() {
   return (
@@ -88,6 +88,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Big Testimonial */}
+      <TestimonialSection />
 
       {/* Pricing Section */}
       <PricingModule linkVisibility={true} />
