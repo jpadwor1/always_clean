@@ -27,6 +27,20 @@ const TestimonialSection = () => {
     },
   ];
 
+  React.useEffect(() => {
+    const slideTimer = () => {
+      setTimeout(() => {
+        if (slide === 2) {
+          setSlide(0);
+        } else {
+          setSlide(slide + 1);
+        }
+      }, 4000)
+    }
+
+    slideTimer()
+  }, [slide])
+
   return (
     <section
       className='md:p-16 px-2 py-10 bg-white rounded-lg shadow-lg mb-10 text-center'
