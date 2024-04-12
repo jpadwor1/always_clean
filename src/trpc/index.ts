@@ -1062,9 +1062,7 @@ export const appRouter = router({
       // Create an Invoice Item with the Price, and Customer
       const invoiceItem = await stripe.invoiceItems.create({
         customer: customerStripeId,
-        price: STRIPE_PLANS.find(
-          (plan) => plan.name === customer.agreementCode
-        )?.priceIds.production,
+        price: price.id,
         invoice: invoice.id,
       });
 

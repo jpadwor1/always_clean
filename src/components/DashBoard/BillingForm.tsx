@@ -44,6 +44,18 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { STRIPE_PLANS } from '@/lib/PLANS';
 import { useRouter } from 'next/navigation';
 
@@ -57,6 +69,12 @@ interface BillingFormProps {
 
 const FormSchema = z.object({
   discount: z.string().optional(),
+});
+
+const InvoiceSchema = z.object({
+  name: z.string(),
+  amount: z.number().int().positive(),
+  description: z.string(),
 });
 
 const AgreementSchema = z.object({
@@ -73,6 +91,9 @@ const BillingForm = ({
   const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+  });
+  const invoiceForm = useForm<z.infer<typeof InvoiceSchema>>({
+    resolver: zodResolver(InvoiceSchema),
   });
   const router = useRouter();
   const handleRefresh = () => {
@@ -110,13 +131,11 @@ const BillingForm = ({
   const invoiceTotal = () => {
     let invoiceTotals = 0;
 
-    invoices.forEach(
-      (invoice) => {
-        if (invoice.status !== 'paid') {
-          invoiceTotals += invoice.total; 
-        }
+    invoices.forEach((invoice) => {
+      if (invoice.status !== 'paid') {
+        invoiceTotals += invoice.total;
       }
-    );
+    });
     return formatCurrency(invoiceTotals, 'USD');
   };
 
@@ -140,6 +159,9 @@ const BillingForm = ({
         });
       },
     });
+  }
+  function submitInvoice(data: z.infer<typeof InvoiceSchema>) {
+    
   }
 
   function updateServiceAgreement(formData: z.infer<typeof AgreementSchema>) {
@@ -291,19 +313,98 @@ const BillingForm = ({
               </form>
             </Form>
           </div>
-          <Button
-            onClick={handleInvoice}
-            className='bg-gray-600 ml-4 hover:bg-black'
-          >
-            Send Invoice
-          </Button>
-          {customer.lastInvoiceSent != null && (
-            <p className='ml-4'>
-            Last invoice sent:{' '}
-            {format(customer.lastInvoiceSent, 'MMM do, yyyy')}
-          </p>
-          )}
-          
+          <div className='flex items-center'>
+            <Button
+              onClick={handleInvoice}
+              className='bg-gray-600 ml-4 hover:bg-black'
+            >
+              Send Monthly Invoice
+            </Button>
+            {customer.lastInvoiceSent != null && (
+              <p className='ml-4'>
+                Last invoice sent:{' '}
+                {format(customer.lastInvoiceSent, 'MMM do, yyyy')}
+              </p>
+            )}
+          </div>
+
+          <div className='flex mt-10 ml-5'>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>Create Custom Invoice</Button>
+              </DialogTrigger>
+              <DialogContent className='sm:max-w-md'>
+                <DialogHeader>
+                  <DialogTitle>Create Custom Invoice</DialogTitle>
+                  <DialogDescription>
+                    Anyone who has this link will be able to view this.
+                  </DialogDescription>
+                </DialogHeader>
+                <Form {...invoiceForm}>
+                  <form onSubmit={invoiceForm.handleSubmit(submitInvoice)} className=''>
+                    <FormField
+                      control={invoiceForm.control}
+                      name='name'
+                      render={({ field }) => (
+                        <FormItem>
+                          <Input placeholder='Item Name' {...field} />
+
+                          <FormDescription>
+                            Enter the item name for the invoice. This will be
+                            visible to the customer. Example: &apos;Initial Pool
+                            Drain and Clean&apos;
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+<FormField
+                      control={invoiceForm.control}
+                      name='name'
+                      render={({ field }) => (
+                        <FormItem>
+                          <Input placeholder='Item Name' {...field} />
+
+                          <FormDescription>
+                            Enter the item name for the invoice. This will be
+                            visible to the customer. Example: &apos;Initial Pool
+                            Drain and Clean&apos;
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+<FormField
+                      control={invoiceForm.control}
+                      name='description'
+                      render={({ field }) => (
+                        <FormItem>
+                          <Input placeholder='Invoice Description' {...field} />
+
+                          <FormDescription>
+                            Enter a description for the invoice. This will be
+                            visible to the customer. Example: &apos;Drained 1/4 of pull, added 1 bag of salt, and muriatic acid.&apos; 
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type='submit'>Submit</Button>
+                  </form>
+                </Form>
+
+                <DialogFooter className='sm:justify-start'>
+                  <DialogClose asChild>
+                    <Button type='button' variant='secondary'>
+                      Close
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
         </>
       ) : (
         <div className='p-4'>
@@ -336,62 +437,61 @@ const BillingForm = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {invoices.map(
-                invoice => {
-                  const dueDate = invoice.due_date ? new Date(invoice.due_date * 1000) : new Date();
-                  return (
-                    <TableRow key={invoice.id}>
-                      <TableCell className='md:flex hidden'>
-                        {format(new Date(invoice.created * 1000), 'MM/dd/yyyy')}
-                      </TableCell>
-                      <TableCell
+              {invoices.map((invoice) => {
+                const dueDate = invoice.due_date
+                  ? new Date(invoice.due_date * 1000)
+                  : new Date();
+                return (
+                  <TableRow key={invoice.id}>
+                    <TableCell className='md:flex hidden'>
+                      {format(new Date(invoice.created * 1000), 'MM/dd/yyyy')}
+                    </TableCell>
+                    <TableCell
+                      className={cn(
+                        dueDate < new Date() ? 'text-red-600' : 'text-gray-900',
+                        'font-medium'
+                      )}
+                    >
+                      {format(dueDate, 'MM/dd/yyyy')}
+                    </TableCell>
+
+                    <TableCell
+                      className={cn(
+                        dueDate < new Date() ? 'text-red-600' : 'text-gray-900',
+                        'font-medium md:flex hidden'
+                      )}
+                    >
+                      {dueDate < new Date() && !invoice.paid
+                        ? 'PAST DUE'
+                        : invoice.paid
+                        ? 'PAID'
+                        : 'Payment Due'}
+                    </TableCell>
+
+                    <TableCell>
+                      {formatCurrency(invoice.total, 'USD')}
+                    </TableCell>
+
+                    <TableCell className='text-right'>
+                      <Link
+                        href={
+                          invoice.paid
+                            ? '#'
+                            : invoice.hosted_invoice_url
+                            ? invoice.hosted_invoice_url
+                            : '#'
+                        }
                         className={cn(
-                          dueDate < new Date()
-                            ? 'text-red-600'
-                            : 'text-gray-900',
-                          'font-medium'
+                          buttonVariants({}),
+                          invoice.paid ? 'bg-green-700' : 'bg-blue-600'
                         )}
                       >
-                        {format(dueDate, 'MM/dd/yyyy')}
-                      </TableCell>
-  
-                      <TableCell
-                        className={cn(
-                          dueDate < new Date()
-                            ? 'text-red-600'
-                            : 'text-gray-900',
-                          'font-medium md:flex hidden'
-                        )}
-                      >
-                        {dueDate < new Date() &&
-                        !invoice.paid
-                          ? 'PAST DUE'
-                          : invoice.paid
-                          ? 'PAID'
-                          : 'Payment Due'}
-                      </TableCell>
-  
-                      <TableCell>
-                        {formatCurrency(invoice.total, 'USD')}
-                      </TableCell>
-  
-                      <TableCell className='text-right'>
-                        <Link
-                          href={invoice.paid ? '#' : invoice.hosted_invoice_url ? invoice.hosted_invoice_url : '#'}
-                          className={cn(
-                            buttonVariants({}),
-                            invoice.paid ? 'bg-green-700' : 'bg-blue-600'
-                          )}
-                        >
-                          {invoice.paid ? 'Paid' : 'Pay'}
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  )
-                }
-                )
-                } 
-              
+                        {invoice.paid ? 'Paid' : 'Pay'}
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
             <TableFooter>
               <TableRow>
