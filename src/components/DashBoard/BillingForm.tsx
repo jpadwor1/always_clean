@@ -58,6 +58,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { STRIPE_PLANS } from '@/lib/PLANS';
 import { useRouter } from 'next/navigation';
+import { Textarea } from '../ui/textarea';
+import { Loader2 } from 'lucide-react';
 
 interface BillingFormProps {
   subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>;
@@ -73,7 +75,7 @@ const FormSchema = z.object({
 
 const InvoiceSchema = z.object({
   name: z.string(),
-  amount: z.number().int().positive(),
+  amount: z.string(),
   description: z.string(),
 });
 
@@ -119,6 +121,7 @@ const BillingForm = ({
   const updateCustomerDiscount = trpc.updateCustomerDiscount.useMutation();
   const updateServiceAgreementCode =
     trpc.updateCustomerServiceAgreementCode.useMutation();
+  const createCustomInvoice = trpc.createCustomInvoice.useMutation();
 
   function formatCurrency(amountInCents: number, currencyCode = 'USD') {
     const amount = amountInCents / 100;
@@ -161,7 +164,29 @@ const BillingForm = ({
     });
   }
   function submitInvoice(data: z.infer<typeof InvoiceSchema>) {
-    
+    const formData = {
+      customerId: customer.id,
+      name: data.name,
+      amount: parseInt(data.amount),
+      description: data.description,
+    };
+    createCustomInvoice.mutate(formData, {
+      onSuccess: () => {
+        toast({
+          title: 'Invoice Sent',
+          description: 'The invoice has been sent to the customer account.',
+        });
+        handleRefresh();
+      },
+      onError: (error: any) => {
+        toast({
+          title: 'Error',
+          description: error.message,
+          variant: 'destructive',
+        });
+        handleRefresh();
+      },
+    });
   }
 
   function updateServiceAgreement(formData: z.infer<typeof AgreementSchema>) {
@@ -337,71 +362,85 @@ const BillingForm = ({
                 <DialogHeader>
                   <DialogTitle>Create Custom Invoice</DialogTitle>
                   <DialogDescription>
-                    Anyone who has this link will be able to view this.
+                    All of these fields will be visible to the customer on the
+                    invoice.
                   </DialogDescription>
                 </DialogHeader>
                 <Form {...invoiceForm}>
-                  <form onSubmit={invoiceForm.handleSubmit(submitInvoice)} className=''>
+                  <form
+                    onSubmit={invoiceForm.handleSubmit(submitInvoice)}
+                    className=' flex flex-col space-y-6'
+                  >
                     <FormField
                       control={invoiceForm.control}
                       name='name'
                       render={({ field }) => (
                         <FormItem>
-                          <Input placeholder='Item Name' {...field} />
+                          <Input placeholder='Item Name' {...field} value={field.value} />
 
                           <FormDescription>
-                            Enter the item name for the invoice. This will be
-                            visible to the customer. Example: &apos;Initial Pool
-                            Drain and Clean&apos;
+                            Example: &apos;Initial Pool Drain and Clean&apos;
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-<FormField
+                    <FormField
                       control={invoiceForm.control}
-                      name='name'
+                      name='amount'
                       render={({ field }) => (
                         <FormItem>
-                          <Input placeholder='Item Name' {...field} />
+                          <Input
+                            type='number'
+                            placeholder='Amount'
+                            {...field}
+                            value={field.value}
+                          />
 
-                          <FormDescription>
-                            Enter the item name for the invoice. This will be
-                            visible to the customer. Example: &apos;Initial Pool
-                            Drain and Clean&apos;
-                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-<FormField
+                    <FormField
                       control={invoiceForm.control}
                       name='description'
                       render={({ field }) => (
                         <FormItem>
-                          <Input placeholder='Invoice Description' {...field} />
+                          <Textarea
+                            placeholder='Invoice Description'
+                            {...field}
+                            value={field.value}
+                          />
 
                           <FormDescription>
-                            Enter a description for the invoice. This will be
-                            visible to the customer. Example: &apos;Drained 1/4 of pull, added 1 bag of salt, and muriatic acid.&apos; 
+                            Example: &apos;Drained 1/4 of pull, added 1 bag of
+                            salt, and muriatic acid.&apos;
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    <Button type='submit'>Submit</Button>
+
+                    <div className='flex flex-row-reverse justify-between'>
+                      <Button className='self-end' type='submit'>
+                        {createCustomInvoice.isLoading ? <Loader2 className='h-4 w-4 text-white animate-spin' />: 'Submit'}
+                      </Button>
+                      <DialogClose asChild>
+                        <Button
+                          className='self-start'
+                          type='button'
+                          variant='secondary'
+                        >
+                          Close
+                        </Button>
+                      </DialogClose>
+                    </div>
                   </form>
                 </Form>
 
-                <DialogFooter className='sm:justify-start'>
-                  <DialogClose asChild>
-                    <Button type='button' variant='secondary'>
-                      Close
-                    </Button>
-                  </DialogClose>
-                </DialogFooter>
+                <DialogFooter className='sm:justify-start'></DialogFooter>
               </DialogContent>
             </Dialog>
           </div>
