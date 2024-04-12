@@ -25,10 +25,7 @@ const notificationsFormSchema = z.object({
   serviceDay: z.enum(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'], {
     required_error: 'You need to select a preferred service day.',
   }),
-  special_instructions: z
-    .string()
-    .max(300, 'The max amount of characters is 300.')
-    .optional(),
+  special_instructions: z.string().optional(),
   communication_emails: z.boolean().default(false).optional(),
   communication_texts: z.boolean().default(false).optional(),
 });
