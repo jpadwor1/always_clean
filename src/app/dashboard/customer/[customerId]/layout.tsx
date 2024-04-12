@@ -50,6 +50,10 @@ export default async function SettingsLayout({
       href: `/dashboard/customer/${customerId}`,
     },
     {
+      title: 'Preferences',
+      href: `/dashboard/customer/${customerId}/preferences`,
+    },
+    {
       title: 'Billing',
       href: `/dashboard/customer/${customerId}/billing`,
     },
