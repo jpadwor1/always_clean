@@ -108,6 +108,15 @@ export const STRIPE_PLANS = [
     },
   },
   {
+    name: 'Military Discount',
+    type: 'Regular Pool Cleaning',
+    price: 115,
+    priceIds: {
+      test: 'price_1OelNvDAvxyq4Y7vw5eO9Y86',
+      production: 'price_1P4VeqDAvxyq4Y7vpbLVc4jF',
+    },
+  },
+  {
     name: 'ENHANCED',
     price: 175,
     priceIds: {
