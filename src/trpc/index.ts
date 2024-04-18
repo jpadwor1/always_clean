@@ -11,6 +11,8 @@ import { addDays, format } from 'date-fns';
 import sgMail from '@sendgrid/mail';
 import { STRIPE_PLANS } from '@/lib/PLANS';
 import { addUser } from '@/lib/actions';
+import { Customer } from '@prisma/client';
+import Stripe from 'stripe';
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -1465,6 +1467,33 @@ export const appRouter = router({
       }
 
       return { success: true };
+    }),
+    getInvoices: publicProcedure
+    .query(async () => {
+      
+      const customers = await db.customer.findMany({
+        where: {
+          stripeBalanceDue: true,
+          customerType: 'ACTIVE',
+        }
+      });
+  
+      let invoicesPromises = customers.map(async (customer: Customer) => {
+        const customerStripeId = customer.stripe_customer_id;
+        const customerInvoices = await stripe.invoices.list({
+          customer: customerStripeId,
+        });
+  
+        return customerInvoices.data;
+      });
+  
+      const results = await Promise.all(invoicesPromises);
+      const invoices = results.flat();
+  
+      if (invoices.length === 0) {
+        return { success: false };
+      }
+      return invoices;
     }),
 });
 

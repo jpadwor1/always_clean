@@ -1,20 +1,12 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Overview } from '@/components/ui/overview';
-import { RecentSales } from '@/components/ui/recent-sales';
 import Table from '@/components/dataTable/Table';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import UtilityPage from '../UtilityPage';
 import MyCalendar from '../Calendar/BigCalendar';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import PaymentTable from './PaymentTable';
 
 const Dashboard = async () => {
   const { getUser } = getKindeServerSession();
@@ -30,7 +22,7 @@ const Dashboard = async () => {
               Dashboard
             </h2>
           </div>
-          <Tabs defaultValue='customers' className='space-y-4'>
+          <Tabs defaultValue='overview' className='space-y-4'>
             <TabsList className='sm:p-4'>
               <TabsTrigger value='overview'>Overview</TabsTrigger>
               <TabsTrigger value='customers'>Customers</TabsTrigger>
@@ -41,7 +33,7 @@ const Dashboard = async () => {
               <Button>
                 <Link href='/routebuilder'>Route Optimizer</Link>
               </Button>
-              
+              <PaymentTable />
             </TabsContent>
 
             <TabsContent value='customers' className='space-y-4 p-2'>

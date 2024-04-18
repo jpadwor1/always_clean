@@ -402,6 +402,7 @@ const MyCalendar = ({ props }: CalendarProps) => {
       }
     }
   };
+  
   return (
     <div className='bg-white rounded-lg w-full sm:p-2 sm:h-[calc(100vh-20rem)] h-[calc(100vh-10rem)]'>
       <Calendar
