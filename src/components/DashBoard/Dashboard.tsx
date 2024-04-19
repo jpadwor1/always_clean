@@ -30,9 +30,7 @@ const Dashboard = async () => {
               <TabsTrigger value='utilities'>Utilities</TabsTrigger>
             </TabsList>
             <TabsContent value='overview' className='space-y-4 p-4'>
-              <Button>
-                <Link href='/routebuilder'>Route Optimizer</Link>
-              </Button>
+              
               <PaymentTable />
             </TabsContent>
 
