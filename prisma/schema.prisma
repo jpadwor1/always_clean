@@ -117,8 +117,8 @@ model ServiceChemical {
   serviceEventId String
   chemicalId     String
   quantity       Int
-  ServiceEvent   ServiceEvent @relation(fields: [serviceEventId], references: [id])
-  chemical       Chemical     @relation(fields: [chemicalId], references: [id])
+  ServiceEvent   ServiceEvent @relation(fields: [serviceEventId], references: [id], onDelete: Cascade)
+  chemical       Chemical     @relation(fields: [chemicalId], references: [id], onDelete: Cascade)
 
   @@index([chemicalId])
   @@index([serviceEventId])
