@@ -385,21 +385,29 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
         </div>
 
         <div className='grid sm:grid-cols-5 grid-cols-2 place-items-center mt-4 relative'>
-          {serviceEvent.serviceChemicals.map((chemical) => (
-            <div
-              className='col-span-1 mt-4 place-items-center text-center'
-              key={chemical.chemical.id}
-            >
+          {serviceEvent.serviceChemicals.length < 0 ? (
+            serviceEvent.serviceChemicals.map((chemical) => (
               <div
+                className='col-span-1 mt-4 place-items-center text-center'
                 key={chemical.chemical.id}
-                className='flex items-center justify-center rounded-full px-2 py-1 bg-black max-w-fit'
               >
-                <p className='text-yellow-400 font-medium text-xs md:text-md '>
-                  {chemical.chemical.name}
-                </p>
+                <div
+                  key={chemical.chemical.id}
+                  className='flex items-center justify-center rounded-full px-2 py-1 bg-black max-w-fit'
+                >
+                  <p className='text-yellow-400 font-medium text-xs md:text-md '>
+                    {chemical.chemical.name}
+                  </p>
+                </div>
               </div>
+            ))
+          ) : (
+            <div className='ml-30 col-span-2 h-12'>
+              <p className='text-black font-medium text-center'>
+                No chemicals used
+              </p>
             </div>
-          ))}
+          )}
         </div>
       </div>
 
