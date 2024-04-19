@@ -8,7 +8,7 @@ export const startFileUpload = async ({ file }: { file: File | null }) => {
   }
 
   const storage = getStorage(app);
-  const storageRef = ref(storage, '/files/' + file.name);
+  const storageRef = ref(storage, file.name);
 
   try {
     const snapshot = await uploadBytes(storageRef, file);
