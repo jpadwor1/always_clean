@@ -11,6 +11,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**',
       },
+      { protocol: 'https', hostname: 'firebasestorage.googleapis.com' },
     ],
   },
   async redirects() {
