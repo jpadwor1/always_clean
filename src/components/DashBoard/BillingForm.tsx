@@ -55,7 +55,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { STRIPE_PLANS } from '@/lib/PLANS';
 import { useRouter } from 'next/navigation';
 import { Textarea } from '../ui/textarea';

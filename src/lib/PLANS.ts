@@ -104,7 +104,7 @@ export const STRIPE_PLANS = [
     price: 145,
     priceIds: {
       test: 'price_1OelNvDAvxyq4Y7vw5eO9Y86',
-      production: 'price_1OenuvDAvxyq4Y7voul8c3Nw',
+      production: 'price_1P7lgWDAvxyq4Y7vcYvg8xXR',
     },
   },
   {
