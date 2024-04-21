@@ -3,11 +3,10 @@ import { Customer } from '@prisma/client';
 import sgMail from '@sendgrid/mail';
 
 export async function GET(request: Request) {
-
   const { secret } = Object.fromEntries(request.headers);
 
   if (secret !== process.env.CRON_SECRET) {
-    return new Response("Unauthorized", { status: 401 });
+    return new Response('Unauthorized', { status: 401 });
   }
 
   try {
@@ -40,7 +39,7 @@ export async function GET(request: Request) {
           };
 
           try {
-            // await sgMail.send(msg);
+            await sgMail.send(msg);
           } catch (error: any) {
             console.error('Error sending email:', error.response.body);
 
