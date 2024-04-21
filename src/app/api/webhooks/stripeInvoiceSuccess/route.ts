@@ -34,7 +34,7 @@ export async function POST(request: Request) {
       },
     });
 
-    dbCustomer.update({
+    db.customer.update({
       where: {
         id: dbCustomer.id,
       },

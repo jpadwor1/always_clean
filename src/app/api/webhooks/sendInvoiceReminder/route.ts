@@ -1,4 +1,3 @@
-import { trpc } from '@/app/_trpc/client';
 import { db } from '@/db';
 import { Customer } from '@prisma/client';
 import sgMail from '@sendgrid/mail';
