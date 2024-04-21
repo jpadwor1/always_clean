@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       },
       data: {
         stripeBalanceDue:
-          dbCustomer.amountDue - event.data.object.amount_due > 0
+          dbCustomer.amountDue === null || dbCustomer.amountDue - event.data.object.amount_due > 0
             ? true
             : false,
         amountDue: dbCustomer.amountDue - event.data.object.amount_due,
