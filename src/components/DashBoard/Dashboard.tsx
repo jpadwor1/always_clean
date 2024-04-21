@@ -7,12 +7,14 @@ import MyCalendar from '../Calendar/BigCalendar';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import PaymentTable from './PaymentTable';
+import { db } from '@/db';
 
 const Dashboard = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   const userId = user?.id;
 
+  
   return (
     <>
       <div className='flex-col md:flex'>

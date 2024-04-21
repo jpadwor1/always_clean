@@ -4,12 +4,13 @@ import { Customer } from '@prisma/client';
 import sgMail from '@sendgrid/mail';
 
 export async function GET(request: Request) {
-
-
   try {
     const customersBehind = await db.customer.findMany({
       where: {
         stripeBalanceDue: true,
+        dueDate: {
+          lt: new Date().getTime().toString(),
+        },
       },
     });
 
