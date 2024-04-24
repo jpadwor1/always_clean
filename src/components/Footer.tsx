@@ -40,14 +40,6 @@ const Footer = () => {
               <div className='w-full md:w-auto p-3 md:px-6'>
                 <Link
                   className='inline-block text-lg md:text-xl text-coolGray-500 hover:text-coolGray-600 font-medium'
-                  href='/account-features'
-                >
-                  Account Features
-                </Link>
-              </div>
-              <div className='w-full md:w-auto p-3 md:px-6'>
-                <Link
-                  className='inline-block text-lg md:text-xl text-coolGray-500 hover:text-coolGray-600 font-medium'
                   href='#'
                 >
                   Careers
