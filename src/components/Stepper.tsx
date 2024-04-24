@@ -234,21 +234,25 @@ export default function StepperForm() {
   };
 
   const getCombinedDateTime = () => {
-    if (!date || !selectedTime) return '';
+  if (!date || !selectedTime) return '';
 
-    const timeParts = selectedTime.split(/[:\s]/); // Split time string into components
-    const hours = timeParts[0];
-    const minutes = timeParts[1];
-    const meridian = timeParts[2];
+  const timeParts = selectedTime.split(/[:\s]/); // Split time string into components
+  let hours = parseInt(timeParts[0]);
+  const minutes = parseInt(timeParts[1]);
+  const meridian = timeParts[2].toUpperCase();
 
-    const dateTime = new Date(date);
-    dateTime.setHours(
-      meridian === 'PM' ? parseInt(hours) + 12 : parseInt(hours)
-    ); // Adjust for AM/PM
-    dateTime.setMinutes(parseInt(minutes));
+  if (meridian === 'PM' && hours < 12) {
+    hours += 12; // Convert PM hour to 24-hour format except for 12 PM which is already correct
+  } else if (meridian === 'AM' && hours === 12) {
+    hours = 0; // Convert 12 AM midnight to 00:00 hours
+  }
 
-    return dateTime.toISOString();
-  };
+  const dateTime = new Date(date);
+  dateTime.setHours(hours);
+  dateTime.setMinutes(minutes);
+
+  return dateTime.toISOString();
+};
 
   const mutation = trpc.createServiceRequest.useMutation();
 
@@ -269,16 +273,12 @@ export default function StepperForm() {
         onError: (error) => {
           toast({
             title: 'Oops Something went wrong',
-            description: (
-              <>
-                <p>try again later</p>
-                <p>{error.message}</p>
-              </>
-            ),
+            description: 'Please try again later or contact support',
           });
         },
       }
     );
+
   }
 
   return (
@@ -515,6 +515,7 @@ export default function StepperForm() {
                             (day) => day.getDay() === 1, // Disables Monday
                             (day) => day.getDay() === 2, // Disables Tuesday
                             (day) => day.getDay() === 3, // Disables Wednesday
+                            (day) => day.getDay() === 0, // Disables Sunday
                           ]}
                         />
                       </div>

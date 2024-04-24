@@ -36,11 +36,9 @@ const notificationsFormSchema = z.object({
 type NotificationsFormValues = z.infer<typeof notificationsFormSchema>;
 
 const serviceDays = [
-  { label: 'Monday', value: 'MONDAY' },
-  { label: 'Tuesday', value: 'TUESDAY' },
-  { label: 'Wednesday', value: 'WEDNESDAY' },
   { label: 'Thursday', value: 'THURSDAY' },
   { label: 'Friday', value: 'FRIDAY' },
+  { label: 'Saturday', value: 'SATURDAY' },
 ];
 
 interface NotificationsFormProps {
@@ -85,7 +83,9 @@ export function NotificationsForm({ customer }: NotificationsFormProps) {
           </h3>
           <h2 className='text-base mb-3'>
             Your next scheduled service is on{' '}
-            {format(customer.nextServiceDate, 'MMM do, yyyy.')}
+            <span className='font-medium'>
+              {format(customer.nextServiceDate, 'MMM do, yyyy.')}
+            </span>
           </h2>
           <FormField
             control={form.control}

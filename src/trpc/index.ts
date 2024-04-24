@@ -450,7 +450,7 @@ export const appRouter = router({
             service: input.service,
             service_date: format(
               new Date(input.nextServiceDate),
-              'EEEE, d MMMM'
+              'EEEE, d MMMM hh:mm a'
             ),
           },
         };
@@ -986,131 +986,131 @@ export const appRouter = router({
     return { url: stripeSession.url };
   }),
   createCustomInvoice: privateProcedure
-  .input(
-    z.object({
-      customerId: z.string(),
-      amount: z.number(),
-      name: z.string(),
-      description: z.string(),
-    })
-  )
-  .mutation(async ({ ctx, input }) => {
-    const { userId, user } = ctx;
-    const date = new Date();
-    const dueDate = date.setDate(date.getDate() + 30);
+    .input(
+      z.object({
+        customerId: z.string(),
+        amount: z.number(),
+        name: z.string(),
+        description: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+      const date = new Date();
+      const dueDate = date.setDate(date.getDate() + 30);
 
-    if (!userId || !user) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
-    }
+      if (!userId || !user) {
+        throw new TRPCError({ code: 'UNAUTHORIZED' });
+      }
 
-    try {
-      let customer = await db.customer.findUnique({
-        where: {
-          id: input.customerId,
-        },
-      });
-      let email = customer?.email;
-
-      let customerStripeId;
-      let stripeCustomer;
-
-      if (!customer?.stripe_customer_id) {
-        // Create a new Customer
-        stripeCustomer = await stripe.customers.create({
-          email,
-          description: 'Customer to invoice',
-          name: customer?.name,
-          phone: customer?.phone,
+      try {
+        let customer = await db.customer.findUnique({
+          where: {
+            id: input.customerId,
+          },
         });
-        // Store the Customer ID in your database to use for future purchases
+        let email = customer?.email;
+
+        let customerStripeId;
+        let stripeCustomer;
+
+        if (!customer?.stripe_customer_id) {
+          // Create a new Customer
+          stripeCustomer = await stripe.customers.create({
+            email,
+            description: 'Customer to invoice',
+            name: customer?.name,
+            phone: customer?.phone,
+          });
+          // Store the Customer ID in your database to use for future purchases
+          await db.customer.update({
+            where: {
+              id: input.customerId,
+            },
+            data: {
+              stripe_customer_id: stripeCustomer.id,
+              stripeBalanceDue: true,
+            },
+          });
+          customerStripeId = stripeCustomer.id;
+        } else {
+          // Read the Customer ID from your database
+          customerStripeId = customer.stripe_customer_id;
+        }
+
+        // Create an Invoice
+        const invoice = await stripe.invoices.create({
+          customer: customerStripeId,
+          currency: 'usd',
+          collection_method: 'send_invoice',
+          days_until_due: 30,
+          automatic_tax: {
+            enabled: false,
+          },
+          auto_advance: true,
+        });
+
+        const product = await stripe.products.create({
+          name: input.name,
+          description: input.description,
+        });
+
+        const price = await stripe.prices.create({
+          currency: 'usd',
+          unit_amount: input.amount * 100,
+          product: product.id,
+        });
+
+        // Create an Invoice Item with the Price, and Customer
+        const invoiceItem = await stripe.invoiceItems.create({
+          customer: customerStripeId,
+          price: price.id,
+          invoice: invoice.id,
+        });
+
+        // Send the Invoice
+        await stripe.invoices.sendInvoice(invoice.id);
+
         await db.customer.update({
           where: {
             id: input.customerId,
           },
           data: {
-            stripe_customer_id: stripeCustomer.id,
-            stripeBalanceDue: true,
+            dueDate: dueDate.toString(),
+            lastInvoiceSent: new Date(),
           },
         });
-        customerStripeId = stripeCustomer.id;
-      } else {
-        // Read the Customer ID from your database
-        customerStripeId = customer.stripe_customer_id;
-      }
+        //Confirmation email to owner
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
-      // Create an Invoice
-      const invoice = await stripe.invoices.create({
-        customer: customerStripeId,
-        currency: 'usd',
-        collection_method: 'send_invoice',
-        days_until_due: 30,
-        automatic_tax: {
-          enabled: false,
-        },
-        auto_advance: true,
-      });
+        const sendEmail = async (to: string) => {
+          const msg = {
+            to: to,
+            from: 'support@krystalcleanpools.com',
+            subject: ' ',
+            html: ' ',
+            text: ' ',
+            template_id: 'd-275d63f041db4530920b60e24948baa5',
+            dynamic_template_data: {
+              sender_message: `Invoice Sent to Customer, ${customer.name}`,
+            },
+          };
 
-      const product = await stripe.products.create({
-        name: input.name,
-        description: input.description,
-      });
+          try {
+            await sgMail.send(msg);
+          } catch (error) {
+            console.error('Error sending email:', error);
 
-      const price = await stripe.prices.create({
-        currency: 'usd',
-        unit_amount: input.amount * 100,
-        product: product.id,
-      });
-
-      // Create an Invoice Item with the Price, and Customer
-      const invoiceItem = await stripe.invoiceItems.create({
-        customer: customerStripeId,
-        price: price.id,
-        invoice: invoice.id,
-      });
-
-      // Send the Invoice
-      await stripe.invoices.sendInvoice(invoice.id);
-
-      await db.customer.update({
-        where: {
-          id: input.customerId,
-        },
-        data: {
-          dueDate: dueDate.toString(),
-          lastInvoiceSent: new Date(),
-        },
-      });
-      //Confirmation email to owner
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
-
-      const sendEmail = async (to: string) => {
-        const msg = {
-          to: to,
-          from: 'support@krystalcleanpools.com',
-          subject: ' ',
-          html: ' ',
-          text: ' ',
-          template_id: 'd-275d63f041db4530920b60e24948baa5',
-          dynamic_template_data: {
-            sender_message: `Invoice Sent to Customer, ${customer.name}`,
-          },
+            throw new Error('Failed to send email');
+          }
         };
 
-        try {
-          await sgMail.send(msg);
-        } catch (error) {
-          console.error('Error sending email:', error);
-
-          throw new Error('Failed to send email');
-        }
-      };
-
-      await sendEmail('support@krystalcleanpools.com');
-    } catch (err) {
-      console.error(err);
-      throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
-    }
-  }),
+        await sendEmail('support@krystalcleanpools.com');
+      } catch (err) {
+        console.error(err);
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+      }
+    }),
   getCreateInvoice: privateProcedure
     .input(
       z.object({
@@ -1468,33 +1468,31 @@ export const appRouter = router({
 
       return { success: true };
     }),
-    getInvoices: publicProcedure
-    .query(async () => {
-      
-      const customers = await db.customer.findMany({
-        where: {
-          stripeBalanceDue: true,
-          customerType: 'ACTIVE',
-        }
+  getInvoices: publicProcedure.query(async () => {
+    const customers = await db.customer.findMany({
+      where: {
+        stripeBalanceDue: true,
+        customerType: 'ACTIVE',
+      },
+    });
+
+    let invoicesPromises = customers.map(async (customer: Customer) => {
+      const customerStripeId = customer.stripe_customer_id;
+      const customerInvoices = await stripe.invoices.list({
+        customer: customerStripeId,
       });
-  
-      let invoicesPromises = customers.map(async (customer: Customer) => {
-        const customerStripeId = customer.stripe_customer_id;
-        const customerInvoices = await stripe.invoices.list({
-          customer: customerStripeId,
-        });
-  
-        return customerInvoices.data;
-      });
-  
-      const results = await Promise.all(invoicesPromises);
-      const invoices = results.flat();
-  
-      if (invoices.length === 0) {
-        return { success: false };
-      }
-      return invoices;
-    }),
+
+      return customerInvoices.data;
+    });
+
+    const results = await Promise.all(invoicesPromises);
+    const invoices = results.flat();
+
+    if (invoices.length === 0) {
+      return { success: false };
+    }
+    return invoices;
+  }),
 });
 
 export type AppRouter = typeof appRouter;
