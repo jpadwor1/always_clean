@@ -142,6 +142,7 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
 
   const options = [
     { label: 'Vacuum', value: 'Vacuum' },
+    { label: 'Brushed Pool', value: 'Brushed Pool' },
     { label: 'Balanced Chemicals', value: 'Balanced Chemicals' },
     { label: 'Cleaned Tile Band', value: 'Cleaned Tile Band' },
     { label: 'Cleaned Filters', value: 'Cleaned Filters' },

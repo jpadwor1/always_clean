@@ -102,6 +102,12 @@ const poolTasks: PoolTask[] = [
       'Scrubbing the tile band around the pool to remove buildup and stains.',
   },
   {
+    label: 'Brushed Pool Walls',
+    icon: 'brush-icon', // Replace with actual icon reference
+    description:
+      'Scrubbing the tile band around the pool to remove buildup and stains.',
+  },
+  {
     label: 'Cleaned Filters',
     icon: 'filter-icon', // Replace with actual icon reference
     description:
@@ -121,6 +127,7 @@ const poolTasks: PoolTask[] = [
 ];
 
 const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
+  console.log(serviceEvent);
   const tasksPerformed = serviceEvent?.tasksPerformed.split(',');
   const technician = {
     name: serviceEvent.technicianName,
@@ -385,7 +392,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
         </div>
 
         <div className='grid sm:grid-cols-5 grid-cols-2 place-items-center mt-4 relative'>
-          {serviceEvent.serviceChemicals.length < 0 ? (
+          {serviceEvent.serviceChemicals.length > 0 ? (
             serviceEvent.serviceChemicals.map((chemical) => (
               <div
                 className='col-span-1 mt-4 place-items-center text-center'
