@@ -13,13 +13,13 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { format } from 'date-fns';
-import Stripe from 'stripe';
 import MaxWidthWrapper from '../MaxWidthWrapper';
 import { Separator } from '../ui/separator';
+import { Stripe } from 'stripe';
 
 const PaymentTable = () => {
   const { data: invoices, isLoading, error } = trpc.getInvoices.useQuery();
-
+  invoices?.sort((a: any, b: any) => b.created - a.created);
   if (isLoading) {
     return (
       <div className='flex flex-col items-center justify-center h-[600px]'>
@@ -38,10 +38,11 @@ const PaymentTable = () => {
     );
   }
 
-  console.log(invoices);
   return (
     <MaxWidthWrapper>
-      <h2 className='text-black font-medium mb-3 lg:text-2xl text-md text-center'>Invoice History</h2>
+      <h2 className='text-black font-medium mb-3 lg:text-2xl text-md text-center'>
+        Invoice History
+      </h2>
       <Separator />
       <Table>
         <TableCaption>Current Invoice History</TableCaption>
@@ -61,7 +62,7 @@ const PaymentTable = () => {
               <TableCell>
                 {format(new Date(invoice?.created * 1000), 'MM/dd/yyyy')}
               </TableCell>
-              <TableCell >${(invoice?.amount_due / 100).toFixed(2)}</TableCell>
+              <TableCell>${(invoice?.amount_due / 100).toFixed(2)}</TableCell>
 
               <TableCell className='text-center'>
                 {invoice?.paid ? (

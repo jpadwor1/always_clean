@@ -1487,11 +1487,16 @@ export const appRouter = router({
 
     const results = await Promise.all(invoicesPromises);
     const invoices = results.flat();
+    const customer_invoices = invoices.filter(
+      (invoice:Stripe.Invoice) => invoice.status === 'paid' || invoice.status === 'open'
+    );
 
-    if (invoices.length === 0) {
+    if (customer_invoices.length === 0) {
       return { success: false };
     }
-    return invoices;
+
+    
+    return customer_invoices;
   }),
 });
 

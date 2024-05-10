@@ -467,9 +467,9 @@ const BillingForm = ({
             <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead className='md:flex hidden'>Invoice Sent</TableHead>
+                <TableHead className='md:flex justify-center items-center hidden'>Invoice Sent</TableHead>
                 <TableHead className=''>Due Date</TableHead>
-                <TableHead className='md:flex hidden'>Status</TableHead>
+                <TableHead className='md:flex justify-center items-center hidden'>Status</TableHead>
                 <TableHead>Amount Due</TableHead>
                 <TableHead className='text-right'>Pay Invoice</TableHead>
               </TableRow>
@@ -480,7 +480,7 @@ const BillingForm = ({
                   ? new Date(invoice.due_date * 1000)
                   : new Date();
                 return (
-                  <TableRow key={invoice.id}>
+                  <TableRow key={invoice.id} className=''>
                     <TableCell className='md:flex hidden'>
                       {format(new Date(invoice.created * 1000), 'MM/dd/yyyy')}
                     </TableCell>
