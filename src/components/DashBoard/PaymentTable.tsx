@@ -19,7 +19,7 @@ import { Stripe } from 'stripe';
 
 const PaymentTable = () => {
   const { data: invoices, isLoading, error } = trpc.getInvoices.useQuery();
-  invoices?.sort((a: any, b: any) => b.created - a.created);
+  invoices?.sort((a: any, b: any) => a.due_date - b.due_date);
   if (isLoading) {
     return (
       <div className='flex flex-col items-center justify-center h-[600px]'>
