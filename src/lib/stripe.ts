@@ -116,7 +116,8 @@ export async function getCustomerInvoices(customerId?: string | null) {
     if (!invoices.data || invoices.data.length === 0) {
       return [];
     }
-    return invoices.data;
+    const customer_invoices = invoices.data.filter((invoice) => invoice.status === 'paid' || invoice.status === 'open')
+    return customer_invoices;
   }
   return [];
   } catch (error) {
