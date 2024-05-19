@@ -30,7 +30,7 @@ const Page = () => {
   const [value, setValue] = useState('');
   const [title, setTitle] = useState('');
   const [progress, setProgress] = useState(0);
-  const [catSlug, setCatSlug] = useState('maintence');
+  const [catSlug, setCatSlug] = useState('maintenance');
   const [postSEO, setPostSEO] = useState({
     metaDescription: '',
     excerpt: '',
