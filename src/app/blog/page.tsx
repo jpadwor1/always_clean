@@ -6,7 +6,11 @@ import { Post } from '@prisma/client';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 
 const Page = async () => {
-  const posts = await db.post.findMany();
+  const posts = await db.post.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
