@@ -9,6 +9,7 @@ import type { Metadata } from 'next';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import dynamic from 'next/dynamic';
 import FacebookPixelEvents from '@/components/FacebookPixelEvents';
+import { Suspense } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,8 +29,6 @@ const CookieConsentBanner = dynamic(
 const Toaster = dynamic(() => import('@/components/ui/toaster'), {
   ssr: false,
 });
-
-
 
 export default function RootLayout({
   children,
@@ -52,8 +51,8 @@ export default function RootLayout({
           <CookieConsentBanner />
         </body>
       </Providers>
-        <GoogleAnalytics gaId='G-CXG6005YVL' />
-        <FacebookPixelEvents />
+      <GoogleAnalytics gaId='G-CXG6005YVL' />
+      <FacebookPixelEvents />
     </html>
   );
 }
