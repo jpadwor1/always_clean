@@ -17,6 +17,10 @@ const Page = async () => {
     },
   });
 
+  if (dbUser?.role !== 'ADMIN') {
+    redirect('/auth-callback?origin=client');
+  }
+
   return <Dashboard />;
 
 };

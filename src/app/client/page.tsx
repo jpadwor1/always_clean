@@ -13,7 +13,6 @@ const Page = async () => {
       id: user?.id,
     },
   });
-
   
   return (
     <div className='space-y-6 bg-white shadow-md p-6 rounded-md'>
