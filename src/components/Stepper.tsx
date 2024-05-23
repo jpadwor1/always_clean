@@ -141,7 +141,7 @@ export default function StepperForm() {
     addressInputRef,
     form.register('address').ref
   );
-  const availableTimes = [
+  const [availableTimes, setAvailableTimes] = React.useState([
     '2:00 PM',
     '2:30 PM',
     '3:00 PM',
@@ -149,7 +149,7 @@ export default function StepperForm() {
     '4:00 PM',
     '4:30 PM',
     '5:00 PM',
-  ];
+  ]);
   const components: { title: string; href: string; description: string }[] = [
     {
       title: 'Regular Pool Cleaning',
@@ -230,7 +230,25 @@ export default function StepperForm() {
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
   };
+  const getAvailableTimes = (date: Date | undefined) => {
+    const currentDate = new Date();
+    if (!date || date < currentDate) return [];
 
+    const filteredTimes = availableTimes.filter((time) => {
+      const [hours, minutes, period] = time.split(/[: ]/);
+      let timeDate = new Date(date);
+      timeDate.setHours(
+        period === 'AM' ? parseInt(hours) : parseInt(hours) + 12,
+        parseInt(minutes),
+        0,
+        0
+      );
+
+      return timeDate > date;
+    });
+
+    return filteredTimes;
+  };
   const getCombinedDateTime = () => {
     if (!date || !selectedTime) return '';
 
@@ -257,7 +275,8 @@ export default function StepperForm() {
   const disableDates = (day: Date) => {
     const dayOfWeek = day.getDay();
     const isPastDate = day <= today;
-    const isDisabledDay = dayOfWeek === 0 || dayOfWeek === 1 || dayOfWeek === 2 || dayOfWeek === 3;
+    const isDisabledDay =
+      dayOfWeek === 0 || dayOfWeek === 1 || dayOfWeek === 2 || dayOfWeek === 3;
 
     return isPastDate || isDisabledDay;
   };
@@ -272,20 +291,20 @@ export default function StepperForm() {
       customerType: 'ACTIVE' as CustomerType,
     };
 
-    // mutation.mutate(
-    //   { ...formData },
-    //   {
-    //     onSuccess: () => {
-    //       router.push('/booking-confirmation');
-    //     },
-    //     onError: (error) => {
-    //       toast({
-    //         title: 'Oops Something went wrong',
-    //         description: 'Please try again later or contact support',
-    //       });
-    //     },
-    //   }
-    // );
+    mutation.mutate(
+      { ...formData },
+      {
+        onSuccess: () => {
+          router.push('/booking-confirmation');
+        },
+        onError: (error) => {
+          toast({
+            title: 'Oops Something went wrong',
+            description: 'Please try again later or contact support',
+          });
+        },
+      }
+    );
   }
 
   return (
@@ -529,7 +548,7 @@ export default function StepperForm() {
                         </h3>
 
                         <div className='grid grid-cols-2 gap-2'>
-                          {availableTimes.map((time) => (
+                          {getAvailableTimes(date).map((time) => (
                             <Button
                               type='button'
                               onClick={() => handleTimeSelect(time)}
