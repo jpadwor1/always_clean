@@ -142,14 +142,12 @@ export default function StepperForm() {
     form.register('address').ref
   );
   const availableTimes = [
-    '9:00 AM',
-    '10:00 AM',
-    '11:00 AM',
-    '12:00 PM',
-    '1:00 PM',
     '2:00 PM',
+    '2:30 PM',
     '3:00 PM',
+    '3:30 PM',
     '4:00 PM',
+    '4:30 PM',
     '5:00 PM',
   ];
   const components: { title: string; href: string; description: string }[] = [
@@ -234,25 +232,35 @@ export default function StepperForm() {
   };
 
   const getCombinedDateTime = () => {
-  if (!date || !selectedTime) return '';
+    if (!date || !selectedTime) return '';
 
-  const timeParts = selectedTime.split(/[:\s]/); // Split time string into components
-  let hours = parseInt(timeParts[0]);
-  const minutes = parseInt(timeParts[1]);
-  const meridian = timeParts[2].toUpperCase();
+    const timeParts = selectedTime.split(/[:\s]/); // Split time string into components
+    let hours = parseInt(timeParts[0]);
+    const minutes = parseInt(timeParts[1]);
+    const meridian = timeParts[2].toUpperCase();
 
-  if (meridian === 'PM' && hours < 12) {
-    hours += 12; // Convert PM hour to 24-hour format except for 12 PM which is already correct
-  } else if (meridian === 'AM' && hours === 12) {
-    hours = 0; // Convert 12 AM midnight to 00:00 hours
-  }
+    if (meridian === 'PM' && hours < 12) {
+      hours += 12; // Convert PM hour to 24-hour format except for 12 PM which is already correct
+    } else if (meridian === 'AM' && hours === 12) {
+      hours = 0; // Convert 12 AM midnight to 00:00 hours
+    }
 
-  const dateTime = new Date(date);
-  dateTime.setHours(hours);
-  dateTime.setMinutes(minutes);
+    const dateTime = new Date(date);
+    dateTime.setHours(hours);
+    dateTime.setMinutes(minutes);
 
-  return dateTime.toISOString();
-};
+    return dateTime.toISOString();
+  };
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Normalize to remove time part
+
+  const disableDates = (day: Date) => {
+    const dayOfWeek = day.getDay();
+    const isPastDate = day <= today;
+    const isDisabledDay = dayOfWeek === 0 || dayOfWeek === 1 || dayOfWeek === 2 || dayOfWeek === 3;
+
+    return isPastDate || isDisabledDay;
+  };
 
   const mutation = trpc.createServiceRequest.useMutation();
 
@@ -264,21 +272,20 @@ export default function StepperForm() {
       customerType: 'ACTIVE' as CustomerType,
     };
 
-    mutation.mutate(
-      { ...formData },
-      {
-        onSuccess: () => {
-          router.push('/booking-confirmation');
-        },
-        onError: (error) => {
-          toast({
-            title: 'Oops Something went wrong',
-            description: 'Please try again later or contact support',
-          });
-        },
-      }
-    );
-
+    // mutation.mutate(
+    //   { ...formData },
+    //   {
+    //     onSuccess: () => {
+    //       router.push('/booking-confirmation');
+    //     },
+    //     onError: (error) => {
+    //       toast({
+    //         title: 'Oops Something went wrong',
+    //         description: 'Please try again later or contact support',
+    //       });
+    //     },
+    //   }
+    // );
   }
 
   return (
@@ -511,12 +518,7 @@ export default function StepperForm() {
                           selected={date}
                           onSelect={setDate}
                           className='rounded-md'
-                          disabled={[
-                            (day) => day.getDay() === 1, // Disables Monday
-                            (day) => day.getDay() === 2, // Disables Tuesday
-                            (day) => day.getDay() === 3, // Disables Wednesday
-                            (day) => day.getDay() === 0, // Disables Sunday
-                          ]}
+                          disabled={(day) => disableDates(day)}
                         />
                       </div>
                       <div className='flex flex-col items-center mt-2'>
