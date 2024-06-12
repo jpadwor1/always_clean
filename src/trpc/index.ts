@@ -429,13 +429,13 @@ export const appRouter = router({
           },
         });
       }
-
+      
       const sendBookingConfirmationEmail = async (
         to: string,
         subject: string
       ) => {
         sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
-
+        const date = format(new Date(input.nextServiceDate), 'EEEE, d MMMM hh:mm a');
         const msg = {
           to: to,
           from: 'support@krystalcleanpools.com',
@@ -448,10 +448,7 @@ export const appRouter = router({
             address: input.address,
             phoneNumber: input.phoneNumber,
             service: input.service,
-            service_date: format(
-              new Date(input.nextServiceDate),
-              'EEEE, d MMMM hh:mm a'
-            ),
+            service_date: date,
           },
         };
 
@@ -1488,14 +1485,14 @@ export const appRouter = router({
     const results = await Promise.all(invoicesPromises);
     const invoices = results.flat();
     const customer_invoices = invoices.filter(
-      (invoice:Stripe.Invoice) => invoice.status === 'paid' || invoice.status === 'open'
+      (invoice: Stripe.Invoice) =>
+        invoice.status === 'paid' || invoice.status === 'open'
     );
 
     if (customer_invoices.length === 0) {
       return { success: false };
     }
 
-    
     return customer_invoices;
   }),
 });
