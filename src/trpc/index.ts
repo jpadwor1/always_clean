@@ -18,14 +18,15 @@ export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-
     if (!user?.id || !user?.email)
       throw new TRPCError({ code: 'UNAUTHORIZED' });
 
-    // check if the user is in the database
+    const email = user.email.toLowerCase();
+
+   
     const dbUser = await db.user.findFirst({
       where: {
-        email: user.email,
+        email: email,
       },
     });
 
@@ -34,7 +35,7 @@ export const appRouter = router({
       await db.user.create({
         data: {
           id: user.id,
-          email: user.email,
+          email: email,
           name:
             user.given_name && user.family_name
               ? user.given_name + ' ' + user.family_name
@@ -47,7 +48,7 @@ export const appRouter = router({
 
       const dbCustomer = await db.customer.findFirst({
         where: {
-          email: user.email,
+          email: email,
         },
       });
 
@@ -55,7 +56,7 @@ export const appRouter = router({
         await db.customer.create({
           data: {
             id: user.id,
-            email: user.email,
+            email: email,
             name:
               user.given_name && user.family_name
                 ? user.given_name + ' ' + user.family_name
@@ -69,7 +70,7 @@ export const appRouter = router({
 
       await db.customer.update({
         where: {
-          email: user.email,
+          email: email,
         },
         data: {
           id: user.id,
@@ -91,7 +92,7 @@ export const appRouter = router({
               user.given_name && user.family_name
                 ? user.given_name + ' ' + user.family_name
                 : '',
-            email: user.email,
+            email: email,
           },
         };
 
@@ -404,15 +405,17 @@ export const appRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+
+      const email = input.email.toLowerCase();
       const currentCustomer = await db.customer.findFirst({
         where: {
-          email: input.email,
+          email: email,
         },
       });
 
       const currentUser = await db.user.findFirst({
         where: {
-          email: input.email,
+          email: email,
         },
       });
 
@@ -421,7 +424,7 @@ export const appRouter = router({
           data: {
             id: randomUUID(),
             name: input.fullName,
-            email: input.email,
+            email: email,
             address: input.address,
             phone: input.phoneNumber,
             customerType: 'ACTIVE',
@@ -460,7 +463,7 @@ export const appRouter = router({
           });
       };
 
-      await sendBookingConfirmationEmail(input.email, 'Booking Confirmation');
+      await sendBookingConfirmationEmail(email, 'Booking Confirmation');
       await sendBookingConfirmationEmail(
         'support@krystalcleanpools.com',
         'New Booking Request'

@@ -3,16 +3,22 @@ import { ProfileForm } from './ProfileForm';
 import { Separator } from '@/components/ui/separator';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { db } from '@/db';
+import { redirect } from 'next/navigation';
 
 const Page = async () => {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-
+  if (!user || !user.id) redirect('/auth-callback?origin=dashboard');
+ 
   const dbUser = await db.customer.findFirst({
     where: {
       id: user?.id,
     },
   });
+  
+  if (!dbUser) {
+    redirect('/auth-callback?origin=client');
+  }
   
   return (
     <div className='space-y-6 bg-white shadow-md p-6 rounded-md'>
