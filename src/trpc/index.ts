@@ -992,6 +992,7 @@ export const appRouter = router({
         amount: z.number(),
         name: z.string(),
         description: z.string(),
+        dueDate: z.number(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -1043,7 +1044,7 @@ export const appRouter = router({
           customer: customerStripeId,
           currency: 'usd',
           collection_method: 'send_invoice',
-          days_until_due: 30,
+          due_date: input.dueDate,
           automatic_tax: {
             enabled: false,
           },

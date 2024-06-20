@@ -76,6 +76,7 @@ const InvoiceSchema = z.object({
   name: z.string(),
   amount: z.string(),
   description: z.string(),
+  dueDate: z.string(),
 });
 
 const AgreementSchema = z.object({
@@ -163,12 +164,21 @@ const BillingForm = ({
     });
   }
   function submitInvoice(data: z.infer<typeof InvoiceSchema>) {
+    // Parse the date string and create a Date object in PST
+    const [year, month, day] = data.dueDate.split('-');
+    const dataDueDatePST = new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day), 8, 0, 0)); // 8 AM UTC is midnight PST
+
+    // Convert the PST date to a Unix timestamp in seconds
+    const dueDateInUTCTimestamp = Math.floor(dataDueDatePST.getTime() / 1000);
+
     const formData = {
       customerId: customer.id,
       name: data.name,
       amount: parseInt(data.amount),
       description: data.description,
+      dueDate: dueDateInUTCTimestamp,
     };
+
     createCustomInvoice.mutate(formData, {
       onSuccess: () => {
         toast({
@@ -338,12 +348,12 @@ const BillingForm = ({
             </Form>
           </div>
           <div className='flex items-center'>
-            <Button
+            {/* <Button
               onClick={handleInvoice}
               className='bg-gray-600 ml-4 hover:bg-black'
             >
               Send Monthly Invoice
-            </Button>
+            </Button> */}
             {customer.lastInvoiceSent != null && (
               <p className='ml-4'>
                 Last invoice sent:{' '}
@@ -375,7 +385,11 @@ const BillingForm = ({
                       name='name'
                       render={({ field }) => (
                         <FormItem>
-                          <Input placeholder='Item Name' {...field} value={field.value} />
+                          <Input
+                            placeholder='Item Name'
+                            {...field}
+                            value={field.value}
+                          />
 
                           <FormDescription>
                             Example: &apos;Initial Pool Drain and Clean&apos;
@@ -422,9 +436,34 @@ const BillingForm = ({
                       )}
                     />
 
+                    <FormField
+                      control={invoiceForm.control}
+                      name='dueDate'
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Due Date</FormLabel>
+                          <Input
+                            type='date'
+                            placeholder='Due Date'
+                            {...field}
+                          />
+
+                          <FormDescription>
+                            Example: &apos;Drained 1/4 of pull, added 1 bag of
+                            salt, and muriatic acid.&apos;
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
                     <div className='flex flex-row-reverse justify-between'>
                       <Button className='self-end' type='submit'>
-                        {createCustomInvoice.isLoading ? <Loader2 className='h-4 w-4 text-white animate-spin' />: 'Submit'}
+                        {createCustomInvoice.isLoading ? (
+                          <Loader2 className='h-4 w-4 text-white animate-spin' />
+                        ) : (
+                          'Submit'
+                        )}
                       </Button>
                       <DialogClose asChild>
                         <Button
@@ -467,9 +506,13 @@ const BillingForm = ({
             <TableCaption>A list of your recent invoices.</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead className='md:flex justify-center items-center hidden'>Invoice Sent</TableHead>
+                <TableHead className='md:flex justify-center items-center hidden'>
+                  Invoice Sent
+                </TableHead>
                 <TableHead className=''>Due Date</TableHead>
-                <TableHead className='md:flex justify-center items-center hidden'>Status</TableHead>
+                <TableHead className='md:flex justify-center items-center hidden'>
+                  Status
+                </TableHead>
                 <TableHead>Amount Due</TableHead>
                 <TableHead className='text-right'>Pay Invoice</TableHead>
               </TableRow>
