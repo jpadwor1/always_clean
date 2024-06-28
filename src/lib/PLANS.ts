@@ -1,10 +1,10 @@
 export const PLANS = [
   {
-    name: 'Winter Special',
+    name: 'Small Pools',
     type: 'Regular Pool Cleaning',
-    price: 125,
+    price:100,
     priceFrequency: 'per month',
-    description: 'Save $240 annually by signing a 1 year service agreement',
+    description: 'Designed for smaller pools less than 10,000 gallons',
     features: [
       'Test and chemically balance water (tailored for residential needs)',
       'Clean skimmer and pump basket',
