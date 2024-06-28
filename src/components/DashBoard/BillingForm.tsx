@@ -166,7 +166,7 @@ const BillingForm = ({
   function submitInvoice(data: z.infer<typeof InvoiceSchema>) {
     // Parse the date string and create a Date object in PST
     const [year, month, day] = data.dueDate.split('-');
-    const dataDueDatePST = new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day), 8, 0, 0)); // 8 AM UTC is midnight PST
+    const dataDueDatePST = new Date(Date.UTC(parseInt(year), parseInt(month) - 1, parseInt(day), 24, 0, 0)); // 8 AM UTC is midnight PST
 
     // Convert the PST date to a Unix timestamp in seconds
     const dueDateInUTCTimestamp = Math.floor(dataDueDatePST.getTime() / 1000);
