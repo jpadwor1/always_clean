@@ -15,7 +15,7 @@
     "@arcgis/map-components-react": "^4.29.7",
     "@googlemaps/js-api-loader": "^1.16.6",
     "@hookform/resolvers": "^3.3.2",
-    "@kinde-oss/kinde-auth-nextjs": "^2.0.13",
+    "@kinde-oss/kinde-auth-nextjs": "^2.3.10",
     "@kinde-oss/kinde-typescript-sdk": "^2.4.0",
     "@material-tailwind/react": "^2.1.8",
     "@neondatabase/serverless": "^0.8.1",

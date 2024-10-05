@@ -83,7 +83,7 @@ const AvatarUploadDropzone: React.FC<FileDropzoneProps> = ({
     multiple: true,
     maxFiles: 6,
   });
-
+console.log(user.photoURL)
   return (
     <>
       <div>
@@ -98,7 +98,7 @@ const AvatarUploadDropzone: React.FC<FileDropzoneProps> = ({
           <>
             {user.photoURL ? (
               <div {...getRootProps()} onClick={(e) => e.stopPropagation()}>
-                <label className='hover:cursor-pointer relative flex items-center justify-center w-[150px] h-[150px] rounded-full overflow-hidden'>
+                <label className='hover:cursor-pointer relative flex items-center  bg-gray-300 justify-center w-[150px] h-[150px] rounded-full overflow-hidden'>
                   <div className='hover:cursor-pointer hover:backdrop-blur-xs opacity-0 hover:opacity-100 absolute flex flex-col items-center justify-center w-full h-full'>
                     <Camera className='h-6 w-6 text-white mb-2 ' />
                     <p className='text-white'>Add New Photo</p>
@@ -121,7 +121,7 @@ const AvatarUploadDropzone: React.FC<FileDropzoneProps> = ({
             ) : (
               <div
                 {...getRootProps()}
-                className='border m-4 border-dashed border-gray-300 w-[150px] h-[150px] rounded-full'
+                className='border m-4 border-dashed border-gray-300 bg-gray-600 w-[150px] h-[150px] rounded-full'
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className='flex items-center justify-center w-full h-full rounded-full'>
