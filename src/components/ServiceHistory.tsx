@@ -127,7 +127,6 @@ const poolTasks: PoolTask[] = [
 ];
 
 const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
-  console.log(serviceEvent);
   const tasksPerformed = serviceEvent?.tasksPerformed.split(',');
   const technician = {
     name: serviceEvent.technicianName,

@@ -1,9 +1,9 @@
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import {app} from '@/config/firebase';
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { app } from "@/config/firebase";
 
 export const startFileUpload = async ({ file }: { file: File | null }) => {
   if (!file) {
-    alert('No file selected');
+    alert("No file selected");
     return null;
   }
 
@@ -12,36 +12,32 @@ export const startFileUpload = async ({ file }: { file: File | null }) => {
 
   try {
     const snapshot = await uploadBytes(storageRef, file);
-    console.log('Uploaded a blob or file!');
 
     // After a successful upload, get the download URL
     const downloadURL = await getDownloadURL(snapshot.ref);
 
     return { downloadURL, fileName: file.name }; // Return the download URL on success
   } catch (error) {
-    console.error('Error uploading file:', error);
+    console.error("Error uploading file:", error);
     return null; // Indicating an error occurred
   }
 };
 
 async function getAuthToken() {
   try {
-    const response = await fetch(
-      `https://alwaysclean.kinde.com/oauth2/token`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Accept: 'application/json',
-        },
-        body: new URLSearchParams({
-          client_id: process.env.KINDE_CLIENT_ID || '',
-          client_secret: process.env.KINDE_CLIENT_SECRET || '',
-          grant_type: 'client_credentials',
-          audience: `${process.env.KINDE_ISSUER_URL}/api`,
-        }),
-      }
-    );
+    const response = await fetch(`https://alwaysclean.kinde.com/oauth2/token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json",
+      },
+      body: new URLSearchParams({
+        client_id: process.env.KINDE_CLIENT_ID || "",
+        client_secret: process.env.KINDE_CLIENT_SECRET || "",
+        grant_type: "client_credentials",
+        audience: `${process.env.KINDE_ISSUER_URL}/api`,
+      }),
+    });
 
     if (!response.ok) {
       throw new Error(`Failed to get auth token: ${response.statusText}`);
@@ -50,11 +46,10 @@ async function getAuthToken() {
     const data = await response.json();
     return data.access_token;
   } catch (error) {
-    console.error('Error getting auth token:', error);
+    console.error("Error getting auth token:", error);
     throw error;
   }
 }
-
 
 export const addUser = async ({
   name,
@@ -68,20 +63,20 @@ export const addUser = async ({
     token = await getAuthToken();
     // Use the token for your subsequent API calls or other logic
   } catch (error) {
-    console.error('Failed to get token:', error);
+    console.error("Failed to get token:", error);
     throw error;
   }
 
-  const [firstName, lastName] = name.split(' ');
+  const [firstName, lastName] = name.split(" ");
 
   const inputBody = JSON.stringify({
     profile: {
       given_name: firstName,
-      family_name: lastName || '',
+      family_name: lastName || "",
     },
     identities: [
       {
-        type: 'email',
+        type: "email",
         details: {
           email: email,
         },
@@ -90,17 +85,17 @@ export const addUser = async ({
   });
 
   const headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
+    "Content-Type": "application/json",
+    Accept: "application/json",
     Authorization: `Bearer ${token}`,
-    AccessControlAllowOrigin: '*',
+    AccessControlAllowOrigin: "*",
   };
 
   try {
     const response = await fetch(
       `${process.env.KINDE_ISSUER_URL}/api/v1/user`,
       {
-        method: 'POST',
+        method: "POST",
         body: inputBody,
         headers: headers,
       }
@@ -109,26 +104,25 @@ export const addUser = async ({
     const body = await response.json();
 
     if (!response.ok) {
-      
       if (body.errors && body.errors.length > 0) {
         const errorMessages = body.errors
           .map((err: { message: any }) => err.message)
-          .join(', ');
+          .join(", ");
         throw new Error(errorMessages);
       } else {
         throw new Error(`Error: ${response.status}`);
       }
     }
 
-    return body; 
+    return body;
   } catch (error: any) {
-    console.error('Failed to add user:', error);
-    if (error.message === 'An existing user was found against the identity data provided.'){
-      return 
+    console.error("Failed to add user:", error);
+    if (
+      error.message ===
+      "An existing user was found against the identity data provided."
+    ) {
+      return;
     }
-    throw error; 
+    throw error;
   }
 };
-
-
-

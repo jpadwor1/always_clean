@@ -24,7 +24,6 @@ const Navbar = async () => {
     },
   });
   const role = dbCustomer?.role;
-  console.log(role);
   return (
     <nav className="sticky h-20 inset-x-0 top-0 z-30 w-flow border-b border-gray-200 bg-white/75 backdrop-blur-lg transtion-all">
       <MaxWidthWrapper>
