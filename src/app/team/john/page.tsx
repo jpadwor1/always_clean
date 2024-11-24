@@ -5,14 +5,14 @@ import React from 'react'
 
 const Page = () => {
     return (
-        <div className='flex flex-col items-center h-screen w-full'>
+        <div className='flex flex-col items-center h-screen w-full sm:w-[450px] sm:mx-auto'>
             <div className='bg-blue-800 flex flex-col items-center justify-center w-full pt-12 pb-16 -mb-7'>
                 <img src='/about/jrHeadshot.jpeg' alt='John Sr' className='rounded-full w-32 h-32 mb-4 shadow-lg' />
                 <h1 className='text-white tracking-wide'>John Padworski Jr</h1>
                 <h2 className='text-white tracking-wider'>Operations Manager</h2>
             </div>
             <div className='flex flex-row items-center w-full justify-center space-x-7'>
-                <a href='tel:123-456-7890' className='shadow-md text-white font-semibold  rounded-full p-2 bg-gray-200'>
+                <a href='tel:562-972-6951' className='shadow-md text-white font-semibold  rounded-full p-2 bg-gray-200'>
                     <Phone className='w-8 h-8 text-blue-300' />
                 </a>
                 <a href='mailto:support@krystalcleanpools.com' className='shadow-md text-white font-semibold  rounded-full p-2 bg-gray-200'>
@@ -53,7 +53,7 @@ const Page = () => {
 
                 <div className='flex flex-col items-center justify-center w-full mt-4 '>
                     <h4 className='text-sm font-medium text-gray-700'>Connect with John Jr</h4>
-                    <a href='https://www.facebook.com/profile.php?id=61556652453501' className='text-blue-600 font-semibold mt-2'>
+                    <a target='_blank' href='https://www.facebook.com/profile.php?id=61556652453501' className='text-blue-600 font-semibold mt-2'>
                         <FacebookIcon className='w-8 h-8 text-blue-600 mt-2' />
                     </a>
 
