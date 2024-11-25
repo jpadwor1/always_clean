@@ -1,29 +1,30 @@
-import { privateProcedure, publicProcedure, router } from './trpc';
-import { TRPCError } from '@trpc/server';
-import { db } from '@/db';
-import z from 'zod';
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import { CustomerType } from '@/lib/utils';
-import { randomUUID } from 'crypto';
-import { getUserSubscriptionPlan, stripe } from '@/lib/stripe';
-import { absoluteUrl } from '@/lib/utils';
-import { addDays, format } from 'date-fns';
-import sgMail from '@sendgrid/mail';
-import { STRIPE_PLANS } from '@/lib/PLANS';
-import { addUser } from '@/lib/actions';
-import { Customer } from '@prisma/client';
-import Stripe from 'stripe';
+import { privateProcedure, publicProcedure, router } from "./trpc";
+import { TRPCError } from "@trpc/server";
+import { db } from "@/db";
+import z from "zod";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { CustomerType } from "@/lib/utils";
+import { randomUUID } from "crypto";
+import { getUserSubscriptionPlan, stripe } from "@/lib/stripe";
+import { absoluteUrl } from "@/lib/utils";
+import { addDays, format } from "date-fns";
+import sgMail from "@sendgrid/mail";
+import { STRIPE_PLANS } from "@/lib/PLANS";
+import { addUser } from "@/lib/actions";
+import { Customer } from "@prisma/client";
+import Stripe from "stripe";
+import { openai } from "@/lib/openai";
+import { zodResponseFormat } from "openai/helpers/zod";
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
     if (!user?.id || !user?.email)
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
+      throw new TRPCError({ code: "UNAUTHORIZED" });
 
     const email = user.email.toLowerCase();
 
-   
     const dbUser = await db.user.findFirst({
       where: {
         email: email,
@@ -38,10 +39,10 @@ export const appRouter = router({
           email: email,
           name:
             user.given_name && user.family_name
-              ? user.given_name + ' ' + user.family_name
-              : '',
-          address: '',
-          phone: '',
+              ? user.given_name + " " + user.family_name
+              : "",
+          address: "",
+          phone: "",
           photoURL: user.picture,
         },
       });
@@ -59,10 +60,10 @@ export const appRouter = router({
             email: email,
             name:
               user.given_name && user.family_name
-                ? user.given_name + ' ' + user.family_name
-                : '',
-            address: '',
-            phone: '',
+                ? user.given_name + " " + user.family_name
+                : "",
+            address: "",
+            phone: "",
             photoURL: user.picture,
           },
         });
@@ -77,21 +78,21 @@ export const appRouter = router({
         },
       });
 
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
       const sendEmail = async () => {
         const msg = {
-          to: 'support@krystalcleanpools.com',
-          from: 'support@krystalcleanpools.com',
-          subject: ' ',
-          html: ' ',
-          text: ' ',
-          template_id: 'd-f1d2078cbff4449b8ea1ae8c0f60ecc9',
+          to: "support@krystalcleanpools.com",
+          from: "support@krystalcleanpools.com",
+          subject: " ",
+          html: " ",
+          text: " ",
+          template_id: "d-f1d2078cbff4449b8ea1ae8c0f60ecc9",
           dynamic_template_data: {
             name:
               user.given_name && user.family_name
-                ? user.given_name + ' ' + user.family_name
-                : '',
+                ? user.given_name + " " + user.family_name
+                : "",
             email: email,
           },
         };
@@ -99,9 +100,9 @@ export const appRouter = router({
         try {
           await sgMail.send(msg);
         } catch (error) {
-          console.error('Error sending email:', error);
+          console.error("Error sending email:", error);
 
-          throw new Error('Failed to send email');
+          throw new Error("Failed to send email");
         }
       };
 
@@ -131,7 +132,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbUser = await db.user.findFirst({
@@ -168,8 +169,8 @@ export const appRouter = router({
 
       if (currentCustomer) {
         throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Customer already exists',
+          code: "BAD_REQUEST",
+          message: "Customer already exists",
         });
       }
       try {
@@ -187,30 +188,30 @@ export const appRouter = router({
             phone: input.phone,
             nextServiceDate: input.nextServiceDate,
             customerType: input.customerType,
-            discount: '',
+            discount: "",
           },
         });
       } catch (error) {
-        console.error('Error in adding user:', error);
+        console.error("Error in adding user:", error);
       }
 
       try {
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
         const msg = {
           to: input.email,
-          from: 'support@krystalcleanpools.com',
-          subject: '',
-          html: ' ',
-          text: ' ',
-          template_id: 'd-f146e5e791104cf99f546d4492360299',
+          from: "support@krystalcleanpools.com",
+          subject: "",
+          html: " ",
+          text: " ",
+          template_id: "d-f146e5e791104cf99f546d4492360299",
         };
 
         await sgMail.send(msg);
       } catch (error) {
-        console.error('Error sending email:', error);
+        console.error("Error sending email:", error);
 
-        throw new Error('Failed to send email');
+        throw new Error("Failed to send email");
       }
       return { success: true };
     }),
@@ -230,7 +231,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbCustomer = await db.customer.findFirst({
@@ -282,7 +283,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbCustomer = await db.customer.findFirst({
@@ -314,7 +315,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const customer = await db.customer.delete({
@@ -346,7 +347,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbCustomer = await db.customer.findFirst({
@@ -405,7 +406,6 @@ export const appRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-
       const email = input.email.toLowerCase();
       const currentCustomer = await db.customer.findFirst({
         where: {
@@ -427,25 +427,28 @@ export const appRouter = router({
             email: email,
             address: input.address,
             phone: input.phoneNumber,
-            customerType: 'ACTIVE',
+            customerType: "ACTIVE",
             nextServiceDate: input.nextServiceDate,
           },
         });
       }
-      
+
       const sendBookingConfirmationEmail = async (
         to: string,
         subject: string
       ) => {
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
-        const date = format(new Date(input.nextServiceDate), 'EEEE, d MMMM hh:mm a');
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
+        const date = format(
+          new Date(input.nextServiceDate),
+          "EEEE, d MMMM hh:mm a"
+        );
         const msg = {
           to: to,
-          from: 'support@krystalcleanpools.com',
-          html: ' ',
-          text: ' ',
+          from: "support@krystalcleanpools.com",
+          html: " ",
+          text: " ",
           subject: subject,
-          template_id: 'd-cd087546446846448257cfe5f199fc80',
+          template_id: "d-cd087546446846448257cfe5f199fc80",
           dynamic_template_data: {
             full_name: input.fullName,
             address: input.address,
@@ -463,10 +466,10 @@ export const appRouter = router({
           });
       };
 
-      await sendBookingConfirmationEmail(email, 'Booking Confirmation');
+      await sendBookingConfirmationEmail(email, "Booking Confirmation");
       await sendBookingConfirmationEmail(
-        'support@krystalcleanpools.com',
-        'New Booking Request'
+        "support@krystalcleanpools.com",
+        "New Booking Request"
       );
 
       return;
@@ -479,16 +482,16 @@ export const appRouter = router({
       })
     )
     .mutation(async ({ input }) => {
-      sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+      sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
       const sendEmail = async (to: string) => {
         const msg = {
           to: to,
-          from: 'support@krystalcleanpools.com',
-          subject: ' ',
-          html: ' ',
-          text: ' ',
-          template_id: 'd-fc576d7863c54a16a540f8d27573ef0f',
+          from: "support@krystalcleanpools.com",
+          subject: " ",
+          html: " ",
+          text: " ",
+          template_id: "d-fc576d7863c54a16a540f8d27573ef0f",
           dynamic_template_data: {
             sender_email: input.email,
             sender_message: input.message,
@@ -498,9 +501,9 @@ export const appRouter = router({
         try {
           await sgMail.send(msg);
         } catch (error) {
-          console.error('Error sending email:', error);
+          console.error("Error sending email:", error);
 
-          throw new Error('Failed to send email');
+          throw new Error("Failed to send email");
         }
       };
 
@@ -533,7 +536,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
       const nextServiceDate = addDays(new Date(input.dateCompleted), 7);
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
       const dbCustomer = await db.customer.findFirst({
         where: {
@@ -543,8 +546,8 @@ export const appRouter = router({
 
       if (!dbCustomer) {
         throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Customer does not exist',
+          code: "BAD_REQUEST",
+          message: "Customer does not exist",
         });
       }
 
@@ -598,7 +601,7 @@ export const appRouter = router({
       if (input.files.length > 0) {
         input.files.map(async (file) => {
           if (!file) {
-            throw new Error('File is undefined');
+            throw new Error("File is undefined");
           }
 
           const currentFile = await db.file.findFirst({
@@ -617,7 +620,7 @@ export const appRouter = router({
                 name: file.fileName,
                 serviceEventId: dbServiceEvent.id,
                 url: file.downloadURL,
-                uploadStatus: 'SUCCESS',
+                uploadStatus: "SUCCESS",
               },
             });
           }
@@ -638,19 +641,19 @@ export const appRouter = router({
           differenceInMilliseconds / (24 * 60 * 60 * 1000);
 
         if (differenceInDays > 1) {
-          sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+          sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
           const msg = {
             to: dbCustomer.email,
-            from: 'support@krystalcleanpools.com',
-            subject: ' ',
-            html: ' ',
-            text: ' ',
-            template_id: 'd-1db21318d80c47078998977e3f5a8b05',
+            from: "support@krystalcleanpools.com",
+            subject: " ",
+            html: " ",
+            text: " ",
+            template_id: "d-1db21318d80c47078998977e3f5a8b05",
             dynamic_template_data: {
               full_name: dbCustomer.name,
               service_date: format(
                 new Date(input.dateCompleted),
-                'EEEE, d MMMM'
+                "EEEE, d MMMM"
               ),
             },
           };
@@ -658,9 +661,9 @@ export const appRouter = router({
           try {
             await sgMail.send(msg);
           } catch (error) {
-            console.error('Error sending email:', error);
+            console.error("Error sending email:", error);
 
-            throw new Error('Failed to send email');
+            throw new Error("Failed to send email");
           } finally {
             await db.customer.update({
               where: {
@@ -672,7 +675,7 @@ export const appRouter = router({
             });
           }
         } else {
-          console.log('The service notification was sent less than 1 day ago.');
+          console.log("The service notification was sent less than 1 day ago.");
         }
       }
 
@@ -685,7 +688,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       await db.serviceEvent.delete({
@@ -702,7 +705,7 @@ export const appRouter = router({
     const user = await getUser();
 
     if (!user?.id || !user?.email)
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
+      throw new TRPCError({ code: "UNAUTHORIZED" });
 
     const chemicals = await db.chemical.findMany();
 
@@ -722,7 +725,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbChemical = await db.chemical.findFirst({
@@ -733,8 +736,8 @@ export const appRouter = router({
 
       if (!dbChemical) {
         throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Chemical does not exist',
+          code: "BAD_REQUEST",
+          message: "Chemical does not exist",
         });
       }
 
@@ -764,7 +767,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbChemical = await db.chemical.findFirst({
@@ -775,8 +778,8 @@ export const appRouter = router({
 
       if (dbChemical) {
         throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'Chemical already exists',
+          code: "BAD_REQUEST",
+          message: "Chemical already exists",
         });
       }
 
@@ -798,7 +801,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const file = await db.file.findFirst({
@@ -807,7 +810,7 @@ export const appRouter = router({
         },
       });
 
-      if (!file) throw new TRPCError({ code: 'NOT_FOUND' });
+      if (!file) throw new TRPCError({ code: "NOT_FOUND" });
 
       return file;
     }),
@@ -823,7 +826,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
       const doesFileExist = await db.file.findFirst({
         where: {
@@ -839,11 +842,11 @@ export const appRouter = router({
           key: input.downloadURL,
           name: input.fileName,
           url: input.downloadURL,
-          uploadStatus: 'PROCESSING',
+          uploadStatus: "PROCESSING",
         },
       });
 
-      if (!createdFile) throw new TRPCError({ code: 'NOT_FOUND' });
+      if (!createdFile) throw new TRPCError({ code: "NOT_FOUND" });
 
       try {
         const response = await fetch(input.downloadURL);
@@ -851,14 +854,14 @@ export const appRouter = router({
         await db.file.update({
           where: { id: createdFile.id },
           data: {
-            uploadStatus: 'SUCCESS',
+            uploadStatus: "SUCCESS",
           },
         });
       } catch (err) {
         await db.file.update({
           where: { id: createdFile.id },
           data: {
-            uploadStatus: 'FAILED',
+            uploadStatus: "FAILED",
           },
         });
       }
@@ -888,7 +891,7 @@ export const appRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbCalendarEvent = await db.calendarEvent.create({
@@ -915,7 +918,7 @@ export const appRouter = router({
     const { userId, user } = ctx;
 
     if (!userId || !user) {
-      throw new TRPCError({ code: 'UNAUTHORIZED' });
+      throw new TRPCError({ code: "UNAUTHORIZED" });
     }
 
     const calendarEvents = await db.calendarEvent.findMany();
@@ -929,7 +932,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       await db.calendarEvent.delete({
@@ -944,9 +947,9 @@ export const appRouter = router({
   createStripeSession: privateProcedure.mutation(async ({ ctx }) => {
     const { userId } = ctx;
 
-    const billingUrl = absoluteUrl('/profile/billing');
+    const billingUrl = absoluteUrl("/profile/billing");
 
-    if (!userId) throw new TRPCError({ code: 'UNAUTHORIZED' });
+    if (!userId) throw new TRPCError({ code: "UNAUTHORIZED" });
 
     const dbUser = await db.user.findFirst({
       where: {
@@ -954,7 +957,7 @@ export const appRouter = router({
       },
     });
 
-    if (!dbUser) throw new TRPCError({ code: 'UNAUTHORIZED' });
+    if (!dbUser) throw new TRPCError({ code: "UNAUTHORIZED" });
 
     const subscriptionPlan = await getUserSubscriptionPlan();
 
@@ -969,9 +972,9 @@ export const appRouter = router({
     const stripeSession = await stripe.checkout.sessions.create({
       success_url: billingUrl,
       cancel_url: billingUrl,
-      payment_method_types: ['card'],
-      mode: 'subscription',
-      billing_address_collection: 'auto',
+      payment_method_types: ["card"],
+      mode: "subscription",
+      billing_address_collection: "auto",
       line_items: [
         // {
         //   price: PLANS.find((plan) => plan.name === 'Pro')?.price.priceIds.test,
@@ -1001,7 +1004,7 @@ export const appRouter = router({
       const dueDate = date.setDate(date.getDate() + 30);
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       try {
@@ -1019,7 +1022,7 @@ export const appRouter = router({
           // Create a new Customer
           stripeCustomer = await stripe.customers.create({
             email,
-            description: 'Customer to invoice',
+            description: "Customer to invoice",
             name: customer?.name,
             phone: customer?.phone,
           });
@@ -1042,8 +1045,8 @@ export const appRouter = router({
         // Create an Invoice
         const invoice = await stripe.invoices.create({
           customer: customerStripeId,
-          currency: 'usd',
-          collection_method: 'send_invoice',
+          currency: "usd",
+          collection_method: "send_invoice",
           due_date: input.dueDate,
           automatic_tax: {
             enabled: false,
@@ -1057,7 +1060,7 @@ export const appRouter = router({
         });
 
         const price = await stripe.prices.create({
-          currency: 'usd',
+          currency: "usd",
           unit_amount: input.amount * 100,
           product: product.id,
         });
@@ -1082,16 +1085,16 @@ export const appRouter = router({
           },
         });
         //Confirmation email to owner
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
         const sendEmail = async (to: string) => {
           const msg = {
             to: to,
-            from: 'support@krystalcleanpools.com',
-            subject: ' ',
-            html: ' ',
-            text: ' ',
-            template_id: 'd-275d63f041db4530920b60e24948baa5',
+            from: "support@krystalcleanpools.com",
+            subject: " ",
+            html: " ",
+            text: " ",
+            template_id: "d-275d63f041db4530920b60e24948baa5",
             dynamic_template_data: {
               sender_message: `Invoice Sent to Customer, ${customer.name}`,
             },
@@ -1100,16 +1103,16 @@ export const appRouter = router({
           try {
             await sgMail.send(msg);
           } catch (error) {
-            console.error('Error sending email:', error);
+            console.error("Error sending email:", error);
 
-            throw new Error('Failed to send email');
+            throw new Error("Failed to send email");
           }
         };
 
-        await sendEmail('support@krystalcleanpools.com');
+        await sendEmail("support@krystalcleanpools.com");
       } catch (err) {
         console.error(err);
-        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
       }
     }),
   getCreateInvoice: privateProcedure
@@ -1124,7 +1127,7 @@ export const appRouter = router({
       const dueDate = date.setDate(date.getDate() + 30);
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       try {
@@ -1142,7 +1145,7 @@ export const appRouter = router({
           // Create a new Customer
           stripeCustomer = await stripe.customers.create({
             email,
-            description: 'Customer to invoice',
+            description: "Customer to invoice",
             name: customer?.name,
             phone: customer?.phone,
           });
@@ -1165,8 +1168,8 @@ export const appRouter = router({
         // Create an Invoice
         const invoice = await stripe.invoices.create({
           customer: customerStripeId,
-          currency: 'usd',
-          collection_method: 'send_invoice',
+          currency: "usd",
+          collection_method: "send_invoice",
           days_until_due: 30,
           automatic_tax: {
             enabled: false,
@@ -1196,16 +1199,16 @@ export const appRouter = router({
           },
         });
         //Confirmation email to owner
-        sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY || "");
 
         const sendEmail = async (to: string) => {
           const msg = {
             to: to,
-            from: 'support@krystalcleanpools.com',
-            subject: ' ',
-            html: ' ',
-            text: ' ',
-            template_id: 'd-275d63f041db4530920b60e24948baa5',
+            from: "support@krystalcleanpools.com",
+            subject: " ",
+            html: " ",
+            text: " ",
+            template_id: "d-275d63f041db4530920b60e24948baa5",
             dynamic_template_data: {
               sender_message: `Invoice Sent to Customer, ${customer.name}`,
             },
@@ -1214,16 +1217,16 @@ export const appRouter = router({
           try {
             await sgMail.send(msg);
           } catch (error) {
-            console.error('Error sending email:', error);
+            console.error("Error sending email:", error);
 
-            throw new Error('Failed to send email');
+            throw new Error("Failed to send email");
           }
         };
 
-        await sendEmail('support@krystalcleanpools.com');
+        await sendEmail("support@krystalcleanpools.com");
       } catch (err) {
         console.error(err);
-        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR' });
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
       }
     }),
   sendInvoiceReminder: privateProcedure
@@ -1236,19 +1239,19 @@ export const appRouter = router({
       const sendEmail = async (to: string) => {
         const msg = {
           to: to,
-          from: 'support@krystalcleanpools.com',
-          subject: ' ',
-          html: ' ',
-          text: ' ',
-          template_id: 'd-30cbd6b7cd654c3888aa20c66b2b24aa',
+          from: "support@krystalcleanpools.com",
+          subject: " ",
+          html: " ",
+          text: " ",
+          template_id: "d-30cbd6b7cd654c3888aa20c66b2b24aa",
         };
 
         try {
           await sgMail.send(msg);
         } catch (error) {
-          console.error('Error sending email:', error);
+          console.error("Error sending email:", error);
 
-          throw new Error('Failed to send email');
+          throw new Error("Failed to send email");
         }
       };
 
@@ -1259,7 +1262,7 @@ export const appRouter = router({
     .input(
       z.object({
         serviceDay: z
-          .enum(['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'])
+          .enum(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"])
           .optional(),
         special_instructions: z.string().max(300).optional(),
         communication_emails: z.boolean().default(true).optional(),
@@ -1269,7 +1272,7 @@ export const appRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbCustomer = await db.customer.findFirst({
@@ -1316,7 +1319,7 @@ export const appRouter = router({
       const { userId, user } = ctx;
 
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       await db.post.create({
@@ -1332,12 +1335,55 @@ export const appRouter = router({
           category: input.catSlug,
           publishDate: input.postSEO.publishDate
             ? input.postSEO.publishDate
-            : '',
+            : "",
           keywords: input.postSEO.keywords,
         },
       });
 
       return { success: true };
+    }),
+  writeWithAi: privateProcedure
+    .input(z.string())
+    .mutation(async ({ input, ctx }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const blogPost = z.object({
+        blogTitle: z.string(),
+        blogBody: z.string(),
+        blogTags: z.string(),
+        blogMetaDescription: z.string(),
+        blogExcerpt: z.string(),
+      });
+
+      const completion = await openai.beta.chat.completions.parse({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content:
+              "You are a professional U.S. defense/military blogger. You need to write a blog post based on the following topic and return the blog post in the format of a JSON object with the following properties: blogTitle, blogBody, any blogTags, blogMetaDescription, blogExcerpt. The blog body must be returned as HTML.",
+          },
+          {
+            role: "user",
+            content: input,
+          },
+        ],
+        response_format: zodResponseFormat(blogPost, "blogPost"),
+      });
+
+      if (!completion || !completion.choices) {
+        throw new TRPCError({
+          message: "Failed to generate story",
+          code: "BAD_REQUEST",
+        });
+      }
+
+      const message = completion.choices[0]?.message.parsed;
+      return message;
     }),
   getPost: publicProcedure
     .input(z.object({ slug: z.string() }))
@@ -1382,7 +1428,7 @@ export const appRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbCustomer = await db.customer.findFirst({
@@ -1397,7 +1443,7 @@ export const appRouter = router({
             id: dbCustomer.id,
           },
           data: {
-            discount: input.discount ? input.discount : '',
+            discount: input.discount ? input.discount : "",
           },
         });
       }
@@ -1414,7 +1460,7 @@ export const appRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbCustomer = await db.customer.findFirst({
@@ -1447,7 +1493,7 @@ export const appRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { userId, user } = ctx;
       if (!userId || !user) {
-        throw new TRPCError({ code: 'UNAUTHORIZED' });
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
 
       const dbCustomer = await db.customer.findFirst({
@@ -1473,7 +1519,7 @@ export const appRouter = router({
     const customers = await db.customer.findMany({
       where: {
         stripeBalanceDue: true,
-        customerType: 'ACTIVE',
+        customerType: "ACTIVE",
       },
     });
 
@@ -1490,7 +1536,7 @@ export const appRouter = router({
     const invoices = results.flat();
     const customer_invoices = invoices.filter(
       (invoice: Stripe.Invoice) =>
-        invoice.status === 'paid' || invoice.status === 'open'
+        invoice.status === "paid" || invoice.status === "open"
     );
 
     if (customer_invoices.length === 0) {
@@ -1499,6 +1545,155 @@ export const appRouter = router({
 
     return customer_invoices;
   }),
+  uniqueSlug: privateProcedure
+    .input(z.string())
+    .query(async ({ input, ctx }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const post = await db.post.findUnique({
+        where: {
+          slug: input,
+        },
+      });
+
+      if (!post) {
+        return true;
+      }
+
+      return false;
+    }),
+  getPostById: privateProcedure
+    .input(z.string())
+    .query(async ({ input, ctx }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      const post = await db.post.findUnique({
+        where: {
+          id: input,
+        },
+      });
+
+      if (!post) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      return post;
+    }),
+  getPostsInfinite: publicProcedure
+    .input(
+      z.object({
+        cursor: z.string().optional().nullish(),
+        limit: z.number().min(1).default(4),
+      })
+    )
+    .query(async (opts) => {
+      const { input } = opts;
+      const limit = input.limit ?? 4;
+      const { cursor } = input;
+
+      const posts = await db.post.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        select: {
+          id: true,
+          title: true,
+          img: true,
+          slug: true,
+          category: true,
+          publishDate: true,
+          excerpt: true,
+        },
+        orderBy: {
+          publishDate: "desc",
+        },
+      });
+
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (posts.length > limit) {
+        const nextItem = posts.pop();
+        nextCursor = nextItem!.id;
+      }
+
+      if (!posts) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No posts found",
+        });
+      }
+
+      return { posts, nextCursor };
+    }),
+  deletePostById: privateProcedure
+    .input(z.string())
+    .mutation(async ({ input, ctx }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      await db.post.delete({
+        where: {
+          id: input,
+        },
+      });
+
+      return { success: true };
+    }),
+  updatePost: privateProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        desc: z.string(),
+        img: z.string(),
+        slug: z.string(),
+        catSlug: z.string(),
+        postSEO: z.object({
+          metaDescription: z.string(),
+          excerpt: z.string(),
+          slug: z.string(),
+          publishDate: z.string(),
+          keywords: z.string(),
+        }),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { userId, user } = ctx;
+
+      if (!userId || !user) {
+        throw new TRPCError({ code: "UNAUTHORIZED" });
+      }
+
+      await db.post.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          desc: input.desc,
+          img: input.img,
+          slug: input.postSEO.slug.length > 0 ? input.postSEO.slug : input.slug,
+          userId: userId,
+          metaDescription: input.postSEO.metaDescription,
+          excerpt: input.postSEO.excerpt,
+          category: input.catSlug,
+          publishDate: input.postSEO.publishDate || "",
+          keywords: input.postSEO.keywords,
+          createdAt: new Date().toISOString(),
+        },
+      });
+
+      return { success: true };
+    }),
 });
 
 export type AppRouter = typeof appRouter;
