@@ -9,7 +9,7 @@ const Page = () => {
             <div className='bg-blue-800 flex flex-col items-center justify-center w-full pt-12 pb-16 -mb-7'>
                 <img src='/about/SrHeadshot.jpg' alt='John Sr' className='rounded-full w-32 h-32 mb-4 shadow-lg' />
                 <h1 className='text-white tracking-wide'>John Padworski Sr</h1>
-                <h2 className='text-white tracking-wider'>Owner</h2>
+                <h2 className='text-sm text-white tracking-wider'>Owner</h2>
             </div>
             <div className='flex flex-row items-center w-full justify-center space-x-7'>
                 <a href='tel:760-912-7396' className='shadow-md text-white font-semibold  rounded-full p-2 bg-gray-200'>
