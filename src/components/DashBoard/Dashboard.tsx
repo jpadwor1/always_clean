@@ -14,7 +14,7 @@ const Dashboard = async () => {
   const user = await getUser();
   const userId = user?.id;
 
-  
+
   return (
     <>
       <div className='flex-col md:flex'>
@@ -24,7 +24,7 @@ const Dashboard = async () => {
               Dashboard
             </h2>
           </div>
-          <Tabs defaultValue='overview' className='space-y-4'>
+          <Tabs defaultValue='customers' className='space-y-4'>
             <TabsList className='sm:p-4'>
               <TabsTrigger value='overview'>Overview</TabsTrigger>
               <TabsTrigger value='customers'>Customers</TabsTrigger>
@@ -32,7 +32,7 @@ const Dashboard = async () => {
               <TabsTrigger value='utilities'>Utilities</TabsTrigger>
             </TabsList>
             <TabsContent value='overview' className='space-y-4 p-4'>
-              
+
               <PaymentTable />
             </TabsContent>
 
