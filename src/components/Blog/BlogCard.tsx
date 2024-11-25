@@ -14,6 +14,13 @@ const BlogCard = async ({ post }: BlogCardProps) => {
       id: post.userId,
     },
   });
+
+  let postCategory;
+  if (post.category.includes("-")) {
+    postCategory = post.category.replace(/-/g, " ");
+  } else {
+    postCategory = post.category
+  }
   return (
     <Link
       href={`/blog/${post.slug}`}
@@ -30,7 +37,7 @@ const BlogCard = async ({ post }: BlogCardProps) => {
       </div>
       <div className='mb-4'>
         <div className='inline-block py-1 px-3 text-xs leading-5 text-blue-500 hover:text-blue-600 font-medium uppercase bg-blue-100 hover:bg-blue-200 rounded-full shadow-sm'>
-          {post.category}
+          {postCategory}
         </div>
       </div>
 

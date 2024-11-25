@@ -39,6 +39,8 @@ const Page = async ({ params }: PageProps) => {
     },
   });
 
+
+
   if (!post) {
     return (
       <MaxWidthWrapper className='mt-40 h-[500px] flex items-center justify-center'>
@@ -49,7 +51,6 @@ const Page = async ({ params }: PageProps) => {
       </MaxWidthWrapper>
     );
   }
-
   return (
     <>
       <Head>
@@ -87,11 +88,11 @@ const Page = async ({ params }: PageProps) => {
               {post.title}
             </h2>
             <div className='inline-block py-1 px-3 text-xs leading-5 text-green-500 font-medium uppercase bg-green-100 rounded-full shadow-sm'>
-              {post.category}
+              {post.category.replace(/-/g, ' ')}
             </div>
           </div>
-          <div className='mb-10 mx-auto max-w-max overflow-hidden rounded-lg'>
-            <Image src={post.img} alt='' height={400} width={400} />
+          <div className='md:max-w-[500px] max-w-[300px] max-h-auto mb-10 mx-auto max-w-max overflow-hidden rounded-lg'>
+            <Image src={post.img} alt='' height={500} width={500} />
           </div>
           <div className='md:max-w-3xl mx-auto'>
             <div
