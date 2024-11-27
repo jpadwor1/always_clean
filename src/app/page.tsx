@@ -7,105 +7,104 @@ import FeaturedPosts from '@/components/Blog/FeaturedPosts';
 import ServiceCTACard from '@/components/Services/ServiceCTACard';
 import CommunityCTA from '@/components/Services/CommunityCTA';
 import ContactInfo from '@/components/ContactInfo';
-import TestimonialSection from '@/components/Home/TestimonialSection';
+import ServiceShowcase from '@/components/Home/service-showcase';
+import { TestimonialsMarqueeGrid } from '@/components/Home/testimonial-section';
+import { CTAWithDashedGridLines } from '@/components/Home/cta-with-gridlines';
+import { FeaturesGrid } from '@/components/Home/feature-grid';
+import { LogosWithBlurFlip } from '@/components/Home/logo-blur';
+import { PricingGrid } from '@/components/Home/all-pricing-grid';
+import BlogPostList from '@/components/Home/blog-post-list';
 
 export default function Home() {
   return (
-    <MaxWidthWrapper>
+    <main className='bg-white overflow-x-hidden'>
       {/* hero section */}
-      <div className='py-20 md:py-28'>
-        <div className='container px-4 mx-auto'>
-          <div className='flex flex-wrap xl:items-center -mx-4'>
-            <div className='w-full md:w-1/2 px-4 mb-16 md:mb-0'>
-              <h1 className='mb-6 text-3xl md:text-5xl lg:text-6xl leading-tight font-bold tracking-tight'>
-                Pristine Pools, Exceptional Service{' '}
-              </h1>
-              <p className='mb-8 text-lg md:text-xl text-slate-600'>
-                Expert Pool Cleaning for a Sparkling, Hassle-Free Summer. We
-                offer a wide range of pool cleaning services that will suit your
-                needs and budget. Contact us today to learn more about our
-                services. Or book directly below.
-              </p>
-              <div className='flex flex-wrap'>
-                <div className='w-full md:w-auto py-1 md:py-0 md:mr-4'>
-                  <Link href='/booking'>
-                    <Button
-                      variant={'secondary'}
-                      className='shadow-lg hover:shadow-xl'
-                    >
-                      Book Here
-                    </Button>
-                  </Link>
-
-                  <Link
-                    className='md:hidden inline-flex'
-                    href='tel:760-912-7396'
-                  >
-                    <Button className='shadow-lg hover:shadow-xl ml-2'>
-                      Call Now
-                    </Button>
-                  </Link>
-                  <Link
-                    className='md:inline-flex hidden'
-                    href='tel:760-912-7396'
-                  >
-                    <Button className='shadow-lg hover:shadow-xl ml-2'>
-                      760-912-7396
-                    </Button>
-                  </Link>
-                </div>
-                <div className='w-full md:w-auto py-1 md:py-0' />
-              </div>
-            </div>
-            <div className='w-full md:w-1/2 px-4'>
-              <div className='relative mx-auto md:mr-0 max-w-max'>
-                <Image
-                  width={500}
-                  height={500}
-                  className='absolute z-10 -left-14 -top-12 w-28 md:w-auto'
-                  src='/circle3-yellow.svg'
-                  priority={true}
-                  alt=''
-                />
-                <Image
-                  width={500}
-                  height={500}
-                  className='absolute z-10 -right-7 -bottom-8 w-28 md:w-auto'
-                  src='/dots3-blue.svg'
-                  priority={true}
-                  alt=''
-                />
-                <Image
-                  width={500}
-                  height={500}
-                  className='relative rounded-7xl'
-                  src='/pool.webp'
-                  alt=''
-                  priority={true}
-                />
-              </div>
-            </div>
-          </div>
+      <section className="relative flex h-screen items-center justify-center">
+        <div className="absolute inset-0 z-0">
+          <video
+            className="h-full w-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            src="/videos/hero.mp4"
+          />
         </div>
-      </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
+        <div className="relative z-10 text-center text-white mx-20">
+          <h1 className="mb-4 text-4xl font-bold md:text-6xl">
+            Pristine Pools, Exceptional Service
+          </h1>
+          <p className="mb-8 text-xl md:text-2xl">
+            Expert Pool Cleaning for a Sparkling, Hassle-Free Summer. We
+            offer a wide range of pool cleaning services that will suit your
+            needs and budget. Contact us today to learn more about our
+            services. Or book directly below.
+          </p>
+          <Link href="/booking">
+            <button className="px-8 py-2 rounded-full relative bg-slate-700 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-slate-600">
+              <div className="absolute inset-x-0 h-px w-1/2 mx-auto -top-px shadow-2xl  bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
+              <span className="relative z-20">
+                Book Today
+              </span>
+              <div className="absolute inset-x-0 h-px w-1/2 mx-auto -bottom-px shadow-2xl  bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
 
-      {/* Big Testimonial */}
-      <TestimonialSection />
+            </button>
+          </Link>
+        </div>
+      </section>
 
-      {/* Pricing Section */}
-      <PricingModule linkVisibility={true} />
+      {/* Service Section */}
+      <section className="mt-16">
+        <ServiceShowcase />
+      </section>
 
-      {/* Featured Posts */}
-      <FeaturedPosts />
-
-      {/* CTASection */}
-      <CommunityCTA buttonType='call' />
-
-      {/* Contact Section */}
-      <ContactInfo />
+      {/* Testimonial Section */}
+      <section className="bg-background mt-20">
+        <TestimonialsMarqueeGrid />
+      </section>
 
       {/* CTA Section */}
+      <section className="mb-0 pb-0 px-16">
+        <CTAWithDashedGridLines />
+      </section>
+
+
+      {/* Features Section */}
+      <section className="mt-24 bg-background px-8">
+        <div className="flex flex-col items-center justify-center text-center">
+          <h1 className="mb-4 text-4xl font-bold text-primary md:text-6xl">
+            Crystal Clear Pools, <br />Expert Care
+          </h1>
+          <p className="mb-8 text-xl text-neutral-600">
+            Experience the professional pool cleaning and maintenance services that set Krystal Clean Pool Service apart. From small pools to commercial properties, we&apos;re dedicated to keeping your pool pristine, safe, and ready to enjoy year-round.
+          </p>
+        </div>
+
+        <FeaturesGrid />
+      </section>
+
+      {/*Credentials Section */}
+      <section className="mt-16">
+        <LogosWithBlurFlip />
+      </section>
+
+
+
+      {/* Featured Posts */}
+      <PricingGrid />
+
+      {/* Featured Posts */}
+      <BlogPostList />
+
+      {/* CTASection */}
       <ServiceCTACard />
-    </MaxWidthWrapper>
+
+      {/* Contact Section */}
+      <section className="px-6">
+        <ContactInfo />
+      </section>
+
+    </main>
   );
 }
