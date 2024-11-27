@@ -31,11 +31,11 @@ export default function Home() {
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
-        <div className="relative z-10 text-center text-white mx-20">
+        <div className="relative z-10 text-center text-white md:mx-20 mx-2 md:mt-0 -mt-16">
           <h1 className="mb-4 text-4xl font-bold md:text-6xl">
             Pristine Pools, Exceptional Service
           </h1>
-          <p className="mb-8 text-xl md:text-2xl">
+          <p className="mb-8 text-xl md:text-2xl w-full">
             Expert Pool Cleaning for a Sparkling, Hassle-Free Summer. We
             offer a wide range of pool cleaning services that will suit your
             needs and budget. Contact us today to learn more about our
@@ -65,7 +65,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="mb-0 pb-0 px-16">
+      <section className="mb-0 pb-0 md:px-16">
         <CTAWithDashedGridLines />
       </section>
 

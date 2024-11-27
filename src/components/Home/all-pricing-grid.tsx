@@ -93,7 +93,7 @@ export const residentialServices: Tier[] = [
 export function PricingGrid() {
     return (
         <div className="relative py-10 md:pt-20 max-w-7xl mx-auto flex flex-col items-center justify-between">
-            <div className="relative">
+            <div className="relative md:mx-0 mx-6">
                 <h2
                     className={cn(
                         "text-center text-xl md:text-4xl font-bold text-black dark:text-white",
@@ -231,7 +231,7 @@ export function Pricing() {
                     </button>
                 ))}
             </div>
-            <div className="mx-10 sm:mx-auto mt-4 max-w-md md:mt-20 grid relative z-20 grid-cols-1 gap-4 items-center xl:gap-12">
+            <div className="mx-6 sm:mx-auto mt-4 max-w-md md:mt-20 grid relative z-20 grid-cols-1 items-center">
                 {tiers[active].map((tier, tierIdx) => (
                     <div
                         key={tier.id}
