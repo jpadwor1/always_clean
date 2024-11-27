@@ -1,7 +1,7 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import sgMail from '@sendgrid/mail';
-import { trpc } from '@/app/_trpc/client';
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+import sgMail from "@sendgrid/mail";
+import { trpc } from "@/app/_trpc/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -12,17 +12,15 @@ export function capitalize(str: string) {
 }
 
 export function absoluteUrl(path: string) {
-  if (typeof window !== 'undefined') return path;
+  if (typeof window !== "undefined") return path;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}${path}`;
   return `http://localhost:${process.env.PORT ?? 3000}${path}`;
 }
 
 export enum CustomerType {
-  Lead = 'LEAD',
-  Active = 'ACTIVE',
-  Inactive = 'INACTIVE',
-  VIP = 'VIP',
-  Lost = 'LOST',
+  Lead = "LEAD",
+  Active = "ACTIVE",
+  Inactive = "INACTIVE",
+  VIP = "VIP",
+  Lost = "LOST",
 }
-
-

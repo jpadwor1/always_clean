@@ -40,7 +40,7 @@ export default function RootLayout({
       <Providers>
         <body
           className={cn(
-            'min-h-screen font-sans antialiased grainy light',
+            'min-h-screen antialiased grainy light',
             inter.className
           )}
         >
