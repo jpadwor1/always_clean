@@ -58,11 +58,11 @@ const Page = () => {
                   "scroll-m-20 text-5xl font-bold text-center md:text-left tracking-tight text-black dark:text-white mb-6"
                 )}
               >
-                Elevate Your Perspective:<br /> The Aerial Edge Blog
+                Expert Tips for Pools in Florence and San Tan Valley, AZ
               </h1>
 
               <p className="text-lg text-neutral-600 dark:text-neutral-400-foreground max-w-xl !mb-6 text-center md:text-left">
-                Insights, Innovations, and Industry Trends in Drone Technology and Aerial Inspection Services
+                Explore helpful articles on pool cleaning, maintenance, and seasonal care tailored for Florence, AZ, and San Tan Valley, AZ. From chemical balancing to seasonal preparation, learn how to keep your pool pristine year-round.
               </p>
             </div>
           </div>
