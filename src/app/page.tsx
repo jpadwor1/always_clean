@@ -32,9 +32,18 @@ export default function Home() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
         <div className="relative z-10 text-center text-white md:mx-20 mx-2 md:mt-0 -mt-16">
-          <h1 className="mb-4 text-4xl font-bold md:text-6xl">
+          <div className='flex flex-col items-center jutify-center w-full mb-2'>
+            <div className='bg-sky-100/50 max-w-fit h-fit px-2 py-1 rounded-full'>
+              <h1 className="sm:text-sm text-xs font-bold">
+                Best Pool Cleaning Service in Florence, San Tan Valley, and Queen Creek.
+              </h1>
+            </div>
+
+          </div>
+
+          <h2 className="mb-4 text-4xl font-bold md:text-6xl">
             Pristine Pools, Exceptional Service
-          </h1>
+          </h2>
           <p className="mb-8 text-xl md:text-2xl w-full">
             Expert Pool Cleaning for a Sparkling, Hassle-Free Summer. We
             offer a wide range of pool cleaning services that will suit your
