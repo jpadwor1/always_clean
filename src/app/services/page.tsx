@@ -6,10 +6,18 @@ import AlgaeFeatureCards from '@/components/Services/AlgaeTreatment/AlgaeFeature
 import RegularCleaningFeatureCards from '@/components/Services/RegularPoolCleaning/RegularCleaningFeatureCards';
 import ServiceCTACard from '@/components/Services/ServiceCTACard';
 import ContactSection from '@/components/ContactSection';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Pool Maintenance & Cleaning Services in Florence, San Tan Valley, and Queen Creek | Krystal Clean Pools',
+  description:
+    'Discover tailored pool cleaning and maintenance services for residential, commercial, and community pools in Florence, San Tan Valley, and Queen Creek, AZ. From chemical balancing to algae treatments, our veteran-owned team delivers unmatched quality and reliability. Contact us today for a free quote!',
+};
 
 const Page = () => {
   return (
     <div className='px-10 py-18'>
+
       <section
         className="py-20 bg-white overflow-hidden"
         style={{

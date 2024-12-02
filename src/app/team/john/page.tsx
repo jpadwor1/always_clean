@@ -12,7 +12,7 @@ const Page = () => {
                 <h2 className='text-white tracking-wider'>Operations Manager</h2>
             </div>
             <div className='flex flex-row items-center w-full justify-center space-x-7'>
-                <a href='tel:562-972-6951' className='shadow-md text-white font-semibold  rounded-full p-2 bg-gray-200'>
+                <a href='tel:520-525-5956' className='shadow-md text-white font-semibold  rounded-full p-2 bg-gray-200'>
                     <Phone className='w-8 h-8 text-blue-300' />
                 </a>
                 <a href='mailto:support@krystalcleanpools.com' className='shadow-md text-white font-semibold  rounded-full p-2 bg-gray-200'>
@@ -28,7 +28,7 @@ const Page = () => {
                         Mobile
                     </h3>
                     <p className='text-gray-700 mb-4'>
-                        +1 (562) 972-6951
+                        +1 (520)-525-5956
                     </p>
                     <Separator className='w-full' />
                 </div>

@@ -553,8 +553,8 @@ const BillingForm = ({
                       {dueDate < new Date() && !invoice.paid
                         ? "PAST DUE"
                         : invoice.paid
-                        ? "PAID"
-                        : "Payment Due"}
+                          ? "PAID"
+                          : "Payment Due"}
                     </TableCell>
 
                     <TableCell>
@@ -567,8 +567,8 @@ const BillingForm = ({
                           invoice.paid
                             ? "#"
                             : invoice.hosted_invoice_url
-                            ? invoice.hosted_invoice_url
-                            : "#"
+                              ? invoice.hosted_invoice_url
+                              : "#"
                         }
                         className={cn(
                           buttonVariants({}),
@@ -600,7 +600,7 @@ const BillingForm = ({
         <CardFooter>
           <div className="flex flex-col space-y-2">
             <p>
-              If this is a mistake, please contact support at 760-912-7396 or
+              If this is a mistake, please contact support at 520-525-5956 or
               send us a message.
             </p>
             <Link href="/contact" className={cn(buttonVariants({}))}>

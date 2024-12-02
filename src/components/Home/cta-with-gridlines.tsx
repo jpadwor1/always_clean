@@ -34,7 +34,7 @@ export function CTAWithDashedGridLines() {
             <HiArrowRight className="mt-0.5 h-3 w-3 stroke-[1px] text-white transition-transform duration-200 group-hover:translate-x-1" />
           </Link>
           <Link
-            href="tel:+17609127396"
+            href="tel:+1520-525-5956"
             className="group mt-8 flex items-center space-x-2 rounded-lg border border-neutral-200 px-4 py-2 text-base text-black shadow-[0px_2px_0px_0px_rgba(255,255,255,0.3)_inset] dark:border-neutral-800 dark:text-white"
           >
             <span>Get a Consultation</span>

@@ -5,8 +5,8 @@ import Navbar from '@/components/Navbar';
 import Providers from '@/components/Providers';
 import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
-import dynamic from 'next/dynamic';
-
+import CookieConsentBanner from '@/components/CookieConsent';
+import Toaster from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -15,16 +15,8 @@ export const metadata: Metadata = {
     'Krystal Clean Pool Service: Trusted father-and-son team offering expert pool cleaning and maintenance in Arizona. Proudly veteran-owned, delivering reliability, integrity, and top-notch quality. Contact us today for a sparkling clean pool!',
 };
 
-const CookieConsentBanner = dynamic(
-  () => import('@/components/CookieConsent'),
-  {
-    ssr: false,
-  }
-);
 
-const Toaster = dynamic(() => import('@/components/ui/toaster'), {
-  ssr: false,
-});
+
 
 export default function RootLayout({
   children,

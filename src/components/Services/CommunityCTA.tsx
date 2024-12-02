@@ -56,10 +56,10 @@ const CommunityCTA = ({ buttonType }: CommunityCTAProps) => {
                     className={buttonVariants({
                       className: 'flex flex-row px-3 py-2 bg-primary h-16',
                     })}
-                    href='tel:760-912-7396'
+                    href='tel:520-525-5956'
                   >
                     <Phone className='mr-2 h-10 w-10 text-white' />
-                    <span className='text-xl'>760-912-7396</span>{' '}
+                    <span className='text-xl'>520-525-5956</span>{' '}
                   </Link>
                 ) : (
                   <Link

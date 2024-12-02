@@ -12,8 +12,6 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
-    "@arcgis/map-components": "^4.29.7",
-    "@arcgis/map-components-react": "^4.29.7",
     "@googlemaps/js-api-loader": "^1.16.6",
     "@hookform/resolvers": "^3.3.2",
     "@kinde-oss/kinde-auth-nextjs": "^2.3.10",
