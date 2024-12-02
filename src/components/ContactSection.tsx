@@ -181,7 +181,7 @@ const ContactSection = () => {
                       Phone
                     </h3>
                     <p className='md:text-sm text-xl text-zinc-600 font-medium'>
-                      1 (760) 912-7396
+                      1 (520)-525-5956
                     </p>
                   </div>
                 </div>

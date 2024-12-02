@@ -470,7 +470,7 @@ export default function StepperForm() {
                             </FormLabel>
                             <div className='flex flex-col justify-center items-center w-full'>
                               <FormControl>
-                                <Input placeholder='760-912-7396' {...field} />
+                                <Input placeholder='520-525-5956' {...field} />
                               </FormControl>
                               <FormMessage />
                             </div>

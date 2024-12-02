@@ -36,7 +36,7 @@ const Page = () => {
 
                                     <Link
                                         className='md:hidden inline-flex'
-                                        href='tel:760-912-7396'
+                                        href='tel:520-525-5956'
                                     >
                                         <Button className='shadow-lg hover:shadow-xl ml-2'>
                                             Call Now
@@ -44,10 +44,10 @@ const Page = () => {
                                     </Link>
                                     <Link
                                         className='md:inline-flex hidden'
-                                        href='tel:760-912-7396'
+                                        href='tel:520-525-5956'
                                     >
                                         <Button className='shadow-lg hover:shadow-xl ml-2'>
-                                            760-912-7396
+                                            520-525-5956
                                         </Button>
                                     </Link>
                                 </div>

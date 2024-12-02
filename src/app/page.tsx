@@ -1,11 +1,5 @@
-import MaxWidthWrapper from '@/components/MaxWidthWrapper';
-import { Button } from '@/components/ui/button';
-import Image from 'next/image';
-import PricingModule from '@/components/Home/PricingModule';
 import Link from 'next/link';
-import FeaturedPosts from '@/components/Blog/FeaturedPosts';
 import ServiceCTACard from '@/components/Services/ServiceCTACard';
-import CommunityCTA from '@/components/Services/CommunityCTA';
 import ContactInfo from '@/components/ContactInfo';
 import ServiceShowcase from '@/components/Home/service-showcase';
 import { TestimonialsMarqueeGrid } from '@/components/Home/testimonial-section';
@@ -28,6 +22,7 @@ export default function Home() {
             muted
             playsInline
             src="/videos/hero.mp4"
+
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
