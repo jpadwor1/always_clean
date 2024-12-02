@@ -32,11 +32,20 @@ export default function Home() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
         <div className="relative z-10 text-center text-white md:mx-20 mx-2 md:mt-0 -mt-16">
-          <h1 className="mb-4 text-4xl font-bold md:text-6xl">
+          <div className='flex flex-col items-center jutify-center w-full mb-2'>
+            <div className='bg-sky-100/50 max-w-fit h-fit px-2 py-1 rounded-full'>
+              <h1 className="sm:text-sm text-xs font-bold">
+                Best Pool Cleaning Service in Florence, San Tan Valley, and Queen Creek.
+              </h1>
+            </div>
+
+          </div>
+
+          <h2 className="mb-4 text-4xl font-bold md:text-6xl">
             Pristine Pools, Exceptional Service
-          </h1>
+          </h2>
           <p className="mb-8 text-xl md:text-2xl w-full">
-            Expert Pool Cleaning for a Sparkling, Hassle-Free Summer. We
+            Expert Pool Cleaning and Maintenance for Florence, San Tan Valley, and Queen Creek, AZ. We
             offer a wide range of pool cleaning services that will suit your
             needs and budget. Contact us today to learn more about our
             services. Or book directly below.
@@ -77,7 +86,7 @@ export default function Home() {
             Crystal Clear Pools, <br />Expert Care
           </h1>
           <p className="mb-8 text-xl text-neutral-600">
-            Experience the professional pool cleaning and maintenance services that set Krystal Clean Pool Service apart. From small pools to commercial properties, we&apos;re dedicated to keeping your pool pristine, safe, and ready to enjoy year-round.
+            Experience top-rated pool cleaning and maintenance services in Florence, San Tan Valley, and Queen Creek, AZ. Whether it&apos;s for small residential pools, play pools, or commercial properties, Krystal Clean Pool Service ensures your pool stays pristine all year.
           </p>
         </div>
 

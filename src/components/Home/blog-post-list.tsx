@@ -28,7 +28,7 @@ export default async function BlogPostList() {
           Expert Tips for Pools in Florence, San Tan Valley, and great Pinal County, AZ
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-gray-400">
-          Explore helpful articles on pool cleaning, maintenance, and seasonal care tailored for Florence, San Tan Valley, and great Pinal County, AZ. From chemical balancing to seasonal preparation, learn how to keep your pool pristine year-round.
+          Explore helpful articles on pool cleaning, maintenance, and seasonal care tailored for Florence, San Tan Valley, and greater Pinal County, AZ. From chemical balancing to seasonal preparation, learn how to keep your pool pristine year-round.
         </p>
       </div>
       <div className="flex flex-col md:flex-row md:space-x-8 max-w-3xl mx-auto">
