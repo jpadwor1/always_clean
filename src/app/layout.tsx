@@ -1,6 +1,5 @@
 import { Inter } from 'next/font/google';
 import './globals.css';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { cn } from '@/lib/utils';
 import Navbar from '@/components/Navbar';
 import Providers from '@/components/Providers';
@@ -11,9 +10,9 @@ import dynamic from 'next/dynamic';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Krystal Clean Pool Service',
+  title: 'Krystal Clean Pool Service | Expert Pool Cleaning in Arizona',
   description:
-    'We are a father and son team, committed to providing top-notch pool services with integrity and unmatched quality. Founded by a proud veteran, we bring military precision and reliability to every job.',
+    'Krystal Clean Pool Service: Trusted father-and-son team offering expert pool cleaning and maintenance in Arizona. Proudly veteran-owned, delivering reliability, integrity, and top-notch quality. Contact us today for a sparkling clean pool!',
 };
 
 const CookieConsentBanner = dynamic(

@@ -3,6 +3,7 @@ import React from 'react';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { redirect } from 'next/navigation';
 import { db } from '@/db';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 import Dashboard from '@/components/DashBoard/Dashboard';
 
