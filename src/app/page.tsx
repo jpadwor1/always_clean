@@ -27,10 +27,10 @@ export default function Home() {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
         <div className="relative z-10 text-center text-white md:mx-20 mx-2 md:mt-0 -mt-16">
-          <div className='flex flex-col items-center jutify-center w-full mb-2'>
-            <div className='bg-sky-100/50 max-w-fit h-fit px-2 py-1 rounded-full'>
-              <h1 className="sm:text-sm text-xs font-bold">
-                Best Pool Cleaning Service in Florence, San Tan Valley, and Queen Creek.
+          <div className='flex flex-col items-center jutify-center w-full mb-6 -mt-4'>
+            <div className='bg-sky-100/50 max-w-fit h-fit px-4 sm:py-2 py-1 rounded-full'>
+              <h1 className="sm:text-sm text-xs font-bold ">
+                Best Pool Cleaning Service in <br className='sm:hidden' /> Florence, San Tan Valley, and Queen Creek.
               </h1>
             </div>
 
@@ -39,7 +39,7 @@ export default function Home() {
           <h2 className="mb-4 text-4xl font-bold md:text-6xl">
             Pristine Pools, Exceptional Service
           </h2>
-          <p className="mb-8 text-xl md:text-2xl w-full">
+          <p className="mb-12 text-xl md:text-2xl w-full">
             Expert Pool Cleaning and Maintenance for Florence, San Tan Valley, and Queen Creek, AZ. We
             offer a wide range of pool cleaning services that will suit your
             needs and budget. Contact us today to learn more about our
@@ -48,7 +48,7 @@ export default function Home() {
           <Link href="/booking">
             <button className="px-8 py-2 rounded-full relative bg-slate-700 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-slate-600">
               <div className="absolute inset-x-0 h-px w-1/2 mx-auto -top-px shadow-2xl  bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
-              <span className="relative z-20">
+              <span className="relative z-20 text-xl">
                 Book Today
               </span>
               <div className="absolute inset-x-0 h-px w-1/2 mx-auto -bottom-px shadow-2xl  bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
