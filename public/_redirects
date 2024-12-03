@@ -1,8 +1,8 @@
 /sign-in /api/auth/login? 301!
 /sign-up /api/auth/register? 301!
 /sign-out /api/auth/logout 301!
-http://poolcleaningservicesflorence.com/_ /pool-cleaning-florence-az/ 301!
-http://poolcleaningqueencreek.com/_ /pool-cleaning-queen-creek-az/ 301!
-https://poolcleaningservicesflorence.com/_ /pool-cleaning-florence-az/ 301!
-https://poolcleaningqueencreek.com/_ /pool-cleaning-queen-creek-az/ 301!
-https://poolcleaningqueencreek.com/* /pool-cleaning-san-tan-valley-az/ 301!
+http://poolcleaningservicesflorence.com/ https://krystalcleanpools.com/pool-cleaning-florence-az/ 301!
+http://poolcleaningqueencreek.com/ https://krystalcleanpools.com/pool-cleaning-queen-creek-az/ 301!
+https://poolcleaningservicesflorence.com/ https://krystalcleanpools.com/pool-cleaning-florence-az/ 301!
+https://poolcleaningqueencreek.com/ https://krystalcleanpools.com/pool-cleaning-queen-creek-az/ 301!
+https://poolcleaningsantanvalley.com/ https://krystalcleanpools.com/pool-cleaning-san-tan-valley-az/ 301!
