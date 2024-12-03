@@ -1,3 +1,8 @@
 /sign-in   /api/auth/login?   301!
 /sign-up   /api/auth/register?   301!
 /sign-out  /api/auth/logout   301!
+http://poolcleaningservicesflorence.com/* /pool-cleaning-florence-az/:splat 200
+http://poolcleaningqueencreek.com/* /pool-cleaning-queen-creek-az/:splat 200
+https://poolcleaningservicesflorence.com/* /pool-cleaning-florence-az/:splat 200
+https://poolcleaningqueencreek.com/* /pool-cleaning-queen-creek-az/:splat 200
+https://poolcleaningqueencreek.com/* /pool-cleaning-san-tan-valley-az/:splat 200

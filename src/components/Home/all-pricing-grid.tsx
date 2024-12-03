@@ -90,7 +90,7 @@ export const residentialServices: Tier[] = [
     },
 ];
 
-export function PricingGrid() {
+export function PricingGrid({ location }: { location: string }) {
     return (
         <div className="relative py-10 md:pt-20 max-w-7xl mx-auto flex flex-col items-center justify-between">
             <div className="relative md:mx-0 mx-6">
@@ -108,7 +108,7 @@ export function PricingGrid() {
                         outfit.className
                     )}
                 >
-                    Krystal Clean Pool Service provides tailored pool cleaning and maintenance plans for small pools, play pools, and commercial properties in Florence, AZ. With flexible pricing and a commitment to excellence, we make keeping your pool pristine easy and hassle-free.
+                    Krystal Clean Pool Service provides tailored pool cleaning and maintenance plans for small pools, play pools, and commercial properties in {location}, AZ. With flexible pricing and a commitment to excellence, we make keeping your pool pristine easy and hassle-free.
                 </p>
             </div>
             <Pricing />

@@ -30,7 +30,7 @@ export default function Home() {
                     <div className='flex flex-col items-center jutify-center w-full mb-6 -mt-4'>
                         <div className='bg-sky-100/50 max-w-fit h-fit px-4 sm:py-2 py-1 rounded-full'>
                             <h1 className="sm:text-sm text-xs font-bold ">
-                                Best Pool Cleaning Service in Florence
+                                Best Pool Cleaning Service in San Tan Valley
                             </h1>
                         </div>
 
@@ -40,7 +40,7 @@ export default function Home() {
                         Pristine Pools, Exceptional Service
                     </h2>
                     <p className="mb-12 text-xl md:text-2xl w-full">
-                        Expert Pool Cleaning and Maintenance in Florence, AZ. We
+                        Expert Pool Cleaning and Maintenance in San Tan Valley, AZ. We
                         offer a wide range of pool cleaning services that will suit your
                         needs and budget. Contact us today to learn more about our
                         services. Or book directly below.
@@ -65,7 +65,7 @@ export default function Home() {
 
             {/* Testimonial Section */}
             <section className="bg-background mt-20">
-                <TestimonialsMarqueeGrid location='Florence' />
+                <TestimonialsMarqueeGrid location='San Tan Valley' />
             </section>
 
             {/* CTA Section */}
@@ -81,11 +81,11 @@ export default function Home() {
                         Crystal Clear Pools, <br />Expert Care
                     </h1>
                     <p className="mb-8 text-xl text-neutral-600">
-                        Experience top-rated pool cleaning and maintenance services in Florence, AZ. Whether it&apos;s for small residential pools, play pools, or commercial properties, Krystal Clean Pool Service ensures your pool stays pristine all year.
+                        Experience top-rated pool cleaning and maintenance services in San Tan Valley, AZ. Whether it&apos;s for small residential pools, play pools, or commercial properties, Krystal Clean Pool Service ensures your pool stays pristine all year.
                     </p>
                 </div>
 
-                <FeaturesGrid location='Florence' />
+                <FeaturesGrid location='San Tan Valley' />
             </section>
 
             {/*Credentials Section */}
@@ -96,10 +96,10 @@ export default function Home() {
 
 
             {/* Featured Posts */}
-            <PricingGrid location='Florence' />
+            <PricingGrid location='San Tan Valley' />
 
             {/* Featured Posts */}
-            <BlogPostList location="Florence" />
+            <BlogPostList location="San Tan Valley" />
 
             {/* CTASection */}
             <ServiceCTACard />

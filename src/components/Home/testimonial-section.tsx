@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Marquee from "react-fast-marquee";
 
-export function TestimonialsMarqueeGrid() {
+export function TestimonialsMarqueeGrid({ location }: { location: string }) {
   return (
     <div className="relative mx-auto h-full w-full max-w-7xl overflow-hidden px-4 md:px-8">
       <div className="pb-20">
@@ -12,7 +12,7 @@ export function TestimonialsMarqueeGrid() {
           Trusted by Pool Owners, Loved for Our Care
         </h1>
         <p className="mt-4 text-base text-neutral-600 dark:text-neutral-200">
-          See why homeowners and businesses in Florence, AZ, rely on Krystal Clean Pool Service for pristine pools and exceptional customer care.
+          See why homeowners and businesses in {location}, AZ, rely on Krystal Clean Pool Service for pristine pools and exceptional customer care.
         </p>
       </div>
 

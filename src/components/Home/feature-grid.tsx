@@ -15,12 +15,12 @@ import {
   IconTool,
 } from "@tabler/icons-react";
 
-export function FeaturesGrid() {
+export function FeaturesGrid({ location }: { location: string }) {
   const features = [
     {
       title: "Pristine Pool Cleaning",
       description:
-        "Our team specializes in keeping pools in Florence, AZ, crystal clear and swim-ready with regular cleaning and debris removal.",
+        `Our team specializes in keeping pools in ${location}, AZ, crystal clear and swim-ready with regular cleaning and debris removal.`,
       icon: <IconDroplet className="text-primary" />,
     },
     {
@@ -32,7 +32,7 @@ export function FeaturesGrid() {
     {
       title: "Customized Maintenance Plans",
       description:
-        "From small residential pools to commercial properties, we tailor our services to meet your unique needs in Florence, AZ, and surrounding areas.",
+        `From small residential pools to commercial properties, we tailor our services to meet your unique needs in ${location}, AZ, and surrounding areas.`,
       icon: <IconAdjustmentsAlt className="text-primary" />,
     },
     {
@@ -44,7 +44,7 @@ export function FeaturesGrid() {
     {
       title: "Seasonal Pool Care",
       description:
-        "Prepare your pool for summer fun or winterize it for colder months with our expert seasonal services in Florence, AZ.",
+        `Prepare your pool for summer fun or winterize it for colder months with our expert seasonal services in ${location}, AZ.`,
       icon: <IconCalendar className="text-primary" />,
     },
     {
@@ -56,7 +56,7 @@ export function FeaturesGrid() {
     {
       title: "Transparent Pricing",
       description:
-        "No surprises—just clear and competitive pricing. Our flat-rate plans offer unbeatable value for pool owners in Florence, AZ.",
+        `No surprises—just clear and competitive pricing. Our flat-rate plans offer unbeatable value for pool owners in ${location}, AZ.`,
       icon: <IconCurrencyDollar className="text-primary" />,
     },
     {
