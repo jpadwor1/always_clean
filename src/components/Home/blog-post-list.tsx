@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function BlogPostList() {
+export default async function BlogPostList({ location }: { location: string }) {
   const titles = [
     "Top Benefits of Hiring a Professional Pool Cleaning Service in Florence, AZ",
     "Essential Pool Safety Tips for Pinal County Families",
@@ -25,10 +25,10 @@ export default async function BlogPostList() {
           Dive Into Pool Care Insights
         </h2>
         <h1 className="mt-2 text-4xl font-bold">
-          Expert Tips for Pools in Florence, San Tan Valley, and great Pinal County, AZ
+          Expert Tips for Pools in {location}, AZ
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-gray-400">
-          Explore helpful articles on pool cleaning, maintenance, and seasonal care tailored for Florence, San Tan Valley, and greater Pinal County, AZ. From chemical balancing to seasonal preparation, learn how to keep your pool pristine year-round.
+          Explore helpful articles on pool cleaning, maintenance, and seasonal care tailored for {location}, AZ. From chemical balancing to seasonal preparation, learn how to keep your pool pristine year-round.
         </p>
       </div>
       <div className="flex flex-col md:flex-row md:space-x-8 max-w-3xl mx-auto">

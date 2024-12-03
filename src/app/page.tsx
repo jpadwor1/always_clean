@@ -30,7 +30,7 @@ export default function Home() {
           <div className='flex flex-col items-center jutify-center w-full mb-6 -mt-4'>
             <div className='bg-sky-100/50 max-w-fit h-fit px-4 sm:py-2 py-1 rounded-full'>
               <h1 className="sm:text-sm text-xs font-bold ">
-                Best Pool Cleaning Service in <br className='sm:hidden' /> Florence, San Tan Valley, and Queen Creek.
+                Best Pool Cleaning Service in Arizona
               </h1>
             </div>
 
@@ -65,7 +65,7 @@ export default function Home() {
 
       {/* Testimonial Section */}
       <section className="bg-background mt-20">
-        <TestimonialsMarqueeGrid />
+        <TestimonialsMarqueeGrid location='Pinal County' />
       </section>
 
       {/* CTA Section */}
@@ -85,7 +85,7 @@ export default function Home() {
           </p>
         </div>
 
-        <FeaturesGrid />
+        <FeaturesGrid location='Pinal County' />
       </section>
 
       {/*Credentials Section */}
@@ -96,10 +96,10 @@ export default function Home() {
 
 
       {/* Featured Posts */}
-      <PricingGrid />
+      <PricingGrid location='Pinal County' />
 
       {/* Featured Posts */}
-      <BlogPostList />
+      <BlogPostList location='Pinal County' />
 
       {/* CTASection */}
       <ServiceCTACard />

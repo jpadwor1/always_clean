@@ -1,229 +1,114 @@
-import React from 'react'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-import TestimonialSection from '@/components/Home/TestimonialSection'
-import MaxWidthWrapper from '@/components/MaxWidthWrapper'
-import CommunityCTA from '@/components/Services/CommunityCTA'
-import { CheckSquare } from 'lucide-react'
+import Link from 'next/link';
+import ServiceCTACard from '@/components/Services/ServiceCTACard';
+import ContactInfo from '@/components/ContactInfo';
+import ServiceShowcase from '@/components/Home/service-showcase';
+import { TestimonialsMarqueeGrid } from '@/components/Home/testimonial-section';
+import { CTAWithDashedGridLines } from '@/components/Home/cta-with-gridlines';
+import { FeaturesGrid } from '@/components/Home/feature-grid';
+import { LogosWithBlurFlip } from '@/components/Home/logo-blur';
+import { PricingGrid } from '@/components/Home/all-pricing-grid';
+import BlogPostList from '@/components/Home/blog-post-list';
 
-const Page = () => {
+export default function Home() {
     return (
-        <MaxWidthWrapper>
-            <div className='py-20 md:py-28'>
-                <div className='container px-4 mx-auto'>
-                    <div className='flex flex-wrap xl:items-center -mx-4'>
-                        <div className='w-full md:w-1/2 px-4 mb-16 md:mb-0'>
-                            <h1 className='mb-6 text-3xl md:text-5xl lg:text-6xl leading-tight font-bold tracking-tight'>
-                                Pristine Pools, Exceptional Service
-                            </h1>
-                            <p className='mb-8 text-lg md:text-xl text-slate-600'>
-                                Expert Pool Cleaning servicing Florence and surrounding areas for a Sparkling, Hassle-Free Summer. We
-                                offer a wide range of pool cleaning services that will suit your
-                                needs and budget. Contact us today to learn more about our
-                                services. Or book directly below.
-                            </p>
-                            <div className='flex flex-wrap'>
-                                <div className='w-full md:w-auto py-1 md:py-0 md:mr-4'>
-                                    <Link href='/booking'>
-                                        <Button
-                                            variant={'secondary'}
-                                            className='shadow-lg hover:shadow-xl'
-                                        >
-                                            Book Here
-                                        </Button>
-                                    </Link>
+        <main className='bg-white overflow-x-hidden'>
+            {/* hero section */}
+            <section className="relative flex h-screen items-center justify-center">
+                <div className="absolute inset-0 z-0">
+                    <video
+                        className="h-full w-full object-cover"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        src="/videos/hero.mp4"
 
-                                    <Link
-                                        className='md:hidden inline-flex'
-                                        href='tel:520-525-5956'
-                                    >
-                                        <Button className='shadow-lg hover:shadow-xl ml-2'>
-                                            Call Now
-                                        </Button>
-                                    </Link>
-                                    <Link
-                                        className='md:inline-flex hidden'
-                                        href='tel:520-525-5956'
-                                    >
-                                        <Button className='shadow-lg hover:shadow-xl ml-2'>
-                                            520-525-5956
-                                        </Button>
-                                    </Link>
-                                </div>
-                                <div className='w-full md:w-auto py-1 md:py-0' />
-                            </div>
-                        </div>
-                        <div className='w-full md:w-1/2 px-4'>
-                            <div className='relative mx-auto md:mr-0 max-w-max'>
-                                <Image
-                                    width={500}
-                                    height={500}
-                                    className='absolute z-10 -left-14 -top-12 w-28 md:w-auto'
-                                    src='/circle3-yellow.svg'
-                                    priority={true}
-                                    alt=''
-                                />
-                                <Image
-                                    width={500}
-                                    height={500}
-                                    className='absolute z-10 -right-7 -bottom-8 w-28 md:w-auto'
-                                    src='/dots3-blue.svg'
-                                    priority={true}
-                                    alt=''
-                                />
-                                <Image
-                                    width={500}
-                                    height={500}
-                                    className='relative rounded-7xl'
-                                    src='/pool.webp'
-                                    alt=''
-                                    priority={true}
-                                />
-                            </div>
-                        </div>
-                    </div>
+                    />
                 </div>
-            </div>
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50"></div>
+                <div className="relative z-10 text-center text-white md:mx-20 mx-2 md:mt-0 -mt-16">
+                    <div className='flex flex-col items-center jutify-center w-full mb-6 -mt-4'>
+                        <div className='bg-sky-100/50 max-w-fit h-fit px-4 sm:py-2 py-1 rounded-full'>
+                            <h1 className="sm:text-sm text-xs font-bold ">
+                                Best Pool Cleaning Service in Florence
+                            </h1>
+                        </div>
 
-            <h2 className='text-3xl md:text-5xl lg:text-6xl font-bold text-center mt-6 mb-8 tracking-tight'>
-                What Our Customers Are Saying
-            </h2>
-
-            <TestimonialSection />
-
-            {/* CTASection */}
-            <CommunityCTA buttonType='call' />
-
-            <section
-                className='my-20 py-24 md:pb-32 bg-white'
-                style={{
-                    backgroundImage: 'url("/pattern-white.svg")',
-                    backgroundPosition: 'center',
-                }}
-            >
-                <div className='container px-4 mx-auto'>
-                    <div className='md:max-w-4xl mb-12 mx-auto text-center'>
-                        <span className='inline-block py-px px-2 mb-4 text-xs leading-5 text-blue-500 bg-blue-100 font-medium uppercase rounded-full shadow-sm'>
-                            FLORENCE POOL CLEANING
-                        </span>
-                        <h1 className='mb-4 text-3xl md:text-4xl leading-tight font-bold tracking-tighter'>
-                            Reliable Pool Cleaning Services in Florence, AZ
-                        </h1>
-                        <p className='text-lg md:text-xl text-gray-500 font-medium'>
-                            At Krystal Clean Pool Service, we specialize in providing top-notch pool cleaning and maintenance for residents of Florence, AZ. Our expert team ensures your pool remains pristine, safe, and ready for enjoyment all year round.
-                        </p>
                     </div>
-                    <div className='flex flex-wrap -mx-4'>
-                        <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
-                            <div className='h-full p-6 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
-                                <CheckSquare className='text-blue-600 inline-flex h-16 w-16 mb-6 mx-auto' />
-                                <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                                    Surface Cleaning
-                                </h3>
-                                <h2 className='mb-2 text-md leading-tight font-medium text-blue-600'>
-                                    Crystal Clear Pools in Florence, AZ
-                                </h2>
-                                <p className='text-gray-500 font-medium'>
-                                    Our surface cleaning removes leaves, debris, and floating impurities, giving your Florence pool a spotless and inviting look every time.
-                                </p>
-                            </div>
-                        </div>
-                        <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
-                            <div className='h-full p-6 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
-                                <CheckSquare className='text-blue-600 inline-flex h-16 w-16 mb-6 mx-auto' />
 
-                                <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                                    Vacuuming and Brushing
-                                </h3>
-                                <h2 className='mb-2 text-md leading-tight font-medium text-blue-600'>
-                                    Comprehensive Pool Care in Florence
-                                </h2>
-                                <p className='text-gray-500 font-medium'>
-                                    Our team meticulously vacuums and brushes the pool floor and
-                                    walls, removing dirt, algae, and build-up. This not only keeps
-                                    your pool looking great but also helps in maintaining a
-                                    healthy swimming environment.
-                                </p>
-                            </div>
-                        </div>
-                        <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
-                            <div className='h-full p-6 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
-                                <CheckSquare className='text-blue-600 inline-flex h-16 w-16 mb-6 mx-auto' />
+                    <h2 className="mb-4 text-4xl font-bold md:text-6xl">
+                        Pristine Pools, Exceptional Service
+                    </h2>
+                    <p className="mb-12 text-xl md:text-2xl w-full">
+                        Expert Pool Cleaning and Maintenance in Florence, AZ. We
+                        offer a wide range of pool cleaning services that will suit your
+                        needs and budget. Contact us today to learn more about our
+                        services. Or book directly below.
+                    </p>
+                    <Link href="/booking">
+                        <button className="px-8 py-2 rounded-full relative bg-slate-700 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-slate-600">
+                            <div className="absolute inset-x-0 h-px w-1/2 mx-auto -top-px shadow-2xl  bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
+                            <span className="relative z-20 text-xl">
+                                Book Today
+                            </span>
+                            <div className="absolute inset-x-0 h-px w-1/2 mx-auto -bottom-px shadow-2xl  bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
 
-                                <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                                    Filter Cleaning
-                                </h3>
-                                <h2 className='mb-2 text-md leading-tight font-medium text-blue-600'>
-                                    Keep Florence Pools Running Smoothly
-                                </h2>
-                                <p className='text-gray-500 font-medium'>
-                                    Regular cleaning and inspection of the pool&apos;s filter
-                                    system are crucial. We ensure that filters are clean and
-                                    functioning efficiently, which is essential for maintaining
-                                    water clarity and hygiene.
-                                </p>
-                            </div>
-                        </div>
-                        <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
-                            <div className='h-full p-6 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
-                                <CheckSquare className='text-blue-600 inline-flex h-16 w-16 mb-6 mx-auto' />
-
-                                <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                                    Chemical Balancing
-                                </h3>
-                                <h2 className='mb-2 text-md leading-tight font-medium text-blue-600'>
-                                    Safe, Balanced Water for Florence Families
-                                </h2>
-                                <p className='text-gray-500 font-medium'>
-                                    Balancing the chemicals in your pool is vital for preventing
-                                    bacteria and algae growth. Our experts test and adjust
-                                    chlorine, pH, and other chemical levels to ensure your pool
-                                    water is safe and comfortable for swimming.
-                                </p>
-                            </div>
-                        </div>
-                        <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
-                            <div className='h-full p-6 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
-                                <CheckSquare className='text-blue-600 inline-flex h-16 w-16 mb-6 mx-auto' />
-
-                                <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                                    Equipment Check
-                                </h3>
-                                <h2 className='mb-2 text-md leading-tight font-medium text-blue-600'>
-                                    Reliable Pool Equipment in Florence
-                                </h2>
-                                <p className='text-gray-500 font-medium'>
-                                    We perform routine checks on all pool equipment, including
-                                    pumps, heaters, and automatic cleaners, to ensure everything
-                                    is in perfect working order, thus avoiding any unexpected
-                                    disruptions.
-                                </p>
-                            </div>
-                        </div>
-                        <div className='w-full md:w-1/2 lg:w-1/3 px-4'>
-                            <div className='h-full p-6 text-center hover:bg-white rounded-md hover:shadow-xl transition duration-200'>
-                                <CheckSquare className='text-blue-600 inline-flex h-16 w-16 mb-6 mx-auto' />
-
-                                <h3 className='mb-4 text-xl md:text-2xl leading-tight font-bold'>
-                                    Seasonal Services
-                                </h3>
-                                <h2 className='mb-2 text-md leading-tight font-medium text-blue-600'>
-                                    Seasonal Pool Care for Florence, AZ
-                                </h2>
-                                <p className='text-gray-500 font-medium'>
-                                    Our services adapt to the changing seasons. Whether it&apos;s
-                                    preparing your pool for summer use or winterizing it to
-                                    prevent damage during colder months, we&apos;ve got you
-                                    covered year-round.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                        </button>
+                    </Link>
                 </div>
             </section>
-        </MaxWidthWrapper>
-    )
-}
 
-export default Page
+            {/* Service Section */}
+            <section className="mt-16">
+                <ServiceShowcase />
+            </section>
+
+            {/* Testimonial Section */}
+            <section className="bg-background mt-20">
+                <TestimonialsMarqueeGrid location='Florence' />
+            </section>
+
+            {/* CTA Section */}
+            <section className="mb-0 pb-0 md:px-16">
+                <CTAWithDashedGridLines />
+            </section>
+
+
+            {/* Features Section */}
+            <section className="mt-24 bg-background px-8">
+                <div className="flex flex-col items-center justify-center text-center">
+                    <h1 className="mb-4 text-4xl font-bold text-primary md:text-6xl">
+                        Crystal Clear Pools, <br />Expert Care
+                    </h1>
+                    <p className="mb-8 text-xl text-neutral-600">
+                        Experience top-rated pool cleaning and maintenance services in Florence, AZ. Whether it&apos;s for small residential pools, play pools, or commercial properties, Krystal Clean Pool Service ensures your pool stays pristine all year.
+                    </p>
+                </div>
+
+                <FeaturesGrid location='Florence' />
+            </section>
+
+            {/*Credentials Section */}
+            <section className="mt-16">
+                <LogosWithBlurFlip />
+            </section>
+
+
+
+            {/* Featured Posts */}
+            <PricingGrid location='Florence' />
+
+            {/* Featured Posts */}
+            <BlogPostList location="Florence" />
+
+            {/* CTASection */}
+            <ServiceCTACard />
+
+            {/* Contact Section */}
+            <section className="px-6">
+                <ContactInfo />
+            </section>
+
+        </main>
+    );
+}
