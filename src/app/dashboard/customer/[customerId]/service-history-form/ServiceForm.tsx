@@ -482,7 +482,7 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
                   onChange={(e) =>
                     handleChemicalQuantityChange(chemical.value, e.target.value)
                   }
-                  value={chemicalQuantities[chemical.value] ? chemicalQuantities[chemical.value].toString() : '' || ''}
+                  value={chemicalQuantities[chemical.value] ? chemicalQuantities[chemical.value].toString() : ''}
                 />
               </div>
             ))}
