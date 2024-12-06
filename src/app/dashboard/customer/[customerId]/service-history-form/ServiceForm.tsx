@@ -79,6 +79,13 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      dateCompleted: new Date().toISOString(),
+      tasksPerformed: '',
+      service: 'Regular Pool Cleaning (Residential)',
+      notes: '',
+      files: [],
+    },
   });
   const {
     formState: { errors, isValid },
@@ -127,18 +134,58 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
         'Seasonal services to prepare your pool for the summer and winterize it for the off-season.',
     },
   ];
+  /*Current Date is the string date but minus 8 hours */
+  const currentDate = new Date();
+  currentDate.setHours(currentDate.getHours() - 8);
   const [formData, setFormData] = React.useState({
     dateCompleted: new Date(),
-    tasksPerformed: [],
+    tasksPerformed: ['Brushed Pool', 'Balanced Chemicals', 'Cleaned Tile Band', 'Skimmed', 'Performed pH test'],
     service: '',
+    chemicalsUsed: [
+      {
+        "name": "Muriatic Acid",
+        "quantity": 12
+      },
+      {
+        "name": "Chlorine Tablet",
+        "quantity": 12
+      },
+      {
+        "name": "Algeacide",
+        "quantity": 12
+      }
+    ],
+
   });
-  const [selected, setSelected] = React.useState<Option[]>([]);
+  const [selected, setSelected] = React.useState<Option[]>([
+    { label: 'Brushed Pool', value: 'Brushed Pool' },
+    { label: 'Balanced Chemicals', value: 'Balanced Chemicals' },
+    { label: 'Cleaned Tile Band', value: 'Cleaned Tile Band' },
+    { label: 'Skimmed', value: 'Skimmed' },
+    { label: 'Performed pH test', value: 'Performed pH test' }]);
   const [selectedChemicals, setSelectedChemicals] = React.useState<Option[]>(
-    []
+    [
+      {
+        "label": "Muriatic Acid",
+        "value": "Muriatic Acid"
+      },
+      {
+        "label": "Chlorine Tablet",
+        "value": "Chlorine Tablet"
+      },
+      {
+        "label": "Algeacide",
+        "value": "Algeacide"
+      },
+    ]
   );
   const [fileData, setFileData] = React.useState<FileData[]>([]);
   const [chemicalQuantities, setChemicalQuantities] =
-    React.useState<ChemicalQuantities>({});
+    React.useState<ChemicalQuantities>({
+      'Muriatic Acid': 12,
+      'Chlorine Tablet': 1,
+      'Algeacide': 12,
+    });
 
   const options = [
     { label: 'Vacuum', value: 'Vacuum' },
@@ -160,7 +207,7 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
   const mutation = trpc.createServiceEvent.useMutation();
   const { data: chemicals } = trpc.getChemicals.useQuery();
   const { mutate: startPolling } = trpc.getFile.useMutation({
-    onSuccess: (file) => {},
+    onSuccess: (file) => { },
     retry: true,
     retryDelay: 500,
   });
@@ -337,6 +384,7 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
                         const dateTimeWithSeconds = `${e.target.value}:01Z`;
                         field.onChange(dateTimeWithSeconds);
                       }}
+                      defaultValue={currentDate.toISOString().slice(0, 16)}
                     />
                     {/* <Popover>
                       <PopoverTrigger className='shadow-sm' asChild>
@@ -390,6 +438,7 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
                       value={selected}
                       onChange={setSelected}
                       labelledBy='Select'
+
                     />
                     <FormDescription className='text-xs'>
                       These are the tasks you completed during the service.
@@ -433,6 +482,7 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
                   onChange={(e) =>
                     handleChemicalQuantityChange(chemical.value, e.target.value)
                   }
+                  value={chemicalQuantities[chemical.value].toString() || ''}
                 />
               </div>
             ))}
