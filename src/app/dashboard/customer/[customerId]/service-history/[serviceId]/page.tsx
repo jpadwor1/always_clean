@@ -1,4 +1,3 @@
-import { getUserSubscriptionPlan } from '@/lib/stripe';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import ServiceHistory from '@/components/ServiceHistory';
 import { db } from '@/db';
@@ -11,8 +10,7 @@ interface PageProps {
   };
 }
 const Page = async ({ params }: PageProps) => {
-  const { customerId, serviceId } = params;
-  const subscriptionPlan = await getUserSubscriptionPlan();
+  const { serviceId } = params;
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   const serviceEvent = await db.serviceEvent.findFirst({

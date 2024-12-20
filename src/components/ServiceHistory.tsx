@@ -201,12 +201,13 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
   };
 
   const formatInTimeZone = (date: Date, fmt: string, tz: string) =>
+
     format(utcToZonedTime(date, tz), fmt, { timeZone: tz });
 
   const formattedTime = formatInTimeZone(
     serviceEvent.dateCompleted,
     'hh:mm a',
-    'UTC'
+    'MST'
   );
 
   const deleteServiceEvent = trpc.getDeleteServiceEvent.useMutation();
