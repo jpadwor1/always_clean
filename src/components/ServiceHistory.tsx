@@ -204,6 +204,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
 
     format(utcToZonedTime(date, tz), fmt, { timeZone: tz });
 
+
   const formattedTime = formatInTimeZone(
     serviceEvent.dateCompleted,
     'hh:mm a',
@@ -336,7 +337,7 @@ const ServiceHistory = ({ serviceEvent }: ServiceHistoryProps) => {
             Technician Arrived
           </h4>
           <p className='text-sm italic leading-none text-gray-600'>
-            {formattedTime}
+            {format(new Date(serviceEvent.dateCompleted), 'hh:mm a')}
           </p>
         </div>
       </div>
