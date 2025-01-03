@@ -18,7 +18,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CustomerType } from '@/lib/utils';
 import { trpc } from '@/app/_trpc/client';
-import { toast } from '@/components/ui/use-toast';
 import {
   Select,
   SelectContent,
