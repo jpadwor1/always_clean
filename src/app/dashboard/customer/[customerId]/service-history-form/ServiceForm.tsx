@@ -18,7 +18,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { CustomerType } from '@/lib/utils';
 import { trpc } from '@/app/_trpc/client';
-import { toast } from '@/components/ui/use-toast';
 import {
   Select,
   SelectContent,
@@ -258,59 +257,60 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
       name: data.service,
     };
 
-    try {
-      await Promise.all(
-        fileData.map(async (file) => {
-          createFile({
-            downloadURL: file.downloadURL,
-            fileName: file.fileName,
-          });
-          startPolling({ downloadURL: file.downloadURL });
-        })
-      );
+    console.log(formData.dateCompleted)
+    // try {
+    //   await Promise.all(
+    //     fileData.map(async (file) => {
+    //       createFile({
+    //         downloadURL: file.downloadURL,
+    //         fileName: file.fileName,
+    //       });
+    //       startPolling({ downloadURL: file.downloadURL });
+    //     })
+    //   );
 
-      mutation.mutate(
-        {
-          ...formData,
-        },
-        {
-          onSuccess: (dbServiceEvent) => {
-            toast({
-              title: 'Service Event Created',
-              description: (
-                <>
-                  <p>Succesfully completed a job! Great work!</p>
-                </>
-              ),
-            });
-            router.push(
-              `/dashboard/customer/${customerId}/service-history/${dbServiceEvent.id}`
-            );
-          },
-          onError: (error: any) => {
-            toast({
-              title: 'Oops Something went wrong',
-              description: (
-                <>
-                  <p>try again later</p>
-                  <p>{error.message}</p>
-                </>
-              ),
-            });
-          },
-        }
-      );
-    } catch (error: any) {
-      toast({
-        title: 'Oops Something went wrong',
-        description: (
-          <>
-            <p>try again later</p>
-            <p>{error.message}</p>
-          </>
-        ),
-      });
-    }
+    //   mutation.mutate(
+    //     {
+    //       ...formData,
+    //     },
+    //     {
+    //       onSuccess: (dbServiceEvent) => {
+    //         toast({
+    //           title: 'Service Event Created',
+    //           description: (
+    //             <>
+    //               <p>Succesfully completed a job! Great work!</p>
+    //             </>
+    //           ),
+    //         });
+    //         router.push(
+    //           `/dashboard/customer/${customerId}/service-history/${dbServiceEvent.id}`
+    //         );
+    //       },
+    //       onError: (error: any) => {
+    //         toast({
+    //           title: 'Oops Something went wrong',
+    //           description: (
+    //             <>
+    //               <p>try again later</p>
+    //               <p>{error.message}</p>
+    //             </>
+    //           ),
+    //         });
+    //       },
+    //     }
+    //   );
+    // } catch (error: any) {
+    //   toast({
+    //     title: 'Oops Something went wrong',
+    //     description: (
+    //       <>
+    //         <p>try again later</p>
+    //         <p>{error.message}</p>
+    //       </>
+    //     ),
+    //   });
+    // }
   }
 
   return (
