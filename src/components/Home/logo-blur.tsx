@@ -11,10 +11,6 @@ export function LogosWithBlurFlip() {
                 src: "/certs/veteran-owned.png",
             },
             {
-                name: "BBB Accredited Business",
-                src: "/certs/better-business-bureau.png",
-            },
-            {
                 name: "Certified Pool & Hot Tub Operator",
                 src: "/certs/APSPlogo.png",
             },
@@ -35,11 +31,7 @@ export function LogosWithBlurFlip() {
                 name: "Veteran Owned2",
                 src: "/certs/veteran-owned.png",
             },
-
             {
-                name: "BBB Accredited Business2",
-                src: "/certs/better-business-bureau.png",
-            }, {
                 name: "Certified Pool & Hot Tub Operator2",
                 src: "/certs/APSPlogo.png",
             },
