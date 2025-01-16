@@ -31,6 +31,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Chemical } from '@prisma/client';
+import { useToast } from '@/components/ui/use-toast';
 
 type Option = {
   label: string;
@@ -75,6 +76,7 @@ const FormSchema = z.object({
 });
 
 const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
+  const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -161,7 +163,9 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
     { label: 'Balanced Chemicals', value: 'Balanced Chemicals' },
     { label: 'Cleaned Tile Band', value: 'Cleaned Tile Band' },
     { label: 'Skimmed', value: 'Skimmed' },
-    { label: 'Performed pH test', value: 'Performed pH test' }]);
+    { label: 'Performed pH test', value: 'Performed pH test' },
+    { label: 'Minor Repair', value: 'Minor Repair' },
+    { label: 'Drain and Fill', value: 'Drain and Fill' },]);
   const [selectedChemicals, setSelectedChemicals] = React.useState<Option[]>(
     [
       {
@@ -257,60 +261,59 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
       name: data.service,
     };
 
-    console.log(formData.dateCompleted)
-    // try {
-    //   await Promise.all(
-    //     fileData.map(async (file) => {
-    //       createFile({
-    //         downloadURL: file.downloadURL,
-    //         fileName: file.fileName,
-    //       });
-    //       startPolling({ downloadURL: file.downloadURL });
-    //     })
-    //   );
+    try {
+      await Promise.all(
+        fileData.map(async (file) => {
+          createFile({
+            downloadURL: file.downloadURL,
+            fileName: file.fileName,
+          });
+          startPolling({ downloadURL: file.downloadURL });
+        })
+      );
 
-    //   mutation.mutate(
-    //     {
-    //       ...formData,
-    //     },
-    //     {
-    //       onSuccess: (dbServiceEvent) => {
-    //         toast({
-    //           title: 'Service Event Created',
-    //           description: (
-    //             <>
-    //               <p>Succesfully completed a job! Great work!</p>
-    //             </>
-    //           ),
-    //         });
-    //         router.push(
-    //           `/dashboard/customer/${customerId}/service-history/${dbServiceEvent.id}`
-    //         );
-    //       },
-    //       onError: (error: any) => {
-    //         toast({
-    //           title: 'Oops Something went wrong',
-    //           description: (
-    //             <>
-    //               <p>try again later</p>
-    //               <p>{error.message}</p>
-    //             </>
-    //           ),
-    //         });
-    //       },
-    //     }
-    //   );
-    // } catch (error: any) {
-    //   toast({
-    //     title: 'Oops Something went wrong',
-    //     description: (
-    //       <>
-    //         <p>try again later</p>
-    //         <p>{error.message}</p>
-    //       </>
-    //     ),
-    //   });
-    // }
+      mutation.mutate(
+        {
+          ...formData,
+        },
+        {
+          onSuccess: (dbServiceEvent) => {
+            toast({
+              title: 'Service Event Created',
+              description: (
+                <>
+                  <p>Succesfully completed a job! Great work!</p>
+                </>
+              ),
+            });
+            router.push(
+              `/dashboard/customer/${customerId}/service-history/${dbServiceEvent.id}`
+            );
+          },
+          onError: (error: any) => {
+            toast({
+              title: 'Oops Something went wrong',
+              description: (
+                <>
+                  <p>try again later</p>
+                  <p>{error.message}</p>
+                </>
+              ),
+            });
+          },
+        }
+      );
+    } catch (error: any) {
+      toast({
+        title: 'Oops Something went wrong',
+        description: (
+          <>
+            <p>try again later</p>
+            <p>{error.message}</p>
+          </>
+        ),
+      });
+    }
   }
 
   return (
@@ -527,3 +530,4 @@ const ServiceForm = ({ customerId, userId }: ServiceFormProps) => {
 };
 
 export default ServiceForm;
+
