@@ -45,15 +45,15 @@ const Navbar = async () => {
 
             {!user ? (
               <>
-                <LoginLink
+                <Link href={"https://krystalcleanpools.mypoolportal.com"}
                   className={buttonVariants({ variant: "ghost", size: "sm" })}
                 >
                   Login
-                </LoginLink>
+                </Link>
 
-                <RegisterLink className={buttonVariants({ size: "sm" })}>
+                <Link href={"https://krystalcleanpools.mypoolportal.com"} className={buttonVariants({ size: "sm" })}>
                   Get Started <ArrowRight className="ml-1.5 h-5 w-5" />
-                </RegisterLink>
+                </Link>
               </>
             ) : (
               <>
