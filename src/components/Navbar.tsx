@@ -38,7 +38,7 @@ const Navbar = async () => {
             />
           </Link>
 
-          <MobileNav role={role} isAuth={!!user} />
+          <MobileNav role={role} isAuth={false} />
 
           <div className="hidden items-center space-x-4 sm:flex">
             <NavbarMenu />
@@ -66,14 +66,6 @@ const Navbar = async () => {
                     : "Service History"}
                 </Link>
 
-                <UserAccountNav
-                  name={
-                    !dbCustomer?.name ? "Your Account" : `${dbCustomer?.name} `
-                  }
-                  imageUrl={user.picture ?? ""}
-                  email={user.email ?? ""}
-                  role={dbCustomer?.role ?? ""}
-                />
               </>
             )}
           </div>
