@@ -49,15 +49,15 @@ const MobileNav = ({ isAuth, role }: MobileNavProps) => {
               {!isAuth ? (
                 <>
                   <li>
-                    <RegisterLink className='flex items-center w-full font-semibold text-green-600'>
+                    <Link href={"https://krystalcleanpools.mypoolportal.com"} className='flex items-center w-full font-semibold text-green-600'>
                       Get Started
-                    </RegisterLink>
+                    </Link>
                   </li>
                   <li className='my-3 h-px w-full bg-gray-300'></li>
                   <li>
-                    <LoginLink className='flex items-center w-full font-semibold'>
+                    <Link href={"https://krystalcleanpools.mypoolportal.com"} className='flex items-center w-full font-semibold'>
                       Login
-                    </LoginLink>
+                    </Link>
                   </li>
                   <li className='my-3 h-px w-full bg-gray-300'></li>
                   <li>
