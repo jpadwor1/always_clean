@@ -46,10 +46,10 @@ export default function Home() {
             services. Or book directly below.
           </p>
           <a className='' href="tel:5205255956">
-            <button className="px-8 py-2 rounded-full relative bg-slate-700 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-slate-600">
+            <button className="px-12 py-3 rounded-full relative bg-slate-700 text-white text-sm hover:shadow-2xl hover:shadow-white/[0.1] transition duration-200 border border-slate-600">
               <div className="absolute inset-x-0 h-px w-1/2 mx-auto -top-px shadow-2xl  bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
-              <span className="relative z-20 text-xl">
-                Call Now
+              <span className="relative z-20 text-2xl">
+                Click To Call Now
               </span>
               <div className="absolute inset-x-0 h-px w-1/2 mx-auto -bottom-px shadow-2xl  bg-gradient-to-r from-transparent via-blue-600 to-transparent" />
 

@@ -7,6 +7,7 @@ import Footer from '@/components/Footer';
 import type { Metadata } from 'next';
 import CookieConsentBanner from '@/components/CookieConsent';
 import Toaster from '@/components/ui/toaster';
+import { GoogleAnalytics } from '@next/third-parties/google'
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -39,7 +40,7 @@ export default function RootLayout({
           <CookieConsentBanner />
         </body>
       </Providers>
-      {/* <GoogleAnalytics gaId='G-CXG6005YVL' /> */}
+      <GoogleAnalytics gaId='G-CXG6005YVL' />
       {/* <FacebookPixelEvents /> */}
     </html>
   );
