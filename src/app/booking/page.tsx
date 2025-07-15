@@ -2,8 +2,6 @@
 
 import React from 'react';
 import MaxWidthWrapper from '@/components/MaxWidthWrapper';
-import { Separator } from '@/components/ui/separator';
-import StepperForm from '@/components/Stepper';
 import CalendlyEmbed from '@/components/booking/CalendlyEmbed';
 
 const Page = () => {
