@@ -98,8 +98,8 @@ export default function Home() {
             {/* Featured Posts */}
             <PricingGrid location='Florence' />
 
-            {/* Featured Posts */}
-            <BlogPostList location="Florence" />
+            {/* Featured Posts
+            <BlogPostList location="Florence" /> */}
 
             {/* CTASection */}
             <ServiceCTACard />

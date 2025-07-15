@@ -7,7 +7,7 @@ import { CTAWithDashedGridLines } from '@/components/Home/cta-with-gridlines';
 import { FeaturesGrid } from '@/components/Home/feature-grid';
 import { LogosWithBlurFlip } from '@/components/Home/logo-blur';
 import { PricingGrid } from '@/components/Home/all-pricing-grid';
-import BlogPostList from '@/components/Home/blog-post-list';
+// import BlogPostList from '@/components/Home/blog-post-list';
 
 export default function Home() {
     return (
@@ -98,8 +98,8 @@ export default function Home() {
             {/* Featured Posts */}
             <PricingGrid location='San Tan Valley' />
 
-            {/* Featured Posts */}
-            <BlogPostList location="San Tan Valley" />
+            {/* Featured Posts
+            <BlogPostList location="San Tan Valley" /> */}
 
             {/* CTASection */}
             <ServiceCTACard />
