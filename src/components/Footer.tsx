@@ -67,7 +67,10 @@ const Footer = () => {
         <div className='border-b border-coolGray-100' />
         <div className='container px-4 mx-auto'>
           <p className='py-5 md:pb-20 text-lg md:text-lg text-zinc-400 font-small text-center'>
-            © 2024 Krystal Clean Pool Service. All rights reserved.
+            © 2025 Krystal Clean Pool Service. All rights reserved.
+          </p>
+          <p>
+            <span className='text-zinc-400 text-sm'>License ROC-360089</span>
           </p>
         </div>
       </div>

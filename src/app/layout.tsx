@@ -37,7 +37,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
-          <CookieConsentBanner />
+          {/* <CookieConsentBanner /> */}
         </body>
       </Providers>
       <GoogleAnalytics gaId='G-CXG6005YVL' />
