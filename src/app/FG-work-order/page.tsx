@@ -25,7 +25,7 @@ function Page() {
                     <iframe
                         src="https://docs.google.com/forms/d/e/1FAIpQLSfTkRK-EdlVnSI1UmQPoKifMyGCuUCFaP101aa6jozm4u9W6g/viewform?embedded=true"
                         title="Florence Gardens Work Order Form"
-                        className="min-h-[600px] max-h-[800px] w-full rounded-2xl"
+                        className="min-h-[900px] w-full rounded-2xl"
                     >
                         Loading…
                     </iframe>
