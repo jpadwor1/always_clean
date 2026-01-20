@@ -86,9 +86,9 @@ export default function NavbarMenu() {
                 A Step-by-Step Guide to Our Professional Pool Cleaning Process.
                 Efficiency and Transparency.
               </ListItem>
-              <ListItem href='/blog' title='Our Blog'>
+              {/* <ListItem href='/blog' title='Our Blog'>
                 Expert Pool Care Tips and Customer Success Stories.
-              </ListItem>
+              </ListItem> */}
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
