@@ -1,1 +1,5 @@
 publish = "dist"
+
+[[edge_functions]]
+path = "/*"
+function = "force-prerender"
