@@ -2,4 +2,4 @@ publish = "dist"
 
 [[edge_functions]]
 path = "/*"
-function = "force-prerender"
+function = "adsbot-head-fix"
