@@ -1,6 +1,2 @@
 [build]
 command = "npm run build"
-
-[[edge_functions]]
-path = "/*"
-function = "adsbot-bypass-prerender"
