@@ -1,5 +1,6 @@
+[build]
 publish = "dist"
 
 [[edge_functions]]
 path = "/*"
-function = "adsbot-head-fix"
+function = "adsbot-bypass-prerender"
