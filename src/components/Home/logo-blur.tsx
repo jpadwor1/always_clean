@@ -7,44 +7,48 @@ export function LogosWithBlurFlip() {
     const [logos, setLogos] = useState([
         [
             {
-                name: "Veteran Owned",
-                src: "/certs/veteran-owned.png",
+                name: "Better Business Bureau Accredited",
+                src: "/certs/better-business-bureau.png",
             },
             {
                 name: "Certified Pool & Hot Tub Operator",
                 src: "/certs/APSPlogo.png",
             },
-
-
             {
                 name: "NSFP Certified",
                 src: "/certs/NSPFlogo.png",
             },
             {
-                name: "Eco-Friendly Certified",
-                src: "/certs/ECOlogo.png",
+                name: "PHTA",
+                src: "/certs/PHTA.png",
             },
-
+            {
+                name: "Veteran Owned",
+                src: "/certs/veteran-owned.png",
+            },
         ],
         [
+
             {
-                name: "Veteran Owned2",
-                src: "/certs/veteran-owned.png",
+                name: "Better Business Bureau Accredited2",
+                src: "/certs/better-business-bureau.png",
             },
             {
                 name: "Certified Pool & Hot Tub Operator2",
                 src: "/certs/APSPlogo.png",
             },
-
             {
                 name: "NSFP Certified2",
                 src: "/certs/NSPFlogo.png",
             },
             {
-                name: "Eco-Friendly Certified2",
-                src: "/certs/ECOlogo.png",
+                name: "PHTA2",
+                src: "/certs/PHTA.png",
             },
-
+            {
+                name: "Veteran Owned2",
+                src: "/certs/veteran-owned.png",
+            },
         ],
     ]);
     const [activeLogoSet, setActiveLogoSet] = useState(logos[0]);

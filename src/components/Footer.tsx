@@ -65,13 +65,14 @@ const Footer = () => {
           </div>
         </div>
         <div className='border-b border-coolGray-100' />
-        <div className='container px-4 mx-auto'>
-          <p className='pt-5 text-lg md:text-lg text-zinc-400 font-small text-center'>
-            © 2025 Krystal Clean Pool Service. All rights reserved.
+        <div className='container px-4 mx-auto flex flex-col items-center justify-center'>
+          <a href='https://azroc.my.site.com/AZRoc/s/contractor-search?licenseId=a0ocs00000GzTaBAAV' className=' text-lg md:text-lg text-zinc-400 font-small text-center'>
+            License No.: ROC-362479
+          </a>
+          <p className='pt-5 text-lg md:text-lg text-zinc-400 font-small text-center pb-6'>
+            © 2026 Krystal Clean Pool Service. All rights reserved.
           </p>
-          <p className='md:pb-20 text-lg md:text-lg text-zinc-400 font-small text-center'>
-            License No.: ROC-360089
-          </p>
+
         </div>
       </div>
     </section>
