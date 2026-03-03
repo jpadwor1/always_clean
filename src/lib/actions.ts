@@ -98,7 +98,7 @@ export const addUser = async ({
         method: "POST",
         body: inputBody,
         headers: headers,
-      }
+      },
     );
 
     const body = await response.json();
