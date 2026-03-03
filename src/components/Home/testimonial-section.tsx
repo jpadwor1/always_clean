@@ -4,10 +4,10 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Marquee from "react-fast-marquee";
 
-export function TestimonialsMarqueeGrid({ location }: { location: string }) {
+export function TestimonialsMarqueeGrid({ location, hide }: { location: string; hide?: boolean }) {
   return (
     <div className="relative mx-auto h-full w-full max-w-7xl overflow-hidden px-4 md:px-8">
-      <div className="pb-20">
+      <div className={cn("pb-20", hide ? "hidden" : "")}>
         <h1 className="pt-4 text-lg font-bold text-blue-900 dark:text-white md:text-4xl">
           Trusted by Pool Owners, Loved for Our Care
         </h1>
