@@ -144,7 +144,7 @@ export function Pricing() {
             {
                 name: "Small Pools",
                 id: "tier-small-pools",
-                price: "$100",
+                price: "$145",
                 priceSubheading: "per month",
                 description:
                     "Affordable and reliable pool cleaning services designed specifically for small residential pools.",
@@ -166,7 +166,7 @@ export function Pricing() {
             {
                 name: "Play Pools",
                 id: "tier-play-pools",
-                price: "$145",
+                price: "$165",
                 priceSubheading: "per month",
                 description:
                     "Comprehensive pool cleaning and maintenance services tailored for play pools to ensure safe and fun swimming experiences.",
