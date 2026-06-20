@@ -16,7 +16,7 @@ const services = [
         id: "small-pools",
         name: "Small Pools",
         description: "Professional maintenance and cleaning services tailored for small residential pools to keep them pristine and swim-ready.",
-        price: "$100 per month",
+        price: "$145 per month",
         icon: <House height={50} width={50} />, // Replace this with an appropriate icon for pool maintenance
         discount: "Flat monthly pricing",
         image: "/pools/smallpool.webp", // Replace with a relevant image
@@ -31,7 +31,7 @@ const services = [
         id: "play-pools",
         name: "Play Pools",
         description: "Comprehensive pool cleaning and maintenance services designed for play pools, ensuring a safe and fun swimming experience.",
-        price: "$145 per month",
+        price: "$165 per month",
         icon: <School height={50} width={50} strokeWidth={1} />, // Replace this with an appropriate icon for play pools
         discount: "Flat monthly pricing",
         image: "/pools/playpool.webp", // Replace with a relevant image
