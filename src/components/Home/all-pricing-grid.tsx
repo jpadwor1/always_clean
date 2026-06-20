@@ -32,7 +32,7 @@ export const residentialServices: Tier[] = [
         name: "Small Pools",
         id: "tier-small-pools",
         href: "#",
-        price: "$100",
+        price: "$145",
         priceSubheading: "per month",
         priceUnit: "",
         description:
@@ -52,7 +52,7 @@ export const residentialServices: Tier[] = [
         name: "Play Pools",
         id: "tier-play-pools",
         href: "#",
-        price: "$145",
+        price: "$165",
         priceSubheading: "per month",
         priceUnit: "",
         description:
