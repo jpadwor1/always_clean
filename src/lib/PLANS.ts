@@ -2,7 +2,7 @@ export const PLANS = [
   {
     name: "Small Pools",
     type: "Regular Pool Cleaning",
-    price: 100,
+    price: 145,
     priceFrequency: "per month",
     description: "Designed for smaller pools less than 10,000 gallons",
     features: [
@@ -22,7 +22,7 @@ export const PLANS = [
   {
     name: "Play Pools",
     type: "Regular Pool Cleaning",
-    price: 145,
+    price: 165,
     priceFrequency: "per month",
     description: "Ideal for residential pools, chemicals included",
     features: [
@@ -41,7 +41,7 @@ export const PLANS = [
   },
   {
     name: "Diving or Extra Large",
-    price: 175,
+    price: 185,
     priceFrequency: "per month",
     description: "Designed for larger pools",
     features: [
