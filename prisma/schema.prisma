@@ -167,3 +167,24 @@ enum UploadStatus {
   FAILED
   SUCCESS
 }
+
+model GiveawayEntry {
+  id                 String   @id @default(cuid())
+  campaign           String
+  email              String
+  phone              String
+  payload            Json
+  legalVersion       String
+  consentText        String
+  receiptHash        String   @unique
+  createdAt          DateTime @default(now())
+  automationStatus   String   @default("PENDING")
+  automationAttempts Int      @default(0)
+  automationError    String?
+  automationLeaseAt  DateTime?
+  automationSentAt   DateTime?
+
+  @@unique([campaign, email])
+  @@unique([campaign, phone])
+  @@index([automationStatus, createdAt])
+}

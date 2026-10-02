@@ -8,6 +8,7 @@ import type { Metadata } from 'next';
 import CookieConsentBanner from '@/components/CookieConsent';
 import Toaster from '@/components/ui/toaster';
 import { GoogleAnalytics } from '@next/third-parties/google'
+import SiteChrome from '@/components/SiteChrome';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -34,9 +35,9 @@ export default function RootLayout({
           )}
         >
           <Toaster />
-          <Navbar />
+          <SiteChrome><Navbar /></SiteChrome>
           {children}
-          <Footer />
+          <SiteChrome><Footer /></SiteChrome>
           {/* <CookieConsentBanner /> */}
         </body>
       </Providers>
