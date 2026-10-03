@@ -93,7 +93,7 @@ export default function RulesPage() {
         <p className="mb-5">{"To the fullest extent permitted by applicable law, entrants agree to release and hold harmless Sponsor and its owners, officers, employees, contractors, agents, and representatives from claims arising directly from participation in the Giveaway or the acceptance, possession, use, or misuse of the prize, except to the extent liability cannot legally be waived."}</p>
         <p className="mb-5">{"Nothing in these Official Rules is intended to waive or limit liability that cannot lawfully be waived or limited."}</p>
         <h2 className="mb-4 mt-10 text-xl font-bold md:text-2xl">{"15. Facebook, Instagram and Meta Disclaimer"}</h2>
-        <p className="mb-5">{"This Giveaway is "}<strong>{"not sponsored, endorsed, administered by, or associated with Facebook, Instagram, or Meta Platforms, Inc."}</strong></p>
+        <p className="mb-5">This promotion is in no way sponsored, endorsed, administered by, or associated with Facebook or Instagram. By entering, participants release Facebook and Instagram from responsibility related to this promotion.</p>
         <p className="mb-5">{"By entering, each entrant acknowledges that the entrant is providing information to Krystal Clean Pool Service and not to Facebook, Instagram, or Meta Platforms, Inc."}</p>
         <p className="mb-5">{"Each entrant releases Facebook, Instagram, and Meta Platforms, Inc. from liability arising from or relating to the administration of this Giveaway to the fullest extent permitted by law."}</p>
         <p className="mb-5">{"Any questions, comments, or complaints regarding the Giveaway should be directed to Krystal Clean Pool Service and not to Facebook, Instagram, or Meta."}</p>
