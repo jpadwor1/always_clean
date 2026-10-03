@@ -49,11 +49,11 @@ October 1 at 00:00 through November 1 at 00:00, 2026, Arizona time (UTC-07:00). 
 
 Live verification passed October 2, 2026: eight simultaneous submissions yielded one accepted entry and seven duplicates; four same-receipt retries recovered that entry. Separate six-way email and phone races each accepted exactly one entry. Receipt verification, Airtable field mapping and recovery after a simulated provider outage passed. The retry updated the same Airtable record. All synthetic records were removed from Neon and Airtable. This exercises the actual server handler and APIs, not a deployed browser UI.
 
-The confirmed Neon entry ID is the opaque Meta Lead event ID. No contact details are included. `NEXT_PUBLIC_META_PIXEL_ID` is optional; no ID means no Meta requests. Tracking needs separate deployment verification.
+The confirmed Neon entry ID is the opaque Meta Lead event ID. No contact details are included as event parameters. Tracking needs separate deployment verification.
 
 ## Meta Pixel
 
-Pixel ID: `890499253469716`, configured locally and in `.env.giveaway.example`. Set `NEXT_PUBLIC_META_PIXEL_ID=890499253469716` in the hosting build environment and rebuild; Next.js embeds public variables at build time.
+Pixel ID: `7174041372672275`, included as the public code default and configured locally and in `.env.giveaway.example`. `NEXT_PUBLIC_META_PIXEL_ID` optionally overrides it at build time; an explicitly empty value disables tracking. Redeploy after code or build-variable changes. A live-site inspection found that an earlier deployment omitted this variable and did not initialize the Pixel; the code default fixes that missing-variable case once deployed.
 
 The giveaway layout owns PageView tracking for the funnel, including client-side route changes. The landing page also sends ViewContent. The receipt-verified thank-you page sends Lead using the Neon entry ID; it does not send an additional PageView. Lead is deduplicated by Pixel ID and entry ID using localStorage, with an in-memory fallback. Clearing or blocking storage limits deduplication across reloads. The call link sends Contact. Form values are not passed as event parameters or advanced-matching data; automatic configuration is disabled.
 
