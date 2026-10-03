@@ -64,10 +64,23 @@ test('Airtable outage cannot turn a committed entry into a failed submission', a
   assert.equal(response.status, 200);
   assert.match(response.headers.get('set-cookie'), /HttpOnly/i);
 });
+test('Pixel uses the approved ID when the hosting variable is missing and honors an empty override', async () => {
+  for (const [env, expected] of [[{}, '7174041372672275'], [{ NEXT_PUBLIC_META_PIXEL_ID: '' }, undefined]]) {
+    let effect; let initialized;
+    const component = load('src/components/FacebookPixelEvents.tsx', {
+      react: { useEffect: fn => { effect = fn; }, useRef: () => ({ current: null }) },
+      'next/navigation': { usePathname: () => '/giveaway' },
+      'react-facebook-pixel': { init: id => { initialized = id; }, pageView() {}, track() {} },
+    }, { process: { env } });
+    component.default({}); effect(); await new Promise(resolve => setImmediate(resolve));
+    assert.equal(initialized, expected);
+  }
+});
+
 test('Meta landing never leads and confirmed entry deduplicates', async () => {
   let effect; let pathname = '/giveaway'; const calls = []; const storage = new Map(); const lastPage = { current: null };
   const api = { init: () => calls.push(['init']), pageView: () => calls.push(['PageView']), track: name => calls.push([name]), fbq: (...args) => calls.push(args) };
-  const component = load('src/components/FacebookPixelEvents.tsx', { react: { useEffect: fn => { effect = fn; }, useRef: () => lastPage }, 'next/navigation': { usePathname: () => pathname }, 'react-facebook-pixel': api }, { process: { env: { NEXT_PUBLIC_META_PIXEL_ID: '890499253469716' } }, localStorage: { getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value) } });
+  const component = load('src/components/FacebookPixelEvents.tsx', { react: { useEffect: fn => { effect = fn; }, useRef: () => lastPage }, 'next/navigation': { usePathname: () => pathname }, 'react-facebook-pixel': api }, { process: { env: { NEXT_PUBLIC_META_PIXEL_ID: '7174041372672275' } }, localStorage: { getItem: key => storage.get(key), setItem: (key, value) => storage.set(key, value) } });
   const flush = () => new Promise(resolve => setImmediate(resolve));
   component.default({}); effect(); await flush();
   assert.equal(calls.filter(x => x[0] === 'PageView').length, 1); assert.equal(calls.filter(x => x[0] === 'ViewContent').length, 1); assert.equal(calls.filter(x => x[1] === 'Lead').length, 0);

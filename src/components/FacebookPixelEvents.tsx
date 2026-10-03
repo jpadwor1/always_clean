@@ -3,9 +3,12 @@ import React, { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 
 let pixelPromise: Promise<typeof import('react-facebook-pixel')> | undefined;
+// Pixel IDs are public. Keep the approved ID available when the hosting build
+// omits the optional override. An explicitly empty override disables tracking.
+const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? '7174041372672275';
 const sent = new Set<string>();
 function pixel() {
-  const id = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const id = pixelId;
   if (!id) return undefined;
   if (!pixelPromise) pixelPromise = import('react-facebook-pixel').then(module => {
     module.default.init(id, undefined, { autoConfig: false, debug: false });
@@ -14,7 +17,7 @@ function pixel() {
   return pixelPromise;
 }
 export async function trackGiveawayEvent(event: 'Lead' | 'Contact', eventId: string) {
-  const key = `giveaway:${process.env.NEXT_PUBLIC_META_PIXEL_ID}:${event}:${eventId}`;
+  const key = `giveaway:${pixelId}:${event}:${eventId}`;
   const api = await pixel();
   if (!api || sent.has(key)) return;
   try { if (localStorage.getItem(key)) return; } catch { /* Memory fallback. */ }
