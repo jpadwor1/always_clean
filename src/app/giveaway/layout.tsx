@@ -6,7 +6,12 @@ export default function GiveawayLayout({ children }: { children: React.ReactNode
       <a href="#giveaway-main" className="absolute -top-24 left-4 z-50 bg-white p-2.5 focus:top-2.5">Skip to content</a>
       <FacebookPixelEvents />
       {children}
-      <footer className="flex flex-wrap justify-center gap-x-5 gap-y-3 px-[6%] pb-[calc(110px+env(safe-area-inset-bottom))] pt-6 text-[11px] text-[#526773] md:pb-6"><span className="w-full text-center md:w-auto">© 2026 Krystal Clean Pool Service</span><a className="underline" href="/giveaway/rules">Official Giveaway Rules</a><a className="underline" href="/privacy-policy">Privacy Policy</a></footer>
+      <footer className="flex flex-wrap justify-center gap-x-5 gap-y-3 px-[6%] pb-[calc(110px+env(safe-area-inset-bottom))] pt-6 text-[11px] text-[#526773] md:pb-6">
+        <span className="w-full text-center md:w-auto">© 2026 Krystal Clean Pool Service</span>
+        <a className="underline" href="/giveaway/rules">Official Giveaway Rules</a>
+        <a className="underline" href="/privacy-policy">Privacy Policy</a>
+        <div className="w-full"><p className="mx-auto max-w-3xl text-center leading-relaxed">This promotion is in no way sponsored, endorsed, administered by, or associated with Facebook or Instagram. By entering, participants release Facebook and Instagram from responsibility related to this promotion.</p></div>
+      </footer>
     </div>
   );
 }
